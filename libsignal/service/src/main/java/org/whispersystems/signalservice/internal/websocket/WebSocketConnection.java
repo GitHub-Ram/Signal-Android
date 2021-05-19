@@ -116,7 +116,7 @@ public class WebSocketConnection extends WebSocketListener {
 
       OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
                                                            .sslSocketFactory(new Tls12SocketFactory(socketFactory.first()), socketFactory.second())
-                                                           .connectionSpecs(Util.immutableList(ConnectionSpec.RESTRICTED_TLS))
+                                                           .connectionSpecs(Util.immutableList(ConnectionSpec.RESTRICTED_TLS,ConnectionSpec.CLEARTEXT))
                                                            .readTimeout(KEEPALIVE_TIMEOUT_SECONDS + 10, TimeUnit.SECONDS)
                                                            .dns(dns.or(Dns.SYSTEM))
                                                            .connectTimeout(KEEPALIVE_TIMEOUT_SECONDS + 10, TimeUnit.SECONDS);
