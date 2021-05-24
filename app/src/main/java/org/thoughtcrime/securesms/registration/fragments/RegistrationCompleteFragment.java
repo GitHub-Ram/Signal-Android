@@ -32,16 +32,16 @@ public final class RegistrationCompleteFragment extends BaseRegistrationFragment
 
     FragmentActivity activity = requireActivity();
 
-    if (SignalStore.storageService().needsAccountRestore()) {
-      activity.startActivity(new Intent(activity, PinRestoreActivity.class));
-    } else if (!isReregister()) {
-      final Intent main    = MainActivity.clearTop(activity);
-      final Intent profile = EditProfileActivity.getIntentForUserProfile(activity);
-
-      Intent kbs = CreateKbsPinActivity.getIntentForPinCreate(requireContext());
-      activity.startActivity(chainIntents(chainIntents(profile, kbs), main));
-    }
-
+//    if (SignalStore.storageServiceValues().needsAccountRestore()) {
+//      activity.startActivity(new Intent(activity, PinRestoreActivity.class));
+//    } else if (!isReregister()) {
+//      final Intent main    = MainActivity.clearTop(activity);
+//      final Intent profile = EditProfileActivity.getIntentForUserProfile(activity);
+//
+//      Intent kbs = CreateKbsPinActivity.getIntentForPinCreate(requireContext());
+//      activity.startActivity(chainIntents(chainIntents(profile, kbs), main));
+//    }
+    activity.startActivity(new Intent(activity, MainActivity.class));
     activity.finish();
     ActivityNavigator.applyPopAnimationsToPendingTransition(activity);
   }
