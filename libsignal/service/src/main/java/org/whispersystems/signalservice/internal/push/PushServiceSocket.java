@@ -1456,6 +1456,7 @@ public class PushServiceSocket {
                                       Optional<UnidentifiedAccess> unidentifiedAccessKey)
       throws NonSuccessfulResponseCodeException, PushNetworkException, MalformedResponseException
   {
+
     Response response = getServiceConnection(urlFragment, method, body, headers, unidentifiedAccessKey);
 
     responseCodeHandler.handle(response.code());
@@ -1570,8 +1571,10 @@ public class PushServiceSocket {
     if (!headers.containsKey("Authorization")) {
       if (unidentifiedAccess.isPresent()) {
         request.addHeader("Unidentified-Access-Key", Base64.encodeBytes(unidentifiedAccess.get().getUnidentifiedAccessKey()));
+        Log.w("RAAM"+TAG,"Unidentified-Access-Key :"+ Base64.encodeBytes(unidentifiedAccess.get().getUnidentifiedAccessKey()));
       } else if (credentialsProvider.getPassword() != null) {
         request.addHeader("Authorization", getAuthorizationHeader(credentialsProvider));
+        Log.w("RAAM"+TAG,"Authorization :"+ getAuthorizationHeader(credentialsProvider));
       }
     }
 
@@ -1581,6 +1584,7 @@ public class PushServiceSocket {
 
     if (connectionHolder.getHostHeader().isPresent()) {
       request.addHeader("Host", connectionHolder.getHostHeader().get());
+      Log.w("RAAM"+TAG,"Host :"+ connectionHolder.getHostHeader().get());
     }
 
     return request.build();

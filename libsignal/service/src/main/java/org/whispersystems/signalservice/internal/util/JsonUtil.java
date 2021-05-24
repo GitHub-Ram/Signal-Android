@@ -38,7 +38,9 @@ public class JsonUtil {
 
   public static String toJson(Object object) {
     try {
-      return objectMapper.writeValueAsString(object);
+      String aaa=  objectMapper.writeValueAsString(object);
+      Log.w("RAAM",aaa);
+      return aaa;
     } catch (JsonProcessingException e) {
       Log.w(TAG, e);
       return "";
@@ -48,6 +50,7 @@ public class JsonUtil {
   public static <T> T fromJson(String json, Class<T> clazz)
       throws IOException
   {
+    Log.w("RAAM",json);
     return objectMapper.readValue(json, clazz);
   }
   
