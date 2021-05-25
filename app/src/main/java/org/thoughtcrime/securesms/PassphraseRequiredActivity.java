@@ -30,6 +30,7 @@ import org.thoughtcrime.securesms.profiles.edit.EditProfileActivity;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.registration.RegistrationNavigationActivity;
+import org.thoughtcrime.securesms.registration.RegistrationUtil;
 import org.thoughtcrime.securesms.service.KeyCachingService;
 import org.thoughtcrime.securesms.util.AppStartup;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
@@ -145,6 +146,7 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
         return null;
       }, success -> {
         Log.i(TAG, "Disable operation finished.");
+        RegistrationUtil.maybeMarkRegistrationComplete(this);
         progress.dismiss();
         Intent intent = getIntentForState(STATE_NORMAL);
         if (intent != null) {
