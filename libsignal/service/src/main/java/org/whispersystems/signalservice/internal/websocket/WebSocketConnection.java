@@ -220,15 +220,16 @@ public class WebSocketConnection extends WebSocketListener {
 
   private synchronized void sendKeepAlive() throws IOException {
     if (keepAliveSender != null && client != null) {
-      byte[] message = WebSocketMessage.newBuilder()
-                                       .setType(WebSocketMessage.Type.REQUEST)
-                                       .setRequest(WebSocketRequestMessage.newBuilder()
-                                                                          .setId(System.currentTimeMillis())
-                                                                          .setPath("/v1/keepalive")
-                                                                          .setVerb("GET")
-                                                                          .build()).build()
-                                       .toByteArray();
-
+      WebSocketRequestMessage wsrm = WebSocketRequestMessage.newBuilder()
+                             .setId(System.currentTimeMillis())
+                             .setPath("/v1/keepalive")
+                             .setVerb("GET")
+                             .build();
+      WebSocketMessage wsm = WebSocketMessage.newBuilder()
+                      .setType(WebSocketMessage.Type.REQUEST)
+                      .setRequest(wsrm).build();
+      byte[] message = wsm.toByteArray();
+      Log.w(TAG+"sendKeepAlive",wsrm.toString()+"----"+wsm.toString());
       if (!client.send(ByteString.of(message))) {
         throw new IOException("Write failed!");
       }
