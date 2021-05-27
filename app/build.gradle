@@ -104,7 +104,7 @@ android {
 
         vectorDrawables.useSupportLibrary = true
         project.ext.set("archivesBaseName", "Signal");
-
+        buildConfigField("Boolean", "STAGE_ENABLED", "false")
         buildConfigField "long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L"
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
 
@@ -124,8 +124,8 @@ android {
                 "\"fe7c1bfae98f9b073d220366ea31163ee82f6d04bead774f71ca8e5c40847bfe\", " +
                 "\"a3baab19ef6ce6f34ab9ebb25ba722725ae44a8872dc0ff08ad6d83a9489de87\")";
         buildConfigField "KbsEnclave[]", "KBS_FALLBACKS", "new KbsEnclave[0]"
-        buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BcNQOwxHtN7bbBFToMp/5Wubkpq+ZhQ9acMVjkaZO004\""
-        buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"AK4ryqCE+83fioOq6F/58d/brniWJ863VfPQX71WyycxgoAfBWZ5QpPAOoN9dG638NLC1/jNxCttnLF64By+DwDy824WCcKmSGr0ZBgA6NogW/4goxxCGpNmWFjqW8bSFaAKijj7MlH6Iwn9aMzYwiNrxI6XdHDfuqUJ0wngIeF3TtZV9oal09CHPLllRc5MljFWSNwwW8Da+mNke9z3yxg==\""
+        buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BY+rsZlgykVI2IC4uaztB5Dd90ew88HwelCQHbc8OZAH\""
+        buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"ANCHQhTSHcQ4Hy3zQDUvu4ZkfjM9hDBluQWuAxaOyO9CXPX58vsYsKiLZgW6zhMAhqNGk9z5YsQshovU9sGx4jSsqkQAUp6815nBYlxpaHAze4LmeF/qjaOe0z5X3zbqNBIcMyZQn7268CgMx2dPN+KrhIn98OrKC8qIzFz+M18Y1pD4JGf1/5vI303UUN8Qm7B5ofqmx8R8QMIlWj+Egis==\""
         buildConfigField "String[]", "LANGUAGES", "new String[]{\"" + autoResConfig().collect { s -> s.replace('-r', '_') }.join('", "') + '"}'
         buildConfigField "int", "CANONICAL_VERSION_CODE", "$canonicalVersionCode"
         buildConfigField "String", "DEFAULT_CURRENCIES", "\"EUR,AUD,GBP,CAD,CNY\""
@@ -263,25 +263,34 @@ android {
         }
 
         staging {
-            dimension 'environment'
-
+            dimension 'distribution'
+            isDefault true
+            ext.websiteUpdateUrl = "null"
+            buildConfigField "boolean", "PLAY_STORE_DISABLED", "false"
+            buildConfigField "String", "NOPLAY_UPDATE_URL", "$ext.websiteUpdateUrl"
+            buildConfigField("Boolean", "STAGE_ENABLED", "true")
             applicationIdSuffix ".staging"
 
-            buildConfigField "String", "SIGNAL_URL", "\"https://textsecure-service-staging.whispersystems.org\""
-            buildConfigField "String", "STORAGE_URL", "\"https://storage-staging.signal.org\""
-            buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn-staging.signal.org\""
-            buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://cdn2-staging.signal.org\""
-            buildConfigField "String", "SIGNAL_CONTACT_DISCOVERY_URL", "\"https://api-staging.directory.signal.org\""
-            buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api-staging.backup.signal.org\""
+            buildConfigField "String", "SIGNAL_URL", "\"https://textsecure-service.whispersystems.org\""
+            buildConfigField "String", "STORAGE_URL", "\"https://storage.signal.org\""
+            buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\""
+            buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://cdn2.signal.org\""
+            buildConfigField "String", "SIGNAL_CONTACT_DISCOVERY_URL", "\"https://api.directorycsdc.signal.org\""
+            buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api.backup.signal.org\""
             buildConfigField "String", "CDS_MRENCLAVE", "\"c98e00a4e3ff977a56afefe7362a27e4961e4f19e211febfbb19b897e6b80b15\""
-            buildConfigField "KbsEnclave", "KBS_ENCLAVE", "new KbsEnclave(\"823a3b2c037ff0cbe305cc48928cfcc97c9ed4a8ca6d49af6f7d6981fb60a4e9\", " +
-                                                                         "\"51a56084c0b21c6b8f62b1bc792ec9bedac4c7c3964bb08ddcab868158c09982\", " +
-                                                                         "\"a3baab19ef6ce6f34ab9ebb25ba722725ae44a8872dc0ff08ad6d83a9489de87\")"
+            buildConfigField "KbsEnclave", "KBS_ENCLAVE", "new KbsEnclave(\"fe7c1bfae98f9b073d220366ea31163ee82f6d04bead774f71ca8e5c40847bfe\"," +
+                    "\"fe7c1bfae98f9b073d220366ea31163ee82f6d04bead774f71ca8e5c40847bfe\", " +
+                    "\"a3baab19ef6ce6f34ab9ebb25ba722725ae44a8872dc0ff08ad6d83a9489de87\")";
             buildConfigField "KbsEnclave[]", "KBS_FALLBACKS", "new KbsEnclave[0]"
-            buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BbqY1DzohE4NUZoVF+L18oUPrK3kILllLEJh2UnPSsEx\""
-            buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"ABSY21VckQcbSXVNCGRYJcfWHiAMZmpTtTELcDmxgdFbtp/bWsSxZdMKzfCp8rvIs8ocCU3B37fT3r4Mi5qAemeGeR2X+/YmOGR5ofui7tD5mDQfstAI9i+4WpMtIe8KC3wU5w3Inq3uNWVmoGtpKndsNfwJrCg0Hd9zmObhypUnSkfYn2ooMOOnBpfdanRtrvetZUayDMSC5iSRcXKpdls=\""
+            buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"Bf0VWy3JUEu90466XBEQFaeYmsxvyUMlG2h+IpOeUsZn\""
+            buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"AMLRGCWTdi2aeAYlejGWDtOrgGTLjgaKHstSteUmTQ1LLhD4nbVZgo4u6waRGVc88hDSkg043rF7vXN5K/IDnXSWEHhwYOiHNG3cKOgoEqO1aVp4gTKrOJqwucBpxAHuaL6EOsOPGZqXkhl9GRNn3gjt1mWFlL5BIVsJqUfQgZN8XmkZSpG4u1174H8yFeR07n+H9y6lsCVAi2fdeuKYiFI==\""
             buildConfigField "String", "MOBILE_COIN_ENVIRONMENT", "\"testnet\""
-            buildConfigField "String", "RECAPTCHA_PROOF_URL", "\"https://signalcaptchas.org/staging/challenge/generate.html\""
+            buildConfigField "String[]", "LANGUAGES", "new String[]{\"" + autoResConfig().collect { s -> s.replace('-r', '_') }.join('", "') + '"}'
+            buildConfigField "int", "CANONICAL_VERSION_CODE", "$canonicalVersionCode"
+            buildConfigField "String", "DEFAULT_CURRENCIES", "\"EUR,AUD,GBP,CAD,CNY\""
+            buildConfigField "int[]", "MOBILE_COIN_REGIONS", "new int[]{44}"
+            buildConfigField "String", "GIPHY_API_KEY", "\"3o6ZsYH6U6Eri53TXy\""
+            buildConfigField "String", "RECAPTCHA_PROOF_URL", "\"https://signalcaptchas.org/challenge/generate.html\""
         }
     }
 
