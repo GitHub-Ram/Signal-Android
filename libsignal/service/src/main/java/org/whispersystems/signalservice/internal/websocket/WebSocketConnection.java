@@ -167,7 +167,12 @@ public class WebSocketConnection extends WebSocketListener {
 
     if      (incomingRequests.isEmpty() && client == null) throw new IOException("Connection closed!");
     else if (incomingRequests.isEmpty())                   throw new TimeoutException("Timeout exceeded");
-    else                                                   return incomingRequests.removeFirst();
+    else          {
+      WebSocketRequestMessage wsm = incomingRequests.removeFirst();
+      Log.w(TAG+"WebSocketRequestMessage",wsm.toString()+" body:"+wsm.getBody()+" path:"+wsm.getPath()+" verb:"+wsm.getVerb());
+      return wsm;
+    }
+
   }
 
   public synchronized ListenableFuture<WebsocketResponse> sendRequest(WebSocketRequestMessage request) throws IOException {
@@ -177,7 +182,7 @@ public class WebSocketConnection extends WebSocketListener {
                                                .setType(WebSocketMessage.Type.REQUEST)
                                                .setRequest(request)
                                                .build();
-
+    Log.w(TAG+"sendRequest",message.toString());
     SettableFuture<WebsocketResponse> future = new SettableFuture<>();
     outgoingRequests.put(request.getId(), new OutgoingRequest(future, System.currentTimeMillis()));
 
@@ -240,8 +245,10 @@ public class WebSocketConnection extends WebSocketListener {
 
       if (message.getType().getNumber() == WebSocketMessage.Type.REQUEST_VALUE)  {
         Log.d(TAG, "onMessage() -- incoming request");
+        Log.w(TAG+"REQUEST_VALUE",message.toString()+" body:"+message.getRequest().getBody()+" path:"+message.getRequest().getPath()+" verb:"+message.getRequest().getVerb());
         incomingRequests.add(message.getRequest());
       } else if (message.getType().getNumber() == WebSocketMessage.Type.RESPONSE_VALUE) {
+        Log.w(TAG+"RESPONSE_VALUE",message.toString()+" body:"+message.getResponse().getBody());
         OutgoingRequest listener = outgoingRequests.get(message.getResponse().getId());
         if (listener != null) {
           listener.getResponseFuture().set(new WebsocketResponse(message.getResponse().getStatus(),

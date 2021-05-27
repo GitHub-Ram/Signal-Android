@@ -1501,8 +1501,8 @@ public class PushServiceSocket {
   private Request buildServiceRequest(String urlFragment, String method, RequestBody body, Map<String, String> headers, Optional<UnidentifiedAccess> unidentifiedAccess) {
     ServiceConnectionHolder connectionHolder = (ServiceConnectionHolder) getRandom(serviceClients, random);
 
-//      Log.d(TAG, "Push service URL: " + connectionHolder.getUrl());
-//      Log.d(TAG, "Opening URL: " + String.format("%s%s", connectionHolder.getUrl(), urlFragment));
+      Log.d(TAG, "Push service URL: " + connectionHolder.getUrl());
+      Log.d(TAG, "Opening URL: " + String.format("%s%s", connectionHolder.getUrl(), urlFragment));
     Log.d(TAG, "Opening URL: <REDACTED>");
 
     Request.Builder request = new Request.Builder();

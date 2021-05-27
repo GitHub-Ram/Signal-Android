@@ -128,8 +128,8 @@ android {
         buildConfigField "String", "KBS_ENCLAVE_NAME", "\"fe7c1bfae98f9b073d220366ea31163ee82f6d04bead774f71ca8e5c40847bfe\""
         buildConfigField "String", "KBS_MRENCLAVE", "\"a3baab19ef6ce6f34ab9ebb25ba722725ae44a8872dc0ff08ad6d83a9489de87\""
 
-        buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BepevLaxGWdeHZmhydMa2T+T/q6f+p2j1ta7Hwkg9ZMU\""
-        buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"ADg0rnZB3Xpm7+LUnsPTArNbBE01Bskm+/NZZOljPewUjkKR+u9WPQuacnDZ6s6879jX+kyfWoOnkhjVv7oRw0uqcvPehwvGaI/Yyhf9Cnn+lurK9q0hs+aCTBdbRowFFfLbw6I7+NP0DEApt2xE2rhhs4OuNaug8khFQNepnY1zZtbv74okuGRg1juLs45D8YTDgcJC+a/U1IHzzuaN+jU==\""
+        buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BYYQRlDuN4PY3dFIHQWaX4oFp0/NIEu70DiArjW7KjA3\""
+        buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"ADA1zUc/2iCDkItMr/yJcP8I1WgpJT+R3kR5t4sJ3jQZRm8H33G4HCKQebab2hEgM/kod6Y2HlQloiyuMfH6hRJQXIuB4+v8k1AOAhzrwiEKBEUZpcCErRNVnGyoY9UZB+acrUa1Vdrv13H7bG7Ci3bgMttBItT2S9TyVQiClrUrXLoFG3APUmYlvuNjhakkxcvxPnGd7NOshQm2pQ2pTlw==\""
         buildConfigField "String[]", "LANGUAGES", "new String[]{\"" + autoResConfig().collect { s -> s.replace('-r', '_') }.join('", "') + '"}'
         buildConfigField "int", "CANONICAL_VERSION_CODE", "$canonicalVersionCode"
         buildConfigField "String", "DEFAULT_CURRENCIES", "\"EUR,AUD,GBP,CAD,CNY\""
@@ -417,10 +417,10 @@ def signProductionRelease = { variant ->
         File   outputFile = new File(output.outputFile.parent, apkName.replace('-unsigned', ''))
 
         new ApkSignerUtil('sun.security.pkcs11.SunPKCS11',
-                          'pkcs11.config',
-                          'PKCS11',
-                          'file:pkcs11.password').calculateSignature(inputFile.getAbsolutePath(),
-                                                                     outputFile.getAbsolutePath())
+                'pkcs11.config',
+                'PKCS11',
+                'file:pkcs11.password').calculateSignature(inputFile.getAbsolutePath(),
+                outputFile.getAbsolutePath())
 
         inputFile.delete()
         outputFile

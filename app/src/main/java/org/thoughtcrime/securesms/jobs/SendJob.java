@@ -26,11 +26,11 @@ public abstract class SendJob extends BaseJob {
 
   @Override
   public final void onRun() throws Exception {
-    if (Util.getDaysTillBuildExpiry() <= 0) {
-      throw new TextSecureExpiredException(String.format("TextSecure expired (build %d, now %d)",
-                                                         BuildConfig.BUILD_TIMESTAMP,
-                                                         System.currentTimeMillis()));
-    }
+//    if (Util.getDaysTillBuildExpiry() <= 0) {
+//      throw new TextSecureExpiredException(String.format("TextSecure expired (build %d, now %d)",
+//                                                         BuildConfig.BUILD_TIMESTAMP,
+//                                                         System.currentTimeMillis()));
+//    }
 
     Log.i(TAG, "Starting message send attempt");
     onSend();

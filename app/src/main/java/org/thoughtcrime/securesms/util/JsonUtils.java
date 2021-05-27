@@ -1,5 +1,7 @@
 package org.thoughtcrime.securesms.util;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -39,7 +41,10 @@ public class JsonUtils {
   }
 
   public static String toJson(Object object) throws IOException {
-    return objectMapper.writeValueAsString(object);
+    String aaa=  objectMapper.writeValueAsString(object);
+    Log.w("RAAM",aaa);
+    return aaa;
+
   }
 
   public static ObjectMapper getMapper() {
