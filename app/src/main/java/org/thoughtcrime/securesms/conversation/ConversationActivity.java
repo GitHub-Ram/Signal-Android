@@ -1560,7 +1560,7 @@ public class ConversationActivity extends PassphraseRequiredActivity
 
     if (UnauthorizedReminder.isEligible(this)) {
       reminderView.get().showReminder(new UnauthorizedReminder(this));
-    } else if (ExpiredBuildReminder.isEligible()) {
+    } else if (false) {
       reminderView.get().showReminder(new ExpiredBuildReminder(this));
     } else if (ServiceOutageReminder.isEligible(this)) {
       ApplicationDependencies.getJobManager().add(new ServiceOutageDetectionJob());

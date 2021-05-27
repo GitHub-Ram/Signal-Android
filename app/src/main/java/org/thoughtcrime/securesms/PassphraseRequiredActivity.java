@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import org.thoughtcrime.securesms.crypto.MasterSecretUtil;
@@ -20,13 +21,19 @@ import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.migrations.ApplicationMigrationActivity;
 import org.thoughtcrime.securesms.migrations.ApplicationMigrations;
 import org.thoughtcrime.securesms.pin.PinRestoreActivity;
+import org.thoughtcrime.securesms.pin.PinState;
 import org.thoughtcrime.securesms.profiles.edit.EditProfileActivity;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.registration.RegistrationNavigationActivity;
+import org.thoughtcrime.securesms.registration.RegistrationUtil;
 import org.thoughtcrime.securesms.service.KeyCachingService;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
+import org.thoughtcrime.securesms.util.concurrent.SimpleTask;
+import org.thoughtcrime.securesms.util.views.SimpleProgressDialog;
+import org.whispersystems.signalservice.internal.contacts.crypto.UnauthenticatedResponseException;
 
+import java.io.IOException;
 import java.util.Locale;
 
 public abstract class PassphraseRequiredActivity extends BaseActivity implements MasterSecretListener {
@@ -121,11 +128,38 @@ public abstract class PassphraseRequiredActivity extends BaseActivity implements
   }
 
   private void routeApplicationState(boolean locked) {
-    Intent intent = getIntentForState(getApplicationState(locked));
-    if (intent != null) {
-      startActivity(intent);
-      finish();
-    }
+    int ret = getApplicationState(locked);
+//    if (ret == STATE_CREATE_SIGNAL_PIN){
+//      AlertDialog progress = SimpleProgressDialog.show(this);
+//      SimpleTask.run(() -> {
+//        try {
+//          PinState.onPinOptOut(PassphraseRequiredActivity.this);
+//
+//          return true;
+//        } catch (IOException | UnauthenticatedResponseException e) {
+//          Log.w(TAG, e);
+//          return false;
+//        }
+//      }, success -> {
+//        Log.i(TAG, "Disable operation finished.");
+//        RegistrationUtil.markRegistrationPossiblyComplete();
+//        progress.dismiss();
+//        Intent intent = getIntentForState(STATE_NORMAL);
+//        if (intent != null) {
+//          startActivity(intent);
+//          finish();
+//        }
+//      });
+//    }else
+//      {
+      Intent intent = getIntentForState(ret);
+      if (intent != null) {
+        startActivity(intent);
+        finish();
+      }
+    //}
+
+
   }
 
   private Intent getIntentForState(int state) {

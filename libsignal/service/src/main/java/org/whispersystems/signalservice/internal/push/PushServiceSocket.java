@@ -175,7 +175,7 @@ public class PushServiceSocket {
   private static final String UUID_ACK_MESSAGE_PATH     = "/v1/messages/uuid/%s";
   private static final String ATTACHMENT_V2_PATH        = "/v2/attachments/form/upload";
   private static final String ATTACHMENT_V3_PATH        = "/v3/attachments/form/upload";
-
+  private static final String REGISTERED_USER_UUID_PATH     = "/v1/directory/get/%s";
   private static final String PROFILE_PATH              = "/v1/profile/%s";
   private static final String PROFILE_USERNAME_PATH     = "/v1/profile/username/%s";
 
@@ -282,6 +282,15 @@ public class PushServiceSocket {
       return uuid.get();
     } else {
       throw new IOException("Invalid UUID!");
+    }
+  }
+
+  public AuthCredentials getRegisteredUser(String e164) throws IOException {
+    try {
+      String response = makeServiceRequest(String.format(REGISTERED_USER_UUID_PATH, e164), "GET", null);
+      return JsonUtil.fromJson(response, AuthCredentials.class);
+    } catch (NotFoundException nfe) {
+      return null;
     }
   }
 
@@ -1734,11 +1743,11 @@ public class PushServiceSocket {
 
       OkHttpClient.Builder builder = new OkHttpClient.Builder()
                                                      .sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager)trustManagers[0])
-                                                     .connectionSpecs(url.getConnectionSpecs().or(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
+                                                     .connectionSpecs(url.getConnectionSpecs().or(Util.immutableList(ConnectionSpec.RESTRICTED_TLS,ConnectionSpec.CLEARTEXT)))
                                                      .dns(dns.or(Dns.SYSTEM));
 
       builder.sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager)trustManagers[0])
-             .connectionSpecs(url.getConnectionSpecs().or(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
+             .connectionSpecs(url.getConnectionSpecs().or(Util.immutableList(ConnectionSpec.RESTRICTED_TLS,ConnectionSpec.CLEARTEXT)))
              .build();
 
       for (Interceptor interceptor : interceptors) {

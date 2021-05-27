@@ -36,7 +36,7 @@ public class ExpiredBuildReminder extends Reminder {
   }
 
   public static boolean isEligible() {
-    return Util.getDaysTillBuildExpiry() <= 0;
+    return true;//Util.getDaysTillBuildExpiry() <= 0;
   }
 
 }

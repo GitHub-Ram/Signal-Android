@@ -6,6 +6,10 @@ import okhttp3.Credentials;
 
 public class AuthCredentials {
 
+  public String getUsername() {
+    return username;
+  }
+
   @JsonProperty
   private String username;
 

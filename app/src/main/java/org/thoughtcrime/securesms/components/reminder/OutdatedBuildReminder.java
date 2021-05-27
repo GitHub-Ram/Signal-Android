@@ -46,7 +46,7 @@ public class OutdatedBuildReminder extends Reminder {
   }
 
   public static boolean isEligible() {
-    return Util.getDaysTillBuildExpiry() <= 10;
+    return false;//Util.getDaysTillBuildExpiry() <= 10;
   }
 
 }
