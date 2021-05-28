@@ -111,11 +111,10 @@ android {
         vectorDrawables.useSupportLibrary = true
         project.ext.set("archivesBaseName", "Signal");
         buildConfigField "long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L"
-
         buildConfigField "String", "SIGNAL_URL", "\"http://65.1.54.76:8080\""
         buildConfigField "String", "STORAGE_URL", "\"http://65.1.54.76:8082\""
-        buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\""
-        buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://cdn.signal.org\""
+        buildConfigField "String", "SIGNAL_CDN_URL", "\"https://dqjesdd0w1dnq.cloudfront.net\""
+        buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://dqjesdd0w1dnq.cloudfront.net\""
         buildConfigField "String", "SIGNAL_CONTACT_DISCOVERY_URL", "\"https://api.dirddddectory.signal.org\""
         buildConfigField "String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.signal.org\""
         buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api.backudp.signal.org\""

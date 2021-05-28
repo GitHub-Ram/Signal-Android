@@ -184,9 +184,9 @@ public class PushServiceSocket {
 
   private static final String KBS_AUTH_PATH                  = "/v1/backup/auth";
 
-  private static final String ATTACHMENT_KEY_DOWNLOAD_PATH   = "attachments/%s";
-  private static final String ATTACHMENT_ID_DOWNLOAD_PATH    = "attachments/%d";
-  private static final String ATTACHMENT_UPLOAD_PATH         = "attachments/";
+  private static final String ATTACHMENT_KEY_DOWNLOAD_PATH   = "%s";
+  private static final String ATTACHMENT_ID_DOWNLOAD_PATH    = "%d";
+  private static final String ATTACHMENT_UPLOAD_PATH         = "";
   private static final String AVATAR_UPLOAD_PATH             = "";
 
   private static final String STICKER_MANIFEST_PATH          = "stickers/%s/manifest.proto";
@@ -196,6 +196,7 @@ public class PushServiceSocket {
   private static final String GROUPSV2_GROUP            = "/v1/groups/";
   private static final String GROUPSV2_GROUP_CHANGES    = "/v1/groups/logs/%s";
   private static final String GROUPSV2_AVATAR_REQUEST   = "/v1/groups/avatar/form";
+
 
   private static final String SERVER_DELIVERED_TIMESTAMP_HEADER = "X-Signal-Timestamp";
 
