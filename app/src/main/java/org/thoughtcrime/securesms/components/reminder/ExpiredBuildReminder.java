@@ -37,8 +37,7 @@ public class ExpiredBuildReminder extends Reminder {
   public @NonNull Importance getImportance() {
     return Importance.TERMINAL;
   }
-
-  public static boolean isEligible() {
-    return SignalStore.misc().isClientDeprecated();
+public static boolean isEligible() {
+    return false;//SignalStore.misc().isClientDeprecated();
   }
 }

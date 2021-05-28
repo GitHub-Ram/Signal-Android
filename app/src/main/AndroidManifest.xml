@@ -99,7 +99,7 @@
                  android:allowBackup="false"
                  android:theme="@style/TextSecure.LightTheme"
         android:usesCleartextTraffic="true"
-            android:networkSecurityConfig="@xml/network_security_config"
+        android:networkSecurityConfig="@xml/network_security_config"
                  android:largeHeap="true">
 
     <meta-data

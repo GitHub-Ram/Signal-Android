@@ -659,7 +659,7 @@ public class ConversationListFragment extends MainFragment implements ActionMode
     SimpleTask.run(getViewLifecycleOwner().getLifecycle(), () -> {
       if (UnauthorizedReminder.isEligible(context)) {
         return Optional.of(new UnauthorizedReminder(context));
-      } else if (ExpiredBuildReminder.isEligible()) {
+      } else if (false) {
         return Optional.of(new ExpiredBuildReminder(context));
       } else if (ServiceOutageReminder.isEligible(context)) {
         ApplicationDependencies.getJobManager().add(new ServiceOutageDetectionJob());

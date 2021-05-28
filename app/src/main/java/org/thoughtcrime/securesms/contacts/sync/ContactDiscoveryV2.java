@@ -66,7 +66,7 @@ class ContactDiscoveryV2 {
     KeyStore                    iasKeyStore    = getIasKeyStore(context);
 
     try {
-      Map<String, UUID>                     results      = accountManager.getRegisteredUsers(iasKeyStore, sanitizedNumbers, BuildConfig.CDS_MRENCLAVE);
+      Map<String, UUID>                     results      = accountManager.getRegisteredUsers(iasKeyStore, sanitizedNumbers, BuildConfig.CDS_MRENCLAVE,BuildConfig.STAGE_ENABLED);
       FuzzyPhoneNumberHelper.OutputResultV2 outputResult = FuzzyPhoneNumberHelper.generateOutputV2(results, inputResult);
 
       return new DirectoryResult(outputResult.getNumbers(), outputResult.getRewrites(), ignoredNumbers);

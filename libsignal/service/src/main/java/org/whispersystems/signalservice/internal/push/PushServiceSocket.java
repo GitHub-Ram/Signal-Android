@@ -204,9 +204,9 @@ public class PushServiceSocket {
 
   private static final String KBS_AUTH_PATH                  = "/v1/backup/auth";
 
-  private static final String ATTACHMENT_KEY_DOWNLOAD_PATH   = "attachments/%s";
-  private static final String ATTACHMENT_ID_DOWNLOAD_PATH    = "attachments/%d";
-  private static final String ATTACHMENT_UPLOAD_PATH         = "attachments/";
+  private static final String ATTACHMENT_KEY_DOWNLOAD_PATH   = "%s";
+  private static final String ATTACHMENT_ID_DOWNLOAD_PATH    = "%d";
+  private static final String ATTACHMENT_UPLOAD_PATH         = "";
   private static final String AVATAR_UPLOAD_PATH             = "";
 
   private static final String STICKER_MANIFEST_PATH          = "stickers/%s/manifest.proto";
@@ -312,6 +312,15 @@ public class PushServiceSocket {
       return uuid.get();
     } else {
       throw new IOException("Invalid UUID!");
+    }
+  }
+
+  public AuthCredentials getRegisteredUser(String e164) throws IOException {
+    try {
+      String response = makeServiceRequest(String.format(REGISTERED_USER_UUID_PATH, e164), "GET", null);
+      return JsonUtil.fromJson(response, AuthCredentials.class);
+    } catch (NotFoundException nfe) {
+      return null;
     }
   }
 
@@ -703,16 +712,6 @@ public class PushServiceSocket {
       }
     });
   }
-
-    public AuthCredentials getRegisteredUser(String e164) throws IOException {
-        try {
-            String response = makeServiceRequest(String.format(REGISTERED_USER_UUID_PATH, e164), "GET", null);
-            return JsonUtil.fromJson(response, AuthCredentials.class);
-        } catch (NotFoundException nfe) {
-            return null;
-        }
-    }
-
   public void retrieveProfileAvatar(String path, File destination, long maxSizeBytes)
       throws IOException
   {
@@ -1529,8 +1528,8 @@ public class PushServiceSocket {
   private Request buildServiceRequest(String urlFragment, String method, RequestBody body, Map<String, String> headers, Optional<UnidentifiedAccess> unidentifiedAccess) {
     ServiceConnectionHolder connectionHolder = (ServiceConnectionHolder) getRandom(serviceClients, random);
 
-//      Log.d(TAG, "Push service URL: " + connectionHolder.getUrl());
-//      Log.d(TAG, "Opening URL: " + String.format("%s%s", connectionHolder.getUrl(), urlFragment));
+      Log.d(TAG, "Push service URL: " + connectionHolder.getUrl());
+      Log.d(TAG, "Opening URL: " + String.format("%s%s", connectionHolder.getUrl(), urlFragment));
 
     Request.Builder request = new Request.Builder();
     request.url(String.format("%s%s", connectionHolder.getUrl(), urlFragment));

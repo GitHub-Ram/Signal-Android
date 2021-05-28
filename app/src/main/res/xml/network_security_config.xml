@@ -3,9 +3,10 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">65.1.111.38</domain><!-- Debug port -->
         <domain includeSubdomains="true">d21uhnfncrk26b.cloudfront.net</domain>
-<!--        <domain includeSubdomains="true">abc.online</domain>-->
-<!--        <trust-anchors>-->
-<!--            <certificates src="@raw/abc"/>-->
-<!--        </trust-anchors>-->
+        <domain includeSubdomains="true">65.1.54.76</domain>
+        <!--        <domain includeSubdomains="true">abc.online</domain>-->
+        <!--        <trust-anchors>-->
+        <!--            <certificates src="@raw/abc"/>-->
+        <!--        </trust-anchors>-->
     </domain-config>
 </network-security-config>
