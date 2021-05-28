@@ -61,6 +61,7 @@ import static org.thoughtcrime.securesms.service.webrtc.WebRtcData.ReceivedAnswe
  */
 public abstract class WebRtcActionProcessor {
 
+  public static String CALL = "CALLOG";
   protected final Context          context;
   protected final WebRtcInteractor webRtcInteractor;
   protected final String           tag;
@@ -141,7 +142,7 @@ public abstract class WebRtcActionProcessor {
                                                             @NonNull OfferMetadata offerMetadata,
                                                             @NonNull ReceivedOfferMetadata receivedOfferMetadata)
   {
-    Log.i(tag, "handleReceivedOffer(): id: " + callMetadata.getCallId().format(callMetadata.getRemoteDevice()));
+    Log.i(tag+ CALL, "handleReceivedOffer(): id: " + callMetadata.getCallId().format(callMetadata.getRemoteDevice())+" Recipient State:"+callMetadata.getRemotePeer().getState()+" call state:"+currentState.getCallInfoState().getCallState().name());
 
     if (TelephonyUtil.isAnyPstnLineBusy(context)) {
       Log.i(tag, "PSTN line is busy.");
