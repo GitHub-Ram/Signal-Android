@@ -1534,25 +1534,41 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
     Callable<List<PeerConnection.IceServer>> callable = () -> {
       LinkedList<PeerConnection.IceServer> results = new LinkedList<>();
 
-      results.add(new PeerConnection.IceServer("stun:stun1.l.google.com:19302"));
-      try {
-        TurnServerInfo turnServerInfo = accountManager.getTurnServerInfo();
+      //results.add(new PeerConnection.IceServer("stun:stun1.l.google.com:19302"));
+      results.add(PeerConnection.IceServer.builder("stun:global.stun.twilio.com:3478?transport=udp").createIceServer());
 
-        for (String url : turnServerInfo.getUrls()) {
-          Log.i(TAG, "ice_server: " + url);
-          if (url.startsWith("turn")) {
-            results.add(new PeerConnection.IceServer(url, turnServerInfo.getUsername(), turnServerInfo.getPassword()));
-            Log.i("Mohit - "+TAG, " ice_server: " + url);
-            Log.i("Mohit - "+TAG, " turnServerInfo.getUsername(): " + turnServerInfo.getUsername());
-            Log.i("Mohit - "+TAG, " ice_server: " + turnServerInfo.getPassword());
+      results.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:3478?transport=udp")
+              .setUsername("ec34a86068a877666507645cf3034b2ebca0320e9baf01a3d602de0deb4a2bf4")
+              .setPassword("BQJLtYMz+wmEYtrt1y2E66sJBN1lQBTwfzfyKh5vBuc=")
+              .createIceServer());
 
-          } else {
-            results.add(new PeerConnection.IceServer(url));
-          }
-        }
-      } catch (IOException e) {
-        Log.w(TAG, e);
-      }
+      results.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:3478?transport=tcp")
+              .setUsername("ec34a86068a877666507645cf3034b2ebca0320e9baf01a3d602de0deb4a2bf4")
+              .setPassword("BQJLtYMz+wmEYtrt1y2E66sJBN1lQBTwfzfyKh5vBuc=")
+              .createIceServer());
+      results.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:443?transport=tcp")
+              .setUsername("ec34a86068a877666507645cf3034b2ebca0320e9baf01a3d602de0deb4a2bf4")
+              .setPassword("BQJLtYMz+wmEYtrt1y2E66sJBN1lQBTwfzfyKh5vBuc=")
+              .createIceServer());
+
+//      try {
+//        TurnServerInfo turnServerInfo = accountManager.getTurnServerInfo();
+//
+//        for (String url : turnServerInfo.getUrls()) {
+//          Log.i(TAG, "ice_server: " + url);
+//          if (url.startsWith("turn")) {
+//            results.add(new PeerConnection.IceServer(url, turnServerInfo.getUsername(), turnServerInfo.getPassword()));
+//            Log.i("Mohit - "+TAG, " ice_server: " + url);
+//            Log.i("Mohit - "+TAG, " turnServerInfo.getUsername(): " + turnServerInfo.getUsername());
+//            Log.i("Mohit - "+TAG, " ice_server: " + turnServerInfo.getPassword());
+//
+//          } else {
+//            results.add(new PeerConnection.IceServer(url));
+//          }
+//        }
+//      } catch (IOException e) {
+//        Log.w(TAG, e);
+//      }
 
       return results;
     };
