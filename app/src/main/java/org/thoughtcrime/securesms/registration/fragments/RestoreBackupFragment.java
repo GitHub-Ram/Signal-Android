@@ -249,12 +249,16 @@ public final class RestoreBackupFragment extends BaseRegistrationFragment {
   @Override
   public void onStart() {
     super.onStart();
+    Log.d("Mohit - "+TAG, "onStart: Registering EventBus()");
+
     EventBus.getDefault().register(this);
   }
 
   @Override
   public void onStop() {
     super.onStop();
+    Log.d("Mohit - "+TAG, "onStop: unregister EventBus()");
+
     EventBus.getDefault().unregister(this);
   }
 

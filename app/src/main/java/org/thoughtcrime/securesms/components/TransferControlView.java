@@ -21,6 +21,7 @@ import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.attachments.Attachment;
 import org.thoughtcrime.securesms.database.AttachmentDatabase;
 import org.thoughtcrime.securesms.events.PartProgressEvent;
+import org.thoughtcrime.securesms.logging.Log;
 import org.thoughtcrime.securesms.mms.Slide;
 import org.thoughtcrime.securesms.util.ViewUtil;
 
@@ -88,12 +89,16 @@ public final class TransferControlView extends FrameLayout {
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
+    Log.d("Mohit - ", "onAttachedToWindow: Registering EventBus()");
+
     if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
   }
 
   @Override
   protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
+    Log.d("Mohit - ", "onDetachedFromWindow:  unregister EventBus()");
+
     EventBus.getDefault().unregister(this);
   }
 

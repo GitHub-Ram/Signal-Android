@@ -113,6 +113,8 @@ public final class AudioView extends FrameLayout implements AudioSlidePlayer.Lis
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
+    Log.d("Mohit - "+TAG, "onAttachedToWindow: Registering EventBus()");
+
     if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
   }
 

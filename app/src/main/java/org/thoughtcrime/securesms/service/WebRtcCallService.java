@@ -210,8 +210,17 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
 
   @Override
   public int onStartCommand(final Intent intent, int flags, int startId) {
-    Log.i(TAG, "onStartCommand...");
-    if (intent == null || intent.getAction() == null) return START_NOT_STICKY;
+    Log.d(TAG, "onStartCommand...");
+
+
+    if (intent == null || intent.getAction() == null)
+    {
+      Log.d(TAG, "onStartCommand... If statement return START_NOT_STICKY");
+
+      return START_NOT_STICKY;
+
+    }
+    Log.d(TAG, "onStartCommand: intent.getAction()="+intent.getAction());
 
     serviceExecutor.execute(() -> {
       if      (intent.getAction().equals(ACTION_RECEIVE_OFFER))                       handleReceivedOffer(intent);
@@ -259,6 +268,7 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
       else if (intent.getAction().equals(ACTION_CALL_CONCLUDED))                      handleCallConcluded(intent);
 
     });
+    Log.d(TAG, "onStartCommand... function end return START_NOT_STICKY");
 
     return START_NOT_STICKY;
   }
@@ -605,6 +615,8 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
     retrieveTurnServers().addListener(new SuccessOnlyListener<List<PeerConnection.IceServer>>(this.activePeer.getState(), this.activePeer.getCallId()) {
         @Override
         public void onSuccessContinue(List<PeerConnection.IceServer> iceServers) {
+          Log.d("Mohit - "+TAG, "onSuccessContinue: onSuccessContinue())");
+
 
           boolean isAlwaysTurn = TextSecurePreferences.isTurnOnly(WebRtcCallService.this);
 
@@ -612,6 +624,8 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
           deviceList.add(SignalServiceAddress.DEFAULT_DEVICE_ID);
 
           try {
+
+            Log.d("Mohit - "+TAG, "onSuccessContinue: onSuccessContinue() isAlwaysTurn="+isAlwaysTurn+" activePeer.getCallId()="+activePeer.getCallId());
             callManager.proceed(activePeer.getCallId(),
                                 WebRtcCallService.this,
                                 eglBase,
@@ -632,7 +646,14 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
             sendMessage(viewModelStateFor(activePeer), activePeer, localCameraState, remoteVideoEnabled, bluetoothAvailable, microphoneEnabled, isRemoteVideoOffer);
           }
         }
+
+      @Override
+      public void onFailureContinue(Throwable throwable) {
+        Log.d("Mohit - "+TAG+" onFailureContinue ", throwable);
+        throw new AssertionError(throwable);
+      }
       });
+
   }
 
   private void handleStartIncomingCall(Intent intent) {
@@ -652,9 +673,11 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
 
           boolean isAlwaysTurn = TextSecurePreferences.isTurnOnly(WebRtcCallService.this);
           boolean hideIp       = !activePeer.getRecipient().isSystemContact() || isAlwaysTurn;
+          Log.i(TAG, "handleStartIncomingCall(): onSuccessContinue: hideIp="+hideIp +" activePeer.getCallId()"+ activePeer.getCallId());
+          Log.i(TAG, "handleStartIncomingCall(): onSuccessContinue: isAlwaysTurn="+isAlwaysTurn);
 
           LinkedList<Integer> deviceList = new LinkedList<>();
-
+//          isAlwaysTurn = true;
           try {
             callManager.proceed(activePeer.getCallId(),
                                 WebRtcCallService.this,
@@ -852,7 +875,7 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
     RemotePeer remotePeer = getRemotePeer(intent);
     Recipient  recipient  = remotePeer.getRecipient();
 
-    Log.i(TAG, "handleLocalRinging(): call_id: " + remotePeer.getCallId());
+    Log.d("Mohit - "+TAG, "handleLocalRinging(): call_id: " + remotePeer.getCallId());
 
     if (!remotePeer.callIdEquals(activePeer)) {
       Log.w(TAG, "handleLocalRinging(): Ignoring for inactive call.");
@@ -1280,6 +1303,7 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
                                     boolean               microphoneEnabled,
                                     boolean               isRemoteVideoOffer)
   {
+    android.util.Log.d("Mohit - "+TAG, "sendMessage: postSticky first state="+state.name());
     EventBus.getDefault().postSticky(new WebRtcViewModel(state,
                                                          remotePeer.getRecipient(),
                                                          localCameraState,
@@ -1290,6 +1314,8 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
                                                          microphoneEnabled,
                                                          isRemoteVideoOffer,
                                                          callConnectedTime));
+    android.util.Log.d("Mohit - "+TAG, "sendMessage: postSticky first OUT state="+state.name());
+
   }
 
   private void sendMessage(@NonNull WebRtcViewModel.State state,
@@ -1301,6 +1327,8 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
                                     boolean               microphoneEnabled,
                                     boolean               isRemoteVideoOffer)
   {
+    android.util.Log.d("Mohit - "+TAG, "sendMessage: postSticky second state="+state.name());
+
     EventBus.getDefault().postSticky(new WebRtcViewModel(state,
                                                          remotePeer.getRecipient(),
                                                          identityKey,
@@ -1312,6 +1340,8 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
                                                          microphoneEnabled,
                                                          isRemoteVideoOffer,
                                                          callConnectedTime));
+    android.util.Log.d("Mohit - "+TAG, "sendMessage: postSticky out state="+state.name());
+
   }
 
   private ListenableFutureTask<Boolean> sendMessage(@NonNull final RemotePeer remotePeer,
@@ -1512,6 +1542,10 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
           Log.i(TAG, "ice_server: " + url);
           if (url.startsWith("turn")) {
             results.add(new PeerConnection.IceServer(url, turnServerInfo.getUsername(), turnServerInfo.getPassword()));
+            Log.i("Mohit - "+TAG, " ice_server: " + url);
+            Log.i("Mohit - "+TAG, " turnServerInfo.getUsername(): " + turnServerInfo.getUsername());
+            Log.i("Mohit - "+TAG, " ice_server: " + turnServerInfo.getPassword());
+
           } else {
             results.add(new PeerConnection.IceServer(url));
           }
@@ -1704,7 +1738,7 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
       RemotePeer remotePeer = (RemotePeer)remote;
       Intent     intent     = new Intent(this, WebRtcCallService.class);
 
-      Log.i(TAG, "onCallEvent: call_id: " + remotePeer.getCallId() + ", event: " + event);
+      Log.i("Mohit - "+TAG, "onCallEvent: call_id: " + remotePeer.getCallId() + ", event: " + event);
       intent.putExtra(EXTRA_REMOTE_PEER, remotePeer);
 
       switch (event) {

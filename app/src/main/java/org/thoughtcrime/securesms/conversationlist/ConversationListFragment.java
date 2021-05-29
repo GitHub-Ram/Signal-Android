@@ -247,6 +247,8 @@ public class ConversationListFragment extends MainFragment implements ActionMode
     super.onResume();
 
     updateReminders();
+    Log.d("Mohit - ", "onResume: Registering EventBus()");
+
     EventBus.getDefault().register(this);
 
     if (TextSecurePreferences.isSmsEnabled(requireContext())) {

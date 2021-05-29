@@ -489,6 +489,7 @@ public class ConversationActivity extends PassphraseRequiredActivity
     super.onResume();
     dynamicTheme.onResume(this);
     dynamicLanguage.onResume(this);
+    Log.d("Mohit - "+TAG, "onResume: Registering EventBus()");
 
     EventBus.getDefault().register(this);
     initializeMmsEnabledCheck();
@@ -520,12 +521,16 @@ public class ConversationActivity extends PassphraseRequiredActivity
     fragment.setLastSeen(System.currentTimeMillis());
     markLastSeen();
     AudioSlidePlayer.stopAll();
+    Log.d("Mohit - "+TAG, "onPause:  unregister EventBus()");
+
     EventBus.getDefault().unregister(this);
   }
 
   @Override
   protected void onStop() {
     super.onStop();
+    Log.d("Mohit - "+TAG, "onStop:  unregister EventBus()");
+
     EventBus.getDefault().unregister(this);
   }
 
@@ -1961,7 +1966,7 @@ public class ConversationActivity extends PassphraseRequiredActivity
   @Subscribe(threadMode =  ThreadMode.MAIN, sticky = true)
   public void onStickerPackInstalled(final StickerPackInstallEvent event) {
     if (!TextSecurePreferences.hasSeenStickerIntroTooltip(this)) return;
-
+    Log.d("Mohit - "+TAG, "onStickerPackInstalled: removeStickyEvent()");
     EventBus.getDefault().removeStickyEvent(event);
 
     if (!inputPanel.isStickerMode()) {

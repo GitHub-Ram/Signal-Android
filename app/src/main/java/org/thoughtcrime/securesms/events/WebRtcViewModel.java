@@ -20,6 +20,7 @@ public class WebRtcViewModel {
     CALL_BUSY,
     CALL_DISCONNECTED,
     CALL_NEEDS_PERMISSION,
+    LOCAL_RINGING,
 
     // Error states
     NETWORK_FAILURE,

@@ -133,6 +133,7 @@ public class WebSocketConnection extends WebSocketListener {
       }
 
       this.connected = false;
+      Log.d("Mohit - "+TAG, "connect: this.connected="+this.connected);
       this.client    = okHttpClient.newWebSocket(requestBuilder.build(), this);
     }
   }
@@ -144,6 +145,8 @@ public class WebSocketConnection extends WebSocketListener {
       client.close(1000, "OK");
       client    = null;
       connected = false;
+      Log.d("Mohit - "+TAG, "disconnect: this.connected="+this.connected);
+
     }
 
     if (keepAliveSender != null) {
@@ -231,6 +234,8 @@ public class WebSocketConnection extends WebSocketListener {
       Log.i(TAG, "onOpen() connected");
       attempts        = 0;
       connected       = true;
+      Log.d("Mohit - "+TAG, "onOpen: this.connected="+this.connected);
+
       keepAliveSender = new KeepAliveSender();
       keepAliveSender.start();
 
@@ -267,8 +272,10 @@ public class WebSocketConnection extends WebSocketListener {
 
   @Override
   public synchronized void onClosed(WebSocket webSocket, int code, String reason) {
-    Log.i(TAG, "onClose()");
+
     this.connected = false;
+    Log.d("Mohit -"+TAG, "onClosed() code="+code+" reason="+reason);
+
 
     Iterator<Map.Entry<Long, OutgoingRequest>> iterator = outgoingRequests.entrySet().iterator();
 
@@ -293,6 +300,8 @@ public class WebSocketConnection extends WebSocketListener {
       client.close(1000, "OK");
       client    = null;
       connected = false;
+      Log.d("Mohit - "+TAG, "onClosed() Second: this.connected="+this.connected);
+
       connect();
     }
 

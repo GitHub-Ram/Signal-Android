@@ -110,6 +110,7 @@ public class ApplicationMigrations {
 
       final long startTime = System.currentTimeMillis();
       final int  uiVersion = uiBlockingVersion;
+      Log.d("Mohit - "+TAG, "onApplicationCreate: Registering EventBus()");
 
       EventBus.getDefault().register(new Object() {
         @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)

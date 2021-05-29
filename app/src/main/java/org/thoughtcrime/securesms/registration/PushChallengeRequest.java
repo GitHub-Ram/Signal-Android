@@ -88,6 +88,7 @@ public final class PushChallengeRequest {
     @WorkerThread
     private Optional<String> requestAndReceiveChallengeBlocking() {
       EventBus eventBus = EventBus.getDefault();
+      Log.d("Mohit - ", "requestAndReceiveChallengeBlocking: Registering EventBus()");
 
       eventBus.register(this);
       try {

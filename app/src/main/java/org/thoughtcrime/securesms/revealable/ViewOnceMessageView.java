@@ -71,6 +71,8 @@ public class ViewOnceMessageView extends LinearLayout {
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     if (!EventBus.getDefault().isRegistered(this)) {
+      Log.d("Mohit - "+TAG, "onStart: onAttachedToWindow EventBus()");
+
       EventBus.getDefault().register(this);
     }
   }
@@ -78,6 +80,8 @@ public class ViewOnceMessageView extends LinearLayout {
   @Override
   protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
+    Log.d("Mohit - "+TAG, "onDetachedFromWindow:  unregister EventBus()");
+
     EventBus.getDefault().unregister(this);
   }
 

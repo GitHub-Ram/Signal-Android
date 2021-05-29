@@ -55,6 +55,7 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
         .setOnPreferenceClickListener(new BackupVerifyListener());
 
     initializeListSummary((ListPreference) findPreference(TextSecurePreferences.MESSAGE_BODY_TEXT_SIZE_PREF));
+    Log.d("Mohit - "+TAG, "onCreate: Registering EventBus()");
 
     EventBus.getDefault().register(this);
   }
@@ -75,6 +76,8 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
   @Override
   public void onDestroy() {
     super.onDestroy();
+    Log.d("Mohit - "+TAG, "onDestroy:  unregister EventBus()");
+
     EventBus.getDefault().unregister(this);
   }
 

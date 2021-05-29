@@ -133,6 +133,8 @@ public class WebRtcCallActivity extends AppCompatActivity {
 
     if (!isInPipMode()) {
       EventBus.getDefault().unregister(this);
+      Log.d("Mohit - "+TAG, "onPause:  unregister EventBus()");
+
     }
   }
 
@@ -140,6 +142,7 @@ public class WebRtcCallActivity extends AppCompatActivity {
   protected void onStop() {
     Log.i(TAG, "onStop");
     super.onStop();
+    Log.d("Mohit - "+TAG, "onStop:  unregister EventBus()");
 
     EventBus.getDefault().unregister(this);
   }
