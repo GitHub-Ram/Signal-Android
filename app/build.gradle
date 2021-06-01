@@ -108,10 +108,10 @@ android {
         buildConfigField "long", "BUILD_TIMESTAMP", getLastCommitTimestamp() + "L"
         buildConfigField "String", "GIT_HASH", "\"${getGitHash()}\""
 
-        buildConfigField "String", "SIGNAL_URL", "\"http://65.1.54.76:8080\""
-        buildConfigField "String", "STORAGE_URL", "\"http://65.1.54.76:8082\""
-        buildConfigField "String", "SIGNAL_CDN_URL", "\"https://cdn.signal.org\""
-        buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://cdn.signal.org\""
+        buildConfigField "String", "SIGNAL_URL", "\"http://3.108.48.212:8080\""
+        buildConfigField "String", "STORAGE_URL", "\"http://3.108.48.212:8082\""
+        buildConfigField "String", "SIGNAL_CDN_URL", "\"https://dqjesdd0w1dnq.cloudfront.net\""
+        buildConfigField "String", "SIGNAL_CDN2_URL", "\"https://dqjesdd0w1dnq.cloudfront.net\""
         buildConfigField "String", "SIGNAL_CONTACT_DISCOVERY_URL", "\"https://api.dirddddectory.signal.org\""
         buildConfigField "String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.signal.org\""
         buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api.backudp.signal.org\""
@@ -124,8 +124,8 @@ android {
                 "\"fe7c1bfae98f9b073d220366ea31163ee82f6d04bead774f71ca8e5c40847bfe\", " +
                 "\"a3baab19ef6ce6f34ab9ebb25ba722725ae44a8872dc0ff08ad6d83a9489de87\")";
         buildConfigField "KbsEnclave[]", "KBS_FALLBACKS", "new KbsEnclave[0]"
-        buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BY+rsZlgykVI2IC4uaztB5Dd90ew88HwelCQHbc8OZAH\""
-        buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"ANCHQhTSHcQ4Hy3zQDUvu4ZkfjM9hDBluQWuAxaOyO9CXPX58vsYsKiLZgW6zhMAhqNGk9z5YsQshovU9sGx4jSsqkQAUp6815nBYlxpaHAze4LmeF/qjaOe0z5X3zbqNBIcMyZQn7268CgMx2dPN+KrhIn98OrKC8qIzFz+M18Y1pD4JGf1/5vI303UUN8Qm7B5ofqmx8R8QMIlWj+Egis==\""
+        buildConfigField "String", "UNIDENTIFIED_SENDER_TRUST_ROOT", "\"BTWd/9V8RIFBH/43q4B3AAZGS31PIvtXg4ZkVBdB/oMI\""
+        buildConfigField "String", "ZKGROUP_SERVER_PUBLIC_PARAMS", "\"AKjmB1q7ve21ou8MAZyMMQ5IXiO8LNgDPY/+YOv4cecHKKvZjqYP1CHAJY2rWKc+WQqgShvzM2kfX3r8zoVpVmIGCaxeEc0HSoImBQzAOU8j7dKo9zeCSZoF9gwGofnjM+ace6q+ipYVCg2G1Zt9iXG82chKZ6ZZ50myzKvsJYgjeHvhDHu2Ag3H8U7d630NBw6rCLAeft4KJBDJjSuAuBs==\""
         buildConfigField "String[]", "LANGUAGES", "new String[]{\"" + autoResConfig().collect { s -> s.replace('-r', '_') }.join('", "') + '"}'
         buildConfigField "int", "CANONICAL_VERSION_CODE", "$canonicalVersionCode"
         buildConfigField "String", "DEFAULT_CURRENCIES", "\"EUR,AUD,GBP,CAD,CNY\""

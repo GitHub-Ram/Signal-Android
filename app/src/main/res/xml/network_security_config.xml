@@ -2,8 +2,9 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">65.1.111.38</domain><!-- Debug port -->
-        <domain includeSubdomains="true">d21uhnfncrk26b.cloudfront.net</domain>
+        <domain includeSubdomains="true">dqjesdd0w1dnq.cloudfront.net</domain>
         <domain includeSubdomains="true">65.1.54.76</domain>
+        <domain includeSubdomains="true">3.108.48.212</domain>
 <!--        <domain includeSubdomains="true">abc.online</domain>-->
 <!--        <trust-anchors>-->
 <!--            <certificates src="@raw/abc"/>-->
