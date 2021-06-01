@@ -1538,17 +1538,17 @@ public class WebRtcCallService extends Service implements CallManager.Observer,
       results.add(PeerConnection.IceServer.builder("stun:global.stun.twilio.com:3478?transport=udp").createIceServer());
 
       results.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:3478?transport=udp")
-              .setUsername("ec34a86068a877666507645cf3034b2ebca0320e9baf01a3d602de0deb4a2bf4")
-              .setPassword("BQJLtYMz+wmEYtrt1y2E66sJBN1lQBTwfzfyKh5vBuc=")
+              .setUsername("b952dd25901f14de8ab1423199efde05690c787b21fce1f1af33a02a14277cfb")
+              .setPassword("HKhKxHTzu8DH4QDdeFBMO5Umy6GX+MphfKxrPe/WjMk=")
               .createIceServer());
 
       results.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:3478?transport=tcp")
-              .setUsername("ec34a86068a877666507645cf3034b2ebca0320e9baf01a3d602de0deb4a2bf4")
-              .setPassword("BQJLtYMz+wmEYtrt1y2E66sJBN1lQBTwfzfyKh5vBuc=")
+              .setUsername("b952dd25901f14de8ab1423199efde05690c787b21fce1f1af33a02a14277cfb")
+              .setPassword("HKhKxHTzu8DH4QDdeFBMO5Umy6GX+MphfKxrPe/WjMk=")
               .createIceServer());
       results.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:443?transport=tcp")
-              .setUsername("ec34a86068a877666507645cf3034b2ebca0320e9baf01a3d602de0deb4a2bf4")
-              .setPassword("BQJLtYMz+wmEYtrt1y2E66sJBN1lQBTwfzfyKh5vBuc=")
+              .setUsername("b952dd25901f14de8ab1423199efde05690c787b21fce1f1af33a02a14277cfb")
+              .setPassword("HKhKxHTzu8DH4QDdeFBMO5Umy6GX+MphfKxrPe/WjMk=")
               .createIceServer());
 
 //      try {
