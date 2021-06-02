@@ -111,7 +111,7 @@ android {
         buildConfigField "String", "SIGNAL_URL", "\"http://3.108.48.212:8080\""
         buildConfigField "String", "STORAGE_URL", "\"http://3.108.48.212:8082\""
         buildConfigField "String", "SIGNAL_CDN_URL", "\"https://dqjesdd0w1dnq.cloudfront.net\""
-        buildConfigField "String", "SIGNAL_CDN2_URL", "\"http://34.102.216.129:80\""
+        buildConfigField "String", "SIGNAL_CDN2_URL", "\"http://34.117.101.254/\""
         buildConfigField "String", "SIGNAL_CONTACT_DISCOVERY_URL", "\"https://api.dirddddectory.signal.org\""
         buildConfigField "String", "SIGNAL_SERVICE_STATUS_URL", "\"uptime.signal.org\""
         buildConfigField "String", "SIGNAL_KEY_BACKUP_URL", "\"https://api.backudp.signal.org\""

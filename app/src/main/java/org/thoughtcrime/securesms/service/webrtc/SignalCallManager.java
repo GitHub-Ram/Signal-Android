@@ -675,18 +675,19 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
         iceServers.add(PeerConnection.IceServer.builder("stun:global.stun.twilio.com:3478?transport=udp").createIceServer());
 
         iceServers.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:3478?transport=udp")
-                                               .setUsername("b952dd25901f14de8ab1423199efde05690c787b21fce1f1af33a02a14277cfb")
-                                               .setPassword("HKhKxHTzu8DH4QDdeFBMO5Umy6GX+MphfKxrPe/WjMk=")
-                                               .createIceServer());
+                                            .setUsername("6f2ea20adbad702b344abdfcb52b094c3451a0712150f9932529aa4c4268f780")
+                                            .setPassword("lHUp55CllUQ/yUedgznFajO0BwEOgmuXI7m1fQLgNF4=")
+                                            .createIceServer());
 
         iceServers.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:3478?transport=tcp")
-                                               .setUsername("b952dd25901f14de8ab1423199efde05690c787b21fce1f1af33a02a14277cfb")
-                                               .setPassword("HKhKxHTzu8DH4QDdeFBMO5Umy6GX+MphfKxrPe/WjMk=")
-                                               .createIceServer());
+                                            .setUsername("6f2ea20adbad702b344abdfcb52b094c3451a0712150f9932529aa4c4268f780")
+                                            .setPassword("lHUp55CllUQ/yUedgznFajO0BwEOgmuXI7m1fQLgNF4=")
+                                            .createIceServer());
+
         iceServers.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:443?transport=tcp")
-                                               .setUsername("b952dd25901f14de8ab1423199efde05690c787b21fce1f1af33a02a14277cfb")
-                                               .setPassword("HKhKxHTzu8DH4QDdeFBMO5Umy6GX+MphfKxrPe/WjMk=")
-                                               .createIceServer());
+                                            .setUsername("6f2ea20adbad702b344abdfcb52b094c3451a0712150f9932529aa4c4268f780")
+                                            .setPassword("lHUp55CllUQ/yUedgznFajO0BwEOgmuXI7m1fQLgNF4=")
+                                            .createIceServer());
 
 //        iceServers.add(PeerConnection.IceServer.builder("stun:stun1.l.google.com:19302").createIceServer());
 //        for (String url : turnServerInfo.getUrls()) {
