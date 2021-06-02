@@ -5,6 +5,7 @@
         <domain includeSubdomains="true">dqjesdd0w1dnq.cloudfront.net</domain>
         <domain includeSubdomains="true">65.1.54.76</domain>
         <domain includeSubdomains="true">3.108.48.212</domain>
+        <domain includeSubdomains="true">34.102.216.129</domain>
 <!--        <domain includeSubdomains="true">abc.online</domain>-->
 <!--        <trust-anchors>-->
 <!--            <certificates src="@raw/abc"/>-->
