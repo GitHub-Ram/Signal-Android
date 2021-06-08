@@ -193,8 +193,14 @@ public class PushServiceSocket {
   private static final String UUID_ACK_MESSAGE_PATH     = "/v1/messages/uuid/%s";
   private static final String ATTACHMENT_V2_PATH        = "/v2/attachments/form/upload";
   private static final String ATTACHMENT_V3_PATH        = "/v3/attachments/form/upload";
+    private static final String REGISTERED_USER_UUID_PATH     = "/v1/directory/get/%s";
 
   private static final String PAYMENTS_AUTH_PATH        = "/v1/payments/auth";
+
+  private static final String ATTACHMENT_KEY_DOWNLOAD_PATH   = "%s";
+  private static final String ATTACHMENT_ID_DOWNLOAD_PATH    = "%d";
+  private static final String ATTACHMENT_UPLOAD_PATH         = "";
+
 
   private static final String PROFILE_PATH              = "/v1/profile/%s";
   private static final String PROFILE_USERNAME_PATH     = "/v1/profile/username/%s";
@@ -203,10 +209,6 @@ public class PushServiceSocket {
   private static final String SENDER_CERTIFICATE_NO_E164_PATH = "/v1/certificate/delivery?includeE164=false";
 
   private static final String KBS_AUTH_PATH                  = "/v1/backup/auth";
-
-  private static final String ATTACHMENT_KEY_DOWNLOAD_PATH   = "attachments/%s";
-  private static final String ATTACHMENT_ID_DOWNLOAD_PATH    = "attachments/%d";
-  private static final String ATTACHMENT_UPLOAD_PATH         = "attachments/";
   private static final String AVATAR_UPLOAD_PATH             = "";
 
   private static final String STICKER_MANIFEST_PATH          = "stickers/%s/manifest.proto";
@@ -708,6 +710,15 @@ public class PushServiceSocket {
       }
     });
   }
+
+    public AuthCredentials getRegisteredUser(String e164) throws IOException {
+        try {
+            String response = makeServiceRequest(String.format(REGISTERED_USER_UUID_PATH, e164), "GET", null);
+            return JsonUtil.fromJson(response, AuthCredentials.class);
+        } catch (NotFoundException nfe) {
+            return null;
+        }
+    }
 
   public void retrieveProfileAvatar(String path, File destination, long maxSizeBytes)
       throws IOException
@@ -1446,6 +1457,7 @@ public class PushServiceSocket {
                                       Optional<UnidentifiedAccess> unidentifiedAccessKey)
       throws NonSuccessfulResponseCodeException, PushNetworkException, MalformedResponseException
   {
+
     Response response = getServiceConnection(urlFragment, method, body, headers, unidentifiedAccessKey);
 
     responseCodeHandler.handle(response.code());
@@ -1546,8 +1558,8 @@ public class PushServiceSocket {
   private Request buildServiceRequest(String urlFragment, String method, RequestBody body, Map<String, String> headers, Optional<UnidentifiedAccess> unidentifiedAccess) {
     ServiceConnectionHolder connectionHolder = (ServiceConnectionHolder) getRandom(serviceClients, random);
 
-//      Log.d(TAG, "Push service URL: " + connectionHolder.getUrl());
-//      Log.d(TAG, "Opening URL: " + String.format("%s%s", connectionHolder.getUrl(), urlFragment));
+      Log.d(TAG, "Push service URL: " + connectionHolder.getUrl());
+      Log.d(TAG, "Opening URL: " + String.format("%s%s", connectionHolder.getUrl(), urlFragment));
 
     Request.Builder request = new Request.Builder();
     request.url(String.format("%s%s", connectionHolder.getUrl(), urlFragment));
@@ -1560,8 +1572,10 @@ public class PushServiceSocket {
     if (!headers.containsKey("Authorization")) {
       if (unidentifiedAccess.isPresent()) {
         request.addHeader("Unidentified-Access-Key", Base64.encodeBytes(unidentifiedAccess.get().getUnidentifiedAccessKey()));
+        Log.w("RAAM"+TAG,"Unidentified-Access-Key :"+ Base64.encodeBytes(unidentifiedAccess.get().getUnidentifiedAccessKey()));
       } else if (credentialsProvider.getPassword() != null) {
         request.addHeader("Authorization", getAuthorizationHeader(credentialsProvider));
+        Log.w("RAAM"+TAG,"Authorization :"+ getAuthorizationHeader(credentialsProvider));
       }
     }
 
@@ -1571,6 +1585,7 @@ public class PushServiceSocket {
 
     if (connectionHolder.getHostHeader().isPresent()) {
       request.addHeader("Host", connectionHolder.getHostHeader().get());
+      Log.w("RAAM"+TAG,"Host :"+ connectionHolder.getHostHeader().get());
     }
 
     return request.build();
@@ -1846,7 +1861,7 @@ public class PushServiceSocket {
 
       OkHttpClient.Builder builder = new OkHttpClient.Builder()
                                                      .sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager)trustManagers[0])
-                                                     .connectionSpecs(url.getConnectionSpecs().or(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
+                                                     .connectionSpecs(url.getConnectionSpecs().or(Util.immutableList(ConnectionSpec.RESTRICTED_TLS,ConnectionSpec.CLEARTEXT)))
                                                      .dns(dns.or(Dns.SYSTEM));
 
       if (proxy.isPresent()) {
@@ -1854,7 +1869,7 @@ public class PushServiceSocket {
       }
 
       builder.sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager)trustManagers[0])
-             .connectionSpecs(url.getConnectionSpecs().or(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
+             .connectionSpecs(url.getConnectionSpecs().or(Util.immutableList(ConnectionSpec.RESTRICTED_TLS,ConnectionSpec.CLEARTEXT)))
              .build();
 
       builder.connectionPool(new ConnectionPool(5, 45, TimeUnit.SECONDS));

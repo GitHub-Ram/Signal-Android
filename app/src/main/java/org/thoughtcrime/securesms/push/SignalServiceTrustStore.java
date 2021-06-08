@@ -2,6 +2,7 @@ package org.thoughtcrime.securesms.push;
 
 import android.content.Context;
 
+import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.R;
 import org.whispersystems.signalservice.api.push.TrustStore;
 
@@ -17,7 +18,9 @@ public class SignalServiceTrustStore implements TrustStore {
 
   @Override
   public InputStream getKeyStoreInputStream() {
-    return context.getResources().openRawResource(R.raw.whisper);
+    if(!BuildConfig.STAGE_ENABLED)
+      return context.getResources().openRawResource(R.raw.cachy);
+    else return context.getResources().openRawResource(R.raw.whisper);
   }
 
   @Override

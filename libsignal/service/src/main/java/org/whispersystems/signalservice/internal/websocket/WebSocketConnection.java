@@ -116,7 +116,7 @@ public class WebSocketConnection extends WebSocketListener {
 
       OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
                                                            .sslSocketFactory(new Tls12SocketFactory(socketFactory.first()), socketFactory.second())
-                                                           .connectionSpecs(Util.immutableList(ConnectionSpec.RESTRICTED_TLS))
+                                                           .connectionSpecs(Util.immutableList(ConnectionSpec.RESTRICTED_TLS,ConnectionSpec.CLEARTEXT))
                                                            .readTimeout(KEEPALIVE_TIMEOUT_SECONDS + 10, TimeUnit.SECONDS)
                                                            .dns(dns.or(Dns.SYSTEM))
                                                            .connectTimeout(KEEPALIVE_TIMEOUT_SECONDS + 10, TimeUnit.SECONDS);
@@ -178,7 +178,11 @@ public class WebSocketConnection extends WebSocketListener {
 
     if      (incomingRequests.isEmpty() && client == null) throw new IOException("Connection closed!");
     else if (incomingRequests.isEmpty())                   throw new TimeoutException("Timeout exceeded");
-    else                                                   return incomingRequests.removeFirst();
+    else          {
+      WebSocketRequestMessage wsm = incomingRequests.removeFirst();
+      Log.w(TAG+"WebSocketRequestMessage",wsm.toString()+" body:"+wsm.getBody()+" path:"+wsm.getPath()+" verb:"+wsm.getVerb());
+      return wsm;
+    }
   }
 
   public synchronized ListenableFuture<WebsocketResponse> sendRequest(WebSocketRequestMessage request) throws IOException {
@@ -188,7 +192,7 @@ public class WebSocketConnection extends WebSocketListener {
                                                .setType(WebSocketMessage.Type.REQUEST)
                                                .setRequest(request)
                                                .build();
-
+    Log.w(TAG+"sendRequest",message.toString());
     SettableFuture<WebsocketResponse> future = new SettableFuture<>();
     outgoingRequests.put(request.getId(), new OutgoingRequest(future, System.currentTimeMillis()));
 
@@ -216,15 +220,16 @@ public class WebSocketConnection extends WebSocketListener {
 
   private synchronized void sendKeepAlive() throws IOException {
     if (keepAliveSender != null && client != null) {
-      byte[] message = WebSocketMessage.newBuilder()
-                                       .setType(WebSocketMessage.Type.REQUEST)
-                                       .setRequest(WebSocketRequestMessage.newBuilder()
-                                                                          .setId(System.currentTimeMillis())
-                                                                          .setPath("/v1/keepalive")
-                                                                          .setVerb("GET")
-                                                                          .build()).build()
-                                       .toByteArray();
-
+      WebSocketRequestMessage wsrm = WebSocketRequestMessage.newBuilder()
+                             .setId(System.currentTimeMillis())
+                             .setPath("/v1/keepalive")
+                             .setVerb("GET")
+                             .build();
+      WebSocketMessage wsm = WebSocketMessage.newBuilder()
+                      .setType(WebSocketMessage.Type.REQUEST)
+                      .setRequest(wsrm).build();
+      byte[] message = wsm.toByteArray();
+      Log.w(TAG+"sendKeepAlive",wsrm.toString()+"----"+wsm.toString());
       if (!client.send(ByteString.of(message))) {
         throw new IOException("Write failed!");
       }
@@ -250,8 +255,10 @@ public class WebSocketConnection extends WebSocketListener {
       WebSocketMessage message = WebSocketMessage.parseFrom(payload.toByteArray());
 
       if (message.getType().getNumber() == WebSocketMessage.Type.REQUEST_VALUE)  {
+        Log.w(TAG+"REQUEST_VALUE",message.toString()+" body:"+message.getRequest().getBody()+" path:"+message.getRequest().getPath()+" verb:"+message.getRequest().getVerb());
         incomingRequests.add(message.getRequest());
       } else if (message.getType().getNumber() == WebSocketMessage.Type.RESPONSE_VALUE) {
+        Log.w(TAG+"RESPONSE_VALUE",message.toString()+" body:"+message.getResponse().getBody());
         OutgoingRequest listener = outgoingRequests.get(message.getResponse().getId());
         if (listener != null) {
           listener.getResponseFuture().set(new WebsocketResponse(message.getResponse().getStatus(),
