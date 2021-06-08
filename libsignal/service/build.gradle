@@ -2,9 +2,9 @@ apply plugin: 'java-library'
 apply plugin: 'com.google.protobuf'
 apply plugin: 'maven'
 apply plugin: 'signing'
-apply plugin: 'witness'
+//apply plugin: 'witness'
 apply plugin: 'idea'
-apply from: 'witness-verifications.gradle'
+//apply from: 'witness-verifications.gradle'
 
 sourceCompatibility = 1.8
 archivesBaseName    = "signal-service-java"
@@ -32,9 +32,9 @@ dependencies {
     testImplementation 'org.conscrypt:conscrypt-openjdk-uber:2.0.0'
 }
 
-dependencyVerification {
-    configuration = '(runtime|compile)Classpath'
-}
+//dependencyVerification {
+//    configuration = '(runtime|compile)Classpath'
+//}
 
 tasks.whenTaskAdded { task ->
     if (task.name.equals("lint")) {

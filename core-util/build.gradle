@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.google.protobuf'
-apply plugin: 'witness'
-apply from: 'witness-verifications.gradle'
 
 android {
     buildToolsVersion BUILD_TOOL_VERSION
@@ -18,9 +16,9 @@ android {
     }
 }
 
-dependencyVerification {
-    configuration = '(debug|release)RuntimeClasspath'
-}
+//dependencyVerification {
+//    configuration = '(debug|release)RuntimeClasspath'
+//}
 
 protobuf {
     protoc {
