@@ -31,13 +31,13 @@ repositories {
             includeGroupByRegex "com\\.amulyakhare.*"
         }
     }
+    maven {
+        url "https://dl.cloudsmith.io/qxAgwaeEE1vN8aLU/mobilecoin/mobilecoin/maven/"
+    }
     google()
     mavenCentral()
     jcenter()
     mavenLocal()
-    maven {
-        url "https://dl.cloudsmith.io/qxAgwaeEE1vN8aLU/mobilecoin/mobilecoin/maven/"
-    }
 }
 
 protobuf {
@@ -143,14 +143,14 @@ android {
 
         resConfigs autoResConfig()
 
-        splits {
-            abi {
-                enable true
-                reset()
-                include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
-                universalApk true
-            }
-        }
+//        splits {
+//            abi {
+//                enable true
+//                reset()
+//                include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+//                universalApk true
+//            }
+//        }
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -173,45 +173,45 @@ android {
         exclude '/org/spongycastle/x509/CertPathReviewerMessages_de.properties'
     }
 
-//    buildTypes {
-//        debug {
+    buildTypes {
+        debug {
 //            if (keystores['debug'] != null) {
 //                signingConfig signingConfigs.debug
 //            }
-//            isDefault true
-//            minifyEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-//                    'proguard/proguard-firebase-messaging.pro',
-//                    'proguard/proguard-google-play-services.pro',
-//                    'proguard/proguard-jackson.pro',
-//                    'proguard/proguard-sqlite.pro',
-//                    'proguard/proguard-appcompat-v7.pro',
-//                    'proguard/proguard-square-okhttp.pro',
-//                    'proguard/proguard-square-okio.pro',
-//                    'proguard/proguard-spongycastle.pro',
-//                    'proguard/proguard-rounded-image-view.pro',
-//                    'proguard/proguard-glide.pro',
-//                    'proguard/proguard-shortcutbadger.pro',
-//                    'proguard/proguard-retrofit.pro',
-//                    'proguard/proguard-webrtc.pro',
-//                    'proguard/proguard-klinker.pro',
-//                    'proguard/proguard-retrolambda.pro',
-//                    'proguard/proguard-okhttp.pro',
-//                    'proguard/proguard-ez-vcard.pro',
-//                    'proguard/proguard.cfg'
-//            testProguardFiles 'proguard/proguard-automation.pro',
-//                    'proguard/proguard.cfg'
-//        }
-//        flipper {
-//            initWith debug
-//            isDefault false
-//            minifyEnabled false
-//            matchingFallbacks = ['debug']
-//        }
-//        release {
-//            minifyEnabled true
-//            proguardFiles = buildTypes.debug.proguardFiles
-//        }
+            isDefault true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard/proguard-firebase-messaging.pro',
+                    'proguard/proguard-google-play-services.pro',
+                    'proguard/proguard-jackson.pro',
+                    'proguard/proguard-sqlite.pro',
+                    'proguard/proguard-appcompat-v7.pro',
+                    'proguard/proguard-square-okhttp.pro',
+                    'proguard/proguard-square-okio.pro',
+                    'proguard/proguard-spongycastle.pro',
+                    'proguard/proguard-rounded-image-view.pro',
+                    'proguard/proguard-glide.pro',
+                    'proguard/proguard-shortcutbadger.pro',
+                    'proguard/proguard-retrofit.pro',
+                    'proguard/proguard-webrtc.pro',
+                    'proguard/proguard-klinker.pro',
+                    'proguard/proguard-retrolambda.pro',
+                    'proguard/proguard-okhttp.pro',
+                    'proguard/proguard-ez-vcard.pro',
+                    'proguard/proguard.cfg'
+            testProguardFiles 'proguard/proguard-automation.pro',
+                    'proguard/proguard.cfg'
+        }
+        flipper {
+            initWith debug
+            isDefault false
+            minifyEnabled false
+            matchingFallbacks = ['debug']
+        }
+        release {
+            minifyEnabled true
+            proguardFiles = buildTypes.debug.proguardFiles
+        }
 //        perf {
 //            initWith debug
 //            isDefault false
@@ -224,7 +224,7 @@ android {
 //            minifyEnabled false
 //            matchingFallbacks = ['debug']
 //        }
-//    }
+    }
 //
 //    productFlavors {
 //        play {
