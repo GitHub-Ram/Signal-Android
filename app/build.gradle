@@ -2,7 +2,7 @@
 
 import java.security.MessageDigest
 
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.protobuf'
@@ -95,7 +95,9 @@ android {
 
     defaultConfig {
         versionCode canonicalVersionCode * postFixSize
+        buildConfigField "int", "VERSION_CODE", "$versionCode"
         versionName canonicalVersionName
+        buildConfigField "String", "VERSION_NAME", "\"$versionName\""
 
         minSdkVersion MINIMUM_SDK
         targetSdkVersion TARGET_SDK
@@ -141,7 +143,7 @@ android {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
 
-        resConfigs autoResConfig()
+        //resConfigs autoResConfig()
 
 //        splits {
 //            abi {
@@ -225,7 +227,7 @@ android {
 //            matchingFallbacks = ['debug']
 //        }
     }
-//
+
 //    productFlavors {
 //        play {
 //            dimension 'distribution'
@@ -297,7 +299,7 @@ android {
 //            buildConfigField "String", "RECAPTCHA_PROOF_URL", "\"https://signalcaptchas.org/challenge/generate.html\""
 //        }
 //    }
-//
+
 //    android.applicationVariants.all { variant ->
 //        variant.outputs.each { output ->
 //            output.outputFileName = output.outputFileName.replace(".apk", "-${variant.versionName}.apk")
@@ -309,7 +311,7 @@ android {
 //            output.versionCodeOverride = canonicalVersionCode * postFixSize + postFix
 //        }
 //    }
-//
+
 //    android.variantFilter { variant ->
 //        def distribution = variant.getFlavors().get(0).name
 //        def environment  = variant.getFlavors().get(1).name
@@ -450,8 +452,8 @@ dependencies {
     }
     implementation 'dnsjava:dnsjava:2.1.9'
 
-//    flipperImplementation 'com.facebook.flipper:flipper:0.32.2'
-//    flipperImplementation 'com.facebook.soloader:soloader:0.8.2'
+    flipperImplementation 'com.facebook.flipper:flipper:0.32.2'
+    flipperImplementation 'com.facebook.soloader:soloader:0.8.2'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.11.1'

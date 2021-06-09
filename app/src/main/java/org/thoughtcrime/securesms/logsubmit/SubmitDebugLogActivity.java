@@ -115,16 +115,14 @@ public class SubmitDebugLogActivity extends BaseActivity implements SubmitDebugL
   public boolean onOptionsItemSelected(MenuItem item) {
     super.onOptionsItemSelected(item);
 
-    switch (item.getItemId()) {
-      case android.R.id.home:
-        finish();
-        return true;
-      case R.id.menu_edit_log:
-        viewModel.onEditButtonPressed();
-        break;
-      case R.id.menu_done_editing_log:
-        viewModel.onDoneEditingButtonPressed();
-        break;
+    int itemId = item.getItemId();
+    if (itemId == android.R.id.home) {
+      finish();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_edit_log) {
+      viewModel.onEditButtonPressed();
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_done_editing_log) {
+      viewModel.onDoneEditingButtonPressed();
     }
 
     return false;

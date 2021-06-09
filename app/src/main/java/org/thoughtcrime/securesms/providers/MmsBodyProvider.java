@@ -36,7 +36,7 @@ import java.io.OutputStream;
 
 public final class MmsBodyProvider extends BaseContentProvider {
   private static final String TAG                = Log.tag(MmsBodyProvider.class);
-  private static final String CONTENT_AUTHORITY  = BuildConfig.APPLICATION_ID + ".mms";
+  private static final String CONTENT_AUTHORITY  = BuildConfig.LIBRARY_PACKAGE_NAME + ".mms";
   private static final String CONTENT_URI_STRING = "content://" + CONTENT_AUTHORITY + "/mms";
   public  static final Uri    CONTENT_URI        = Uri.parse(CONTENT_URI_STRING);
   private static final int    SINGLE_ROW         = 1;

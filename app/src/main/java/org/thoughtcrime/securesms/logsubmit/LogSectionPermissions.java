@@ -25,7 +25,7 @@ public class LogSectionPermissions implements LogSection {
     List<Pair<String, Boolean>> status = new ArrayList<>();
 
     try {
-      PackageInfo info = context.getPackageManager().getPackageInfo(BuildConfig.APPLICATION_ID, PackageManager.GET_PERMISSIONS);
+      PackageInfo info = context.getPackageManager().getPackageInfo(BuildConfig.LIBRARY_PACKAGE_NAME, PackageManager.GET_PERMISSIONS);
 
       for (int i = 0; i < info.requestedPermissions.length; i++) {
         status.add(new Pair<>(info.requestedPermissions[i],

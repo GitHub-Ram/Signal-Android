@@ -90,27 +90,25 @@ final class ReactWithAnyEmojiRepository {
   }
 
   private @StringRes int getCategoryLabel(@AttrRes int iconAttr) {
-    switch (iconAttr) {
-      case R.attr.emoji_category_people:
-        return R.string.ReactWithAnyEmojiBottomSheetDialogFragment__smileys_and_people;
-      case R.attr.emoji_category_nature:
-        return R.string.ReactWithAnyEmojiBottomSheetDialogFragment__nature;
-      case R.attr.emoji_category_foods:
-        return R.string.ReactWithAnyEmojiBottomSheetDialogFragment__food;
-      case R.attr.emoji_category_activity:
-        return R.string.ReactWithAnyEmojiBottomSheetDialogFragment__activities;
-      case R.attr.emoji_category_places:
-        return R.string.ReactWithAnyEmojiBottomSheetDialogFragment__places;
-      case R.attr.emoji_category_objects:
-        return R.string.ReactWithAnyEmojiBottomSheetDialogFragment__objects;
-      case R.attr.emoji_category_symbols:
-        return R.string.ReactWithAnyEmojiBottomSheetDialogFragment__symbols;
-      case R.attr.emoji_category_flags:
-        return R.string.ReactWithAnyEmojiBottomSheetDialogFragment__flags;
-      case R.attr.emoji_category_emoticons:
-        return R.string.ReactWithAnyEmojiBottomSheetDialogFragment__emoticons;
-      default:
-        throw new AssertionError();
+    if (iconAttr == org.thoughtcrime.securesms.R.attr.emoji_category_people) {
+      return org.thoughtcrime.securesms.R.string.ReactWithAnyEmojiBottomSheetDialogFragment__smileys_and_people;
+    } else if (iconAttr == org.thoughtcrime.securesms.R.attr.emoji_category_nature) {
+      return org.thoughtcrime.securesms.R.string.ReactWithAnyEmojiBottomSheetDialogFragment__nature;
+    } else if (iconAttr == org.thoughtcrime.securesms.R.attr.emoji_category_foods) {
+      return org.thoughtcrime.securesms.R.string.ReactWithAnyEmojiBottomSheetDialogFragment__food;
+    } else if (iconAttr == org.thoughtcrime.securesms.R.attr.emoji_category_activity) {
+      return org.thoughtcrime.securesms.R.string.ReactWithAnyEmojiBottomSheetDialogFragment__activities;
+    } else if (iconAttr == org.thoughtcrime.securesms.R.attr.emoji_category_places) {
+      return org.thoughtcrime.securesms.R.string.ReactWithAnyEmojiBottomSheetDialogFragment__places;
+    } else if (iconAttr == org.thoughtcrime.securesms.R.attr.emoji_category_objects) {
+      return org.thoughtcrime.securesms.R.string.ReactWithAnyEmojiBottomSheetDialogFragment__objects;
+    } else if (iconAttr == org.thoughtcrime.securesms.R.attr.emoji_category_symbols) {
+      return org.thoughtcrime.securesms.R.string.ReactWithAnyEmojiBottomSheetDialogFragment__symbols;
+    } else if (iconAttr == org.thoughtcrime.securesms.R.attr.emoji_category_flags) {
+      return org.thoughtcrime.securesms.R.string.ReactWithAnyEmojiBottomSheetDialogFragment__flags;
+    } else if (iconAttr == org.thoughtcrime.securesms.R.attr.emoji_category_emoticons) {
+      return org.thoughtcrime.securesms.R.string.ReactWithAnyEmojiBottomSheetDialogFragment__emoticons;
     }
+    throw new AssertionError();
   }
 }

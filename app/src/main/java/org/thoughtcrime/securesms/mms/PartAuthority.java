@@ -24,7 +24,7 @@ import java.io.InputStream;
 
 public class PartAuthority {
 
-  private static final String AUTHORITY             = BuildConfig.APPLICATION_ID;
+  private static final String AUTHORITY             = BuildConfig.LIBRARY_PACKAGE_NAME;
   private static final String PART_URI_STRING       = "content://" + AUTHORITY + "/part";
   private static final String STICKER_URI_STRING    = "content://" + AUTHORITY + "/sticker";
   private static final String WALLPAPER_URI_STRING  = "content://" + AUTHORITY + "/wallpaper";

@@ -83,7 +83,7 @@ public class LogSectionSystemInfo implements LogSection {
     } catch (PackageManager.NameNotFoundException nnfe) {
       builder.append("Unknown\n");
     }
-    builder.append("Package       : ").append(BuildConfig.APPLICATION_ID).append(" (").append(getSigningString(context)).append(")");
+    builder.append("Package       : ").append(BuildConfig.LIBRARY_PACKAGE_NAME).append(" (").append(getSigningString(context)).append(")");
 
     return builder;
   }

@@ -331,13 +331,25 @@ public class ConversationListFragment extends MainFragment implements ActionMode
   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
     super.onOptionsItemSelected(item);
 
-    switch (item.getItemId()) {
-      case R.id.menu_new_group:         handleCreateGroup();     return true;
-      case R.id.menu_settings:          handleDisplaySettings(); return true;
-      case R.id.menu_clear_passphrase:  handleClearPassphrase(); return true;
-      case R.id.menu_mark_all_read:     handleMarkAllRead();     return true;
-      case R.id.menu_invite:            handleInvite();          return true;
-      case R.id.menu_insights:          handleInsights();        return true;
+    int itemId = item.getItemId();
+    if (itemId == org.thoughtcrime.securesms.R.id.menu_new_group) {
+      handleCreateGroup();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_settings) {
+      handleDisplaySettings();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_clear_passphrase) {
+      handleClearPassphrase();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_mark_all_read) {
+      handleMarkAllRead();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_invite) {
+      handleInvite();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_insights) {
+      handleInsights();
+      return true;
     }
 
     return false;
@@ -1012,14 +1024,28 @@ public class ConversationListFragment extends MainFragment implements ActionMode
 
   @Override
   public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.menu_select_all:       handleSelectAllThreads();     return true;
-      case R.id.menu_delete_selected:  handleDeleteAllSelected();    return true;
-      case R.id.menu_pin_selected:     handlePinAllSelected();       return true;
-      case R.id.menu_unpin_selected:   handleUnpinAllSelected();     return true;
-      case R.id.menu_archive_selected: handleArchiveAllSelected();   return true;
-      case R.id.menu_mark_as_read:     handleMarkSelectedAsRead();   return true;
-      case R.id.menu_mark_as_unread:   handleMarkSelectedAsUnread(); return true;
+    int itemId = item.getItemId();
+    if (itemId == org.thoughtcrime.securesms.R.id.menu_select_all) {
+      handleSelectAllThreads();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_delete_selected) {
+      handleDeleteAllSelected();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_pin_selected) {
+      handlePinAllSelected();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_unpin_selected) {
+      handleUnpinAllSelected();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_archive_selected) {
+      handleArchiveAllSelected();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_mark_as_read) {
+      handleMarkSelectedAsRead();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_mark_as_unread) {
+      handleMarkSelectedAsUnread();
+      return true;
     }
 
     return false;

@@ -86,13 +86,13 @@ public final class KbsSplashFragment extends Fragment {
 
   @Override
   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.menu_pin_learn_more:
-        onLearnMore();
-        return true;
-      case R.id.menu_pin_skip:
-        onPinSkipped();
-        return true;
+    int itemId = item.getItemId();
+    if (itemId == org.thoughtcrime.securesms.R.id.menu_pin_learn_more) {
+      onLearnMore();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_pin_skip) {
+      onPinSkipped();
+      return true;
     }
 
     return false;

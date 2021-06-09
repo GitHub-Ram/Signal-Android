@@ -1011,28 +1011,67 @@ public class ConversationActivity extends PassphraseRequiredActivity
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     super.onOptionsItemSelected(item);
-    switch (item.getItemId()) {
-    case R.id.menu_call_secure:               handleDial(getRecipient(), true);                  return true;
-    case R.id.menu_video_secure:              handleVideo(getRecipient());                       return true;
-    case R.id.menu_call_insecure:             handleDial(getRecipient(), false);                 return true;
-    case R.id.menu_view_media:                handleViewMedia();                                 return true;
-    case R.id.menu_add_shortcut:              handleAddShortcut();                               return true;
-    case R.id.menu_search:                    handleSearch();                                    return true;
-    case R.id.menu_add_to_contacts:           handleAddToContacts();                             return true;
-    case R.id.menu_reset_secure_session:      handleResetSecureSession();                        return true;
-    case R.id.menu_group_recipients:          handleDisplayGroupRecipients();                    return true;
-    case R.id.menu_distribution_broadcast:    handleDistributionBroadcastEnabled(item);          return true;
-    case R.id.menu_distribution_conversation: handleDistributionConversationEnabled(item);       return true;
-    case R.id.menu_group_settings:            handleManageGroup();                               return true;
-    case R.id.menu_leave:                     handleLeavePushGroup();                            return true;
-    case R.id.menu_invite:                    handleInviteLink();                                return true;
-    case R.id.menu_mute_notifications:        handleMuteNotifications();                         return true;
-    case R.id.menu_unmute_notifications:      handleUnmuteNotifications();                       return true;
-    case R.id.menu_conversation_settings:     handleConversationSettings();                      return true;
-    case R.id.menu_expiring_messages_off:
-    case R.id.menu_expiring_messages:         handleSelectMessageExpiration();                   return true;
-    case R.id.menu_create_bubble:             handleCreateBubble();                              return true;
-    case android.R.id.home:                   super.onBackPressed();                             return true;
+    int itemId = item.getItemId();
+    if (itemId == org.thoughtcrime.securesms.R.id.menu_call_secure) {
+      handleDial(getRecipient(), true);
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_video_secure) {
+      handleVideo(getRecipient());
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_call_insecure) {
+      handleDial(getRecipient(), false);
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_view_media) {
+      handleViewMedia();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_add_shortcut) {
+      handleAddShortcut();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_search) {
+      handleSearch();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_add_to_contacts) {
+      handleAddToContacts();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_reset_secure_session) {
+      handleResetSecureSession();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_group_recipients) {
+      handleDisplayGroupRecipients();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_distribution_broadcast) {
+      handleDistributionBroadcastEnabled(item);
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_distribution_conversation) {
+      handleDistributionConversationEnabled(item);
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_group_settings) {
+      handleManageGroup();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_leave) {
+      handleLeavePushGroup();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_invite) {
+      handleInviteLink();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_mute_notifications) {
+      handleMuteNotifications();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_unmute_notifications) {
+      handleUnmuteNotifications();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_conversation_settings) {
+      handleConversationSettings();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_expiring_messages_off || itemId == org.thoughtcrime.securesms.R.id.menu_expiring_messages) {
+      handleSelectMessageExpiration();
+      return true;
+    } else if (itemId == org.thoughtcrime.securesms.R.id.menu_create_bubble) {
+      handleCreateBubble();
+      return true;
+    } else if (itemId == android.R.id.home) {
+      super.onBackPressed();
+      return true;
     }
 
     return false;

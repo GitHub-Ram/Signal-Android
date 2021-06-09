@@ -429,7 +429,7 @@ public class DirectoryHelper {
 
   private static @Nullable AccountHolder getOrCreateSystemAccount(Context context) {
     AccountManager accountManager = AccountManager.get(context);
-    Account[]      accounts       = accountManager.getAccountsByType(BuildConfig.APPLICATION_ID);
+    Account[]      accounts       = accountManager.getAccountsByType(BuildConfig.LIBRARY_PACKAGE_NAME);
 
     AccountHolder account;
 
@@ -448,7 +448,7 @@ public class DirectoryHelper {
 
   private static @Nullable AccountHolder createAccount(Context context) {
     AccountManager accountManager = AccountManager.get(context);
-    Account        account        = new Account(context.getString(R.string.app_name), BuildConfig.APPLICATION_ID);
+    Account        account        = new Account(context.getString(R.string.app_name), BuildConfig.LIBRARY_PACKAGE_NAME);
 
     if (accountManager.addAccountExplicitly(account, null, null)) {
       Log.i(TAG, "Created new account...");

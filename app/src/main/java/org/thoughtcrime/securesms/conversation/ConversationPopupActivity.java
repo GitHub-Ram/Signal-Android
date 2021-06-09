@@ -75,26 +75,22 @@ public class ConversationPopupActivity extends ConversationActivity {
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.menu_expand:
-        saveDraft().addListener(new ListenableFuture.Listener<Long>() {
-          @Override
-          public void onSuccess(Long result) {
-            ActivityOptionsCompat transition = ActivityOptionsCompat.makeScaleUpAnimation(getWindow().getDecorView(), 0, 0, getWindow().getAttributes().width, getWindow().getAttributes().height);
-            Intent                intent     = ConversationIntents.createBuilder(ConversationPopupActivity.this, getRecipient().getId(), result)
-                                                                  .build();
+    if (item.getItemId() == org.thoughtcrime.securesms.R.id.menu_expand) {
+      saveDraft().addListener(new org.thoughtcrime.securesms.util.concurrent.ListenableFuture.Listener<Long>() {
+        @Override public void onSuccess(Long result) {
+          androidx.core.app.ActivityOptionsCompat transition = androidx.core.app.ActivityOptionsCompat.makeScaleUpAnimation(getWindow().getDecorView(), 0, 0, getWindow().getAttributes().width, getWindow().getAttributes().height);
+          android.content.Intent intent = ConversationIntents.createBuilder(ConversationPopupActivity.this, getRecipient().getId(), result).build();
 
-            startActivity(intent, transition.toBundle());
+          startActivity(intent, transition.toBundle());
 
-            finish();
-          }
+          finish();
+        }
 
-          @Override
-          public void onFailure(ExecutionException e) {
-            Log.w(TAG, e);
-          }
-        });
-        return true;
+        @Override public void onFailure(java.util.concurrent.ExecutionException e) {
+          org.signal.core.util.logging.Log.w(TAG, e);
+        }
+      });
+      return true;
     }
 
     return false;

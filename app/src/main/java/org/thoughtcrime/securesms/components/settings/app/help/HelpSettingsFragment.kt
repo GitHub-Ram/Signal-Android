@@ -33,7 +33,7 @@ class HelpSettingsFragment : DSLSettingsFragment(R.string.preferences__help) {
 
       textPref(
         title = DSLSettingsText.from(R.string.HelpSettingsFragment__version),
-        summary = DSLSettingsText.from(BuildConfig.VERSION_NAME)
+        summary = DSLSettingsText.from("5.12.1")//(BuildConfig.VERSION_NAME)
       )
 
       clickPref(

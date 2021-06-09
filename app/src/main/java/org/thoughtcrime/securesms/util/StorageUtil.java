@@ -51,8 +51,8 @@ public class StorageUtil {
     File backups = new File(signal, "Backups");
 
     //noinspection ConstantConditions
-    if (BuildConfig.APPLICATION_ID.startsWith(PRODUCTION_PACKAGE_ID + ".")) {
-      backups = new File(backups, BuildConfig.APPLICATION_ID.substring(PRODUCTION_PACKAGE_ID.length() + 1));
+    if (BuildConfig.LIBRARY_PACKAGE_NAME.startsWith(PRODUCTION_PACKAGE_ID + ".")) {
+      backups = new File(backups, BuildConfig.LIBRARY_PACKAGE_NAME.substring(PRODUCTION_PACKAGE_ID.length() + 1));
     }
 
     return backups;

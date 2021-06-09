@@ -24,7 +24,7 @@ public class UriUtilTest_isValidExternalUri {
   private final String  input;
   private final boolean output;
 
-  private static final String APPLICATION_ID = BuildConfig.APPLICATION_ID;
+  private static final String APPLICATION_ID = BuildConfig.LIBRARY_PACKAGE_NAME;
 
   @ParameterizedRobolectricTestRunner.Parameters
   public static Collection<Object[]> data() {

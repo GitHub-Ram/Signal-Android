@@ -365,19 +365,17 @@ public final class MediaOverviewPageFragment extends Fragment
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
-      switch (menuItem.getItemId()) {
-        case R.id.save:
-          MediaActions.handleSaveMedia(MediaOverviewPageFragment.this,
-                                       getListAdapter().getSelectedMedia(),
-                                       () -> actionMode.finish());
-          return true;
-        case R.id.delete:
-          MediaActions.handleDeleteMedia(requireContext(), getListAdapter().getSelectedMedia());
-          actionMode.finish();
-          return true;
-        case R.id.select_all:
-          handleSelectAllMedia();
-          return true;
+      int itemId = menuItem.getItemId();
+      if (itemId == org.thoughtcrime.securesms.R.id.save) {
+        MediaActions.handleSaveMedia(MediaOverviewPageFragment.this, getListAdapter().getSelectedMedia(), () -> actionMode.finish());
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.delete) {
+        MediaActions.handleDeleteMedia(requireContext(), getListAdapter().getSelectedMedia());
+        actionMode.finish();
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.select_all) {
+        handleSelectAllMedia();
+        return true;
       }
       return false;
     }

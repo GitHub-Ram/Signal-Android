@@ -381,11 +381,15 @@ public class VerifyIdentityActivity extends PassphraseRequiredActivity implement
     public boolean onContextItemSelected(MenuItem item) {
       if (fingerprint == null) return super.onContextItemSelected(item);
 
-      switch (item.getItemId()) {
-        case R.id.menu_copy:    handleCopyToClipboard(fingerprint, codes.length); return true;
-        case R.id.menu_compare: handleCompareWithClipboard(fingerprint);          return true;
-        default:                return super.onContextItemSelected(item);
+      int itemId = item.getItemId();
+      if (itemId == org.thoughtcrime.securesms.R.id.menu_copy) {
+        handleCopyToClipboard(fingerprint, codes.length);
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.menu_compare) {
+        handleCompareWithClipboard(fingerprint);
+        return true;
       }
+      return super.onContextItemSelected(item);
     }
 
     @Override
@@ -399,8 +403,9 @@ public class VerifyIdentityActivity extends PassphraseRequiredActivity implement
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-      switch (item.getItemId()) {
-        case R.id.verify_identity__share: handleShare(fingerprint, codes.length);  return true;
+      if (item.getItemId() == org.thoughtcrime.securesms.R.id.verify_identity__share) {
+        handleShare(fingerprint, codes.length);
+        return true;
       }
 
       return false;

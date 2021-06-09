@@ -32,7 +32,7 @@ public class DeprecatedPersistentBlobProvider {
 
   private static final String TAG = Log.tag(DeprecatedPersistentBlobProvider.class);
 
-  public  static final String     AUTHORITY             = BuildConfig.APPLICATION_ID;
+  public  static final String     AUTHORITY             = BuildConfig.LIBRARY_PACKAGE_NAME;
   private static final String     URI_STRING            = "content://" + AUTHORITY + "/capture-new";
   public  static final Uri        CONTENT_URI           = Uri.parse(URI_STRING);
   public  static final String     EXPECTED_PATH_OLD     = "capture/*/*/#";

@@ -1742,16 +1742,30 @@ public class ConversationFragment extends LoggingFragment {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-      switch (item.getItemId()) {
-        case R.id.action_info:        handleDisplayDetails(conversationMessage);                                            return true;
-        case R.id.action_delete:      handleDeleteMessages(SetUtil.newHashSet(conversationMessage));                        return true;
-        case R.id.action_copy:        handleCopyMessage(SetUtil.newHashSet(conversationMessage));                           return true;
-        case R.id.action_reply:       handleReplyMessage(conversationMessage);                                              return true;
-        case R.id.action_multiselect: handleEnterMultiSelect(conversationMessage);                                          return true;
-        case R.id.action_forward:     handleForwardMessage(conversationMessage);                                            return true;
-        case R.id.action_download:    handleSaveAttachment((MediaMmsMessageRecord) conversationMessage.getMessageRecord()); return true;
-        default:                                                                                                            return false;
+      int itemId = item.getItemId();
+      if (itemId == org.thoughtcrime.securesms.R.id.action_info) {
+        handleDisplayDetails(conversationMessage);
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.action_delete) {
+        handleDeleteMessages(org.thoughtcrime.securesms.util.SetUtil.newHashSet(conversationMessage));
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.action_copy) {
+        handleCopyMessage(org.thoughtcrime.securesms.util.SetUtil.newHashSet(conversationMessage));
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.action_reply) {
+        handleReplyMessage(conversationMessage);
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.action_multiselect) {
+        handleEnterMultiSelect(conversationMessage);
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.action_forward) {
+        handleForwardMessage(conversationMessage);
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.action_download) {
+        handleSaveAttachment((org.thoughtcrime.securesms.database.model.MediaMmsMessageRecord) conversationMessage.getMessageRecord());
+        return true;
       }
+      return false;
     }
   }
 
@@ -1804,36 +1818,36 @@ public class ConversationFragment extends LoggingFragment {
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
       if (actionMode == null) return false;
 
-      switch(item.getItemId()) {
-        case R.id.menu_context_copy:
-          handleCopyMessage(getListAdapter().getSelectedItems());
-          actionMode.finish();
-          return true;
-        case R.id.menu_context_delete_message:
-          handleDeleteMessages(getListAdapter().getSelectedItems());
-          actionMode.finish();
-          return true;
-        case R.id.menu_context_details:
-          handleDisplayDetails(getSelectedConversationMessage());
-          actionMode.finish();
-          return true;
-        case R.id.menu_context_forward:
-          handleForwardMessage(getSelectedConversationMessage());
-          actionMode.finish();
-          return true;
-        case R.id.menu_context_resend:
-          handleResendMessage(getSelectedConversationMessage().getMessageRecord());
-          actionMode.finish();
-          return true;
-        case R.id.menu_context_save_attachment:
-          handleSaveAttachment((MediaMmsMessageRecord) getSelectedConversationMessage().getMessageRecord());
-          actionMode.finish();
-          return true;
-        case R.id.menu_context_reply:
-          maybeShowSwipeToReplyTooltip();
-          handleReplyMessage(getSelectedConversationMessage());
-          actionMode.finish();
-          return true;
+      int itemId = item.getItemId();
+      if (itemId == org.thoughtcrime.securesms.R.id.menu_context_copy) {
+        handleCopyMessage(getListAdapter().getSelectedItems());
+        actionMode.finish();
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.menu_context_delete_message) {
+        handleDeleteMessages(getListAdapter().getSelectedItems());
+        actionMode.finish();
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.menu_context_details) {
+        handleDisplayDetails(getSelectedConversationMessage());
+        actionMode.finish();
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.menu_context_forward) {
+        handleForwardMessage(getSelectedConversationMessage());
+        actionMode.finish();
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.menu_context_resend) {
+        handleResendMessage(getSelectedConversationMessage().getMessageRecord());
+        actionMode.finish();
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.menu_context_save_attachment) {
+        handleSaveAttachment((org.thoughtcrime.securesms.database.model.MediaMmsMessageRecord) getSelectedConversationMessage().getMessageRecord());
+        actionMode.finish();
+        return true;
+      } else if (itemId == org.thoughtcrime.securesms.R.id.menu_context_reply) {
+        maybeShowSwipeToReplyTooltip();
+        handleReplyMessage(getSelectedConversationMessage());
+        actionMode.finish();
+        return true;
       }
 
       return false;
