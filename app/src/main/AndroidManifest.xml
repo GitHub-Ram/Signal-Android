@@ -98,16 +98,16 @@
             android:networkSecurityConfig="@xml/network_security_config"
                  android:largeHeap="true">
 
-    <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"/>
+<!--    <meta-data-->
+<!--            android:name="com.google.android.geo.API_KEY"-->
+<!--            android:value="AIzaSyCSx9xea86GwDKGznCAULE9Y5a8b-TfN9U"/>-->
 
-    <meta-data android:name="com.google.android.gms.version"
-               android:value="@integer/google_play_services_version" />
+<!--    <meta-data android:name="com.google.android.gms.version"-->
+<!--               android:value="@integer/google_play_services_version" />-->
 
-    <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />
-    <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />
-    <meta-data android:name="firebase_messaging_auto_init_enabled" android:value="false" />
+<!--    <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />-->
+<!--    <meta-data android:name="google_analytics_adid_collection_enabled" android:value="false" />-->
+<!--    <meta-data android:name="firebase_messaging_auto_init_enabled" android:value="false" />-->
 
     <activity android:name=".WebRtcCallActivity"
               android:theme="@style/TextSecure.DarkTheme.WebRTCCall"
