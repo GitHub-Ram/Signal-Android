@@ -252,7 +252,7 @@ public class ApplicationContext extends MultiDexApplication implements AppForegr
     ApplicationDependencies.getIncomingMessageObserver();
   }
 
-  private void initializeAppDependencies() {
+  public void initializeAppDependencies() {
     ApplicationDependencies.init(this, new ApplicationDependencyProvider(this));
   }
 
