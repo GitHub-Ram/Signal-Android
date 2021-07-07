@@ -672,20 +672,16 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
         TurnServerInfo turnServerInfo = accountManager.getTurnServerInfo();
 
         List<PeerConnection.IceServer> iceServers = new LinkedList<>();
-        iceServers.add(PeerConnection.IceServer.builder("stun:global.stun.twilio.com:3478?transport=udp").createIceServer());
+        iceServers.add(PeerConnection.IceServer.builder("stun:65.1.90.206:3478?transport=udp").createIceServer());
 
-        iceServers.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:3478?transport=udp")
-                                               .setUsername("4c80b03305ad11a2144f4e460b35fa5d1858a347a515e352d3060aa636e379b7")
-                                               .setPassword("pDQUX/2rlD5Q8N13pP8MSuy/XmmBOZHzdUD3qjGnUaY=")
+        iceServers.add(PeerConnection.IceServer.builder("turn:65.1.90.206:3478?transport=udp")
+                                               .setUsername("cachy")
+                                               .setPassword("cachy9807")
                                                .createIceServer());
 
-        iceServers.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:3478?transport=tcp")
-                                               .setUsername("4c80b03305ad11a2144f4e460b35fa5d1858a347a515e352d3060aa636e379b7")
-                                               .setPassword("pDQUX/2rlD5Q8N13pP8MSuy/XmmBOZHzdUD3qjGnUaY=")
-                                               .createIceServer());
-        iceServers.add(PeerConnection.IceServer.builder("turn:global.turn.twilio.com:443?transport=tcp")
-                                               .setUsername("4c80b03305ad11a2144f4e460b35fa5d1858a347a515e352d3060aa636e379b7")
-                                               .setPassword("pDQUX/2rlD5Q8N13pP8MSuy/XmmBOZHzdUD3qjGnUaY=")
+        iceServers.add(PeerConnection.IceServer.builder("turn:65.1.90.206:3478?transport=tcp")
+                                               .setUsername("cachy")
+                                               .setPassword("cachy9807")
                                                .createIceServer());
 
 //        iceServers.add(PeerConnection.IceServer.builder("stun:stun1.l.google.com:19302").createIceServer());
