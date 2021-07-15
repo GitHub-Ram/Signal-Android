@@ -8,6 +8,9 @@ include ':video'
 include ':device-transfer'
 include ':device-transfer-app'
 
+//include ':react-native-webrtc'
+//project(':react-native-webrtc').projectDir = file('react-native-webrtc/android')
+
 project(':app').name = 'Signal-Android'
 project(':paging').projectDir = file('paging/lib')
 project(':paging-app').projectDir = file('paging/app')
@@ -18,3 +21,37 @@ project(':device-transfer-app').projectDir = file('device-transfer/app')
 project(':libsignal-service').projectDir = file('libsignal/service')
 
 rootProject.name='Signal'
+
+
+include ':jitsi-sdk'
+project(':jitsi-sdk').projectDir = file('jitsi-meet/android/sdk')
+include ':react-native-async-storage'
+project(':react-native-async-storage').projectDir = file( 'jitsi-meet/node_modules/@react-native-async-storage/async-storage/android')
+include ':react-native-background-timer'
+project(':react-native-background-timer').projectDir = file( 'jitsi-meet/node_modules/react-native-background-timer/android')
+include ':react-native-calendar-events'
+project(':react-native-calendar-events').projectDir = file( 'jitsi-meet/node_modules/react-native-calendar-events/android')
+include ':react-native-community_netinfo'
+project(':react-native-community_netinfo').projectDir = file( 'jitsi-meet/node_modules/@react-native-community/netinfo/android')
+include ':react-native-default-preference'
+project(':react-native-default-preference').projectDir = file( 'jitsi-meet/node_modules/react-native-default-preference/android')
+include ':react-native-device-info'
+project(':react-native-device-info').projectDir = file( 'jitsi-meet/node_modules/react-native-device-info/android')
+include ':react-native-google-signin'
+project(':react-native-google-signin').projectDir = file( 'jitsi-meet/node_modules/@react-native-community/google-signin/android')
+include ':react-native-immersive'
+project(':react-native-immersive').projectDir = file( 'jitsi-meet/node_modules/react-native-immersive/android')
+include ':react-native-keep-awake'
+project(':react-native-keep-awake').projectDir = file( 'jitsi-meet/node_modules/react-native-keep-awake/android')
+include ':react-native-linear-gradient'
+project(':react-native-linear-gradient').projectDir = file( 'jitsi-meet/node_modules/react-native-linear-gradient/android')
+include ':react-native-sound'
+project(':react-native-sound').projectDir = file( 'jitsi-meet/node_modules/react-native-sound/android')
+include ':react-native-splash-screen'
+project(':react-native-splash-screen').projectDir = file( 'jitsi-meet/node_modules/react-native-splash-screen/android')
+include ':react-native-svg'
+project(':react-native-svg').projectDir = file( 	'jitsi-meet/node_modules/react-native-svg/android')
+include ':react-native-webrtc'
+project(':react-native-webrtc').projectDir = file( 'jitsi-meet/node_modules/react-native-webrtc/android')
+include ':react-native-webview'
+project(':react-native-webview').projectDir = file( 'jitsi-meet/node_modules/react-native-webview/android')
