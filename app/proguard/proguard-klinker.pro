@@ -1,0 +1,3 @@
+-dontwarn android.net.ConnectivityManager
+-dontwarn android.net.ConnectivityManager$NetworkCallback
+-dontwarn com.cachy.webrtc.NetworkMonitorAutoDetect$ConnectivityManagerDelegate
