@@ -471,11 +471,11 @@ dependencies {
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.0"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
-//    implementation(project(':sdk-jitsi')) {
-//        exclude group: 'org.jetbrains'
-//        exclude group: 'androidx.swiperefreshlayout'
-//        exclude group: 'com.google.android.gms'
-//    }
+    implementation(project(':sdk-jitsi')) {
+        exclude group: 'org.jetbrains'
+        exclude group: 'androidx.swiperefreshlayout'
+        exclude group: 'com.google.android.gms'
+    }
     implementation(name:'ringrtc-android-2.9.6', ext:'aar')
 }
 
