@@ -477,6 +477,12 @@ dependencies {
 //        exclude group: 'com.google.android.gms'
 //    }
     implementation(name:'ringrtc-android-2.9.6', ext:'aar')
+    implementation ('org.jitsi.react:jitsi-meet-sdk:+') {
+        transitive = true
+        exclude group: 'org.jetbrains'
+        exclude group: 'androidx.swiperefreshlayout'
+        exclude group: 'com.google.android.gms'
+    }
 }
 
 dependencyVerification {

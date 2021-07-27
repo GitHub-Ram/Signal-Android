@@ -35,22 +35,6 @@ ext {
     MINIMUM_SDK = 23
 
     JAVA_VERSION = JavaVersion.VERSION_1_8
-
-    // The Maven artifact groupdId of the third-party react-native modules which
-    // Jitsi Meet SDK for Android depends on and which are not available in
-    // third-party Maven repositories so we have to deploy to a Maven repository
-    // of ours.
-    moduleGroupId = 'com.facebook.react'
-
-    // Maven repo where artifacts will be published
-    mavenRepo = System.env.MVN_REPO ?: ""
-    mavenUser = System.env.MVN_USER ?: ""
-    mavenPassword = System.env.MVN_PASSWORD ?: ""
-
-    // Libre build
-    libreBuild = (System.env.LIBRE_BUILD ?: "false").toBoolean()
-
-    googleServicesEnabled = project.file('app/google-services.json').exists() && !libreBuild
 }
 
 wrapper {
@@ -61,80 +45,15 @@ allprojects {
     repositories {
         google()
         jcenter()
-        // React Native (JS, Obj-C sources, Android binaries) is installed from npm.
-        maven { url "$rootDir/../node_modules/react-native/android" }
-        // Android JSC is installed from npm.
-        maven { url("$rootDir/../node_modules/jsc-android/dist") }
+        maven { url "$rootDir/app/libs"}
         flatDir {
             dirs 'libs'
         }
     }
-    // Make sure we use the react-native version in node_modules and not the one
-    // published in jcenter / elsewhere.
-    configurations.all {
-        resolutionStrategy {
-            eachDependency { DependencyResolveDetails details ->
-                if (details.requested.group == 'com.facebook.react'
-                    && details.requested.name == 'react-native') {
-                    def file = new File("$rootDir/../node_modules/react-native/package.json")
-                    def version = new JsonSlurper().parseText(file.text).version
-                    details.useVersion version
-                }
-            }
-        }
-    }
-
-    // Third-party react-native modules which Jitsi Meet SDK for Android depends
-    // on and which are not available in third-party Maven repositories need to
-    // be deployed in a Maven repository of ours.
-    //
-
-    if (project.name.startsWith('react-native-')) {
-        apply plugin: 'maven-publish'
-        publishing {
-            publications {}
-            repositories {
-                maven {
-                    url rootProject.ext.mavenRepo
-                    if (!rootProject.ext.mavenRepo.startsWith("file")) {
-                        credentials {
-                            username rootProject.ext.mavenUser
-                            password rootProject.ext.mavenPassword
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Use the number of seconds/10 since Jan 1 2019 as the version qualifier number.
-    // This will last for the next ~680 years.
-    // https://stackoverflow.com/a/38643838
-    def versionQualifierNumber = (int)(((new Date().getTime()/1000) - 1546297200) / 10)
-
-    afterEvaluate { project ->
-        if (project.plugins.hasPlugin('android') || project.plugins.hasPlugin('android-library')) {
-            project.android {
-                compileSdkVersion COMPILE_SDK
-                buildToolsVersion BUILD_TOOL_VERSION
-            }
-        }
-
-        if (project.name.startsWith('react-native-')) {
-        }
-    }
 }
 
-subprojects { subproject ->
-        afterEvaluate{
-            if ((subproject.plugins.hasPlugin('android')
-                || subproject.plugins.hasPlugin('android-library'))
-                && rootProject.ext.has('buildToolsVersion')) {
-                android {
-                    buildToolsVersion rootProject.ext.buildToolsVersion
-                }
-            }
-        }
+subprojects {
+
     ext.lib_signal_service_version_number   = "2.15.3"
     ext.lib_signal_service_group_info       = "org.whispersystems"
     ext.lib_signal_client_version           = "0.1.0"
