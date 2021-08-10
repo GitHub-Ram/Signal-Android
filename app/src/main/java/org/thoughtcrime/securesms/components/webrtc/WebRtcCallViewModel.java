@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.annimon.stream.Stream;
 
+import org.signal.glide.Log;
 import org.thoughtcrime.securesms.components.sensors.DeviceOrientationMonitor;
 import org.thoughtcrime.securesms.components.sensors.Orientation;
 import org.thoughtcrime.securesms.database.IdentityDatabase;
@@ -27,6 +28,7 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.recipients.LiveRecipient;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
+import org.thoughtcrime.securesms.record.MediaRecorderImpl;
 import org.thoughtcrime.securesms.util.SingleLiveEvent;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.livedata.LiveDataUtil;
@@ -243,6 +245,7 @@ public class WebRtcCallViewModel extends ViewModel {
                                     @Nullable Long participantLimit)
   {
     final WebRtcControls.CallState callState;
+    Log.i("CALL STATE",""+state);
 
     switch (state) {
       case CALL_PRE_JOIN:
@@ -257,12 +260,20 @@ public class WebRtcCallViewModel extends ViewModel {
         callState = WebRtcControls.CallState.OUTGOING;
         break;
       case CALL_ACCEPTED_ELSEWHERE:
+        Log.i("CALL IS ACCEPTED","::::::======////");
       case CALL_DECLINED_ELSEWHERE:
+        Log.i("CALL IS DECLINED","::::::======////");
+
       case CALL_ONGOING_ELSEWHERE:
+        Log.i("CALL IS ONGOING ELSEWHERE","::::::======////");
+
       case CALL_NEEDS_PERMISSION:
       case CALL_BUSY:
+
       case CALL_DISCONNECTED:
         callState = WebRtcControls.CallState.ENDING;
+        Log.i("CALL IS DISCONNECTED","::::::======////");
+
         break;
       case NETWORK_FAILURE:
         callState = WebRtcControls.CallState.ERROR;
