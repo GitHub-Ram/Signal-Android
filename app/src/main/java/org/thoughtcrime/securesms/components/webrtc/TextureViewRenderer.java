@@ -16,16 +16,16 @@ import androidx.lifecycle.LifecycleOwner;
 
 import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.util.ViewUtil;
-import org.webrtc.EglBase;
-import org.webrtc.EglRenderer;
-import org.webrtc.GlRectDrawer;
-import org.webrtc.RendererCommon;
-import org.webrtc.ThreadUtils;
-import org.webrtc.VideoFrame;
-import org.webrtc.VideoSink;
+import com.cachy.webrtc.EglBase;
+import com.cachy.webrtc.EglRenderer;
+import com.cachy.webrtc.GlRectDrawer;
+import com.cachy.webrtc.RendererCommon;
+import com.cachy.webrtc.ThreadUtils;
+import com.cachy.webrtc.VideoFrame;
+import com.cachy.webrtc.VideoSink;
 
 /**
- * This class is a modified version of {@link org.webrtc.SurfaceViewRenderer} which is based on {@link TextureView}
+ * This class is a modified version of {@link com.cachy.webrtc.SurfaceViewRenderer} which is based on {@link TextureView}
  */
 public class TextureViewRenderer extends TextureView implements TextureView.SurfaceTextureListener, VideoSink, RendererCommon.RendererEvents {
 

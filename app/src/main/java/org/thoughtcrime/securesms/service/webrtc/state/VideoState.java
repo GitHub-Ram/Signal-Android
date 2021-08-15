@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import org.thoughtcrime.securesms.components.webrtc.BroadcastVideoSink;
 import org.thoughtcrime.securesms.ringrtc.Camera;
-import org.webrtc.EglBase;
+import com.cachy.webrtc.EglBase;
 
 import java.util.Objects;
 

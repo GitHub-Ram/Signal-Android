@@ -5,6 +5,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import org.jetbrains.annotations.NotNull;
 import org.signal.core.util.concurrent.SignalExecutors;
 import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.BuildConfig;
@@ -43,6 +44,7 @@ import org.thoughtcrime.securesms.payments.Payments;
 import org.thoughtcrime.securesms.push.SecurityEventListener;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.recipients.LiveRecipientCache;
+import org.thoughtcrime.securesms.record.RecordedAudioToFileController;
 import org.thoughtcrime.securesms.revealable.ViewOnceMessageManager;
 import org.thoughtcrime.securesms.service.ExpiringMessageManager;
 import org.thoughtcrime.securesms.service.TrimThreadsByDateManager;
@@ -66,16 +68,17 @@ import org.whispersystems.signalservice.api.util.SleepTimer;
 import org.whispersystems.signalservice.api.util.UptimeSleepTimer;
 
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Implementation of {@link ApplicationDependencies.Provider} that provides real app dependencies.
  */
 public class ApplicationDependencyProvider implements ApplicationDependencies.Provider {
 
-  private static final String TAG = Log.tag(ApplicationDependencyProvider.class);
-
-  private final Application              context;
-  private final PipeConnectivityListener pipeListener;
+  private static final String TAG               = Log.tag(ApplicationDependencyProvider.class);
+  private final Application                   context;
+  private final PipeConnectivityListener      pipeListener;
 
   public ApplicationDependencyProvider(@NonNull Application context) {
     this.context      = context;
@@ -249,6 +252,11 @@ public class ApplicationDependencyProvider implements ApplicationDependencies.Pr
   @Override
   public @NonNull SignalCallManager provideSignalCallManager() {
     return new SignalCallManager(context);
+  }
+
+  @Override
+  public @NonNull RecordedAudioToFileController provideRecordedAudioToFileController(ExecutorService executor) {
+    return new RecordedAudioToFileController(executor);
   }
 
   private static class DynamicCredentialsProvider implements CredentialsProvider {

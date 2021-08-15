@@ -2,7 +2,7 @@ package org.thoughtcrime.securesms.record;
 
 import android.os.Build;
 
-import org.webrtc.EglBase;
+import com.cachy.webrtc.EglBase;
 
 
 public class EglUtils {

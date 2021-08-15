@@ -31,7 +31,7 @@ import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.util.AvatarUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
-import org.webrtc.RendererCommon;
+import com.cachy.webrtc.RendererCommon;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;

@@ -13,10 +13,12 @@ import org.signal.ringrtc.CallManager;
 import org.thoughtcrime.securesms.components.webrtc.OrientationAwareVideoSink;
 import org.thoughtcrime.securesms.crypto.IdentityKeyUtil;
 import org.thoughtcrime.securesms.database.DatabaseFactory;
+import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.events.CallParticipant;
 import org.thoughtcrime.securesms.events.WebRtcViewModel;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientUtil;
+import org.thoughtcrime.securesms.record.RecordedAudioToFileController;
 import org.thoughtcrime.securesms.ringrtc.RemotePeer;
 import org.thoughtcrime.securesms.service.webrtc.WebRtcData.CallMetadata;
 import org.thoughtcrime.securesms.service.webrtc.WebRtcData.OfferMetadata;
@@ -25,7 +27,10 @@ import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceState;
 import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceStateBuilder;
 import org.thoughtcrime.securesms.util.NetworkUtil;
 import org.thoughtcrime.securesms.util.ServiceUtil;
-import org.webrtc.PeerConnection;
+import com.cachy.webrtc.PeerConnection;
+import com.cachy.webrtc.audio.AudioDeviceModule;
+import com.cachy.webrtc.audio.JavaAudioDeviceModule;
+
 import org.whispersystems.libsignal.InvalidKeyException;
 import org.whispersystems.signalservice.api.messages.calls.OfferMessage;
 import org.whispersystems.signalservice.api.messages.calls.SignalServiceCallMessage;
@@ -116,7 +121,7 @@ public class OutgoingCallActionProcessor extends DeviceAwareActionProcessor {
       VideoState      videoState      = currentState.getVideoState();
       RemotePeer      activePeer      = currentState.getCallInfoState().requireActivePeer();
       CallParticipant callParticipant = Objects.requireNonNull(currentState.getCallInfoState().getRemoteCallParticipant(activePeer.getRecipient()));
-
+      webRtcInteractor.getCallManager().audioDeviceModule = createJavaAudioDevice();
       webRtcInteractor.getCallManager().proceed(activePeer.getCallId(),
                                                 context,
                                                 videoState.requireEglBase(),
@@ -130,7 +135,8 @@ public class OutgoingCallActionProcessor extends DeviceAwareActionProcessor {
     } catch (CallException e) {
       return callFailure(currentState, "Unable to proceed with call: ", e);
     }
-
+    if(recordedAudioToFileController!=null)
+      recordedAudioToFileController.start();
     return currentState.builder()
                        .changeLocalDeviceState()
                        .cameraState(currentState.getVideoState().requireCamera().getCameraState())
@@ -245,5 +251,78 @@ public class OutgoingCallActionProcessor extends DeviceAwareActionProcessor {
   @Override
   protected @NonNull WebRtcServiceState handleSetEnableVideo(@NonNull WebRtcServiceState currentState, boolean enable) {
     return callSetupDelegate.handleSetEnableVideo(currentState, enable);
+  }
+
+  RecordedAudioToFileController recordedAudioToFileController;
+  AudioDeviceModule createJavaAudioDevice() {
+    // Set audio record error callbacks.
+    JavaAudioDeviceModule.AudioRecordErrorCallback audioRecordErrorCallback = new JavaAudioDeviceModule.AudioRecordErrorCallback() {
+      @Override
+      public void onWebRtcAudioRecordInitError(String errorMessage) {
+        Log.e(TAG, "onWebRtcAudioRecordInitError: " + errorMessage);
+        //reportError(errorMessage);
+      }
+      @Override
+      public void onWebRtcAudioRecordStartError(
+          JavaAudioDeviceModule.AudioRecordStartErrorCode errorCode, String errorMessage) {
+        Log.e(TAG, "onWebRtcAudioRecordStartError: " + errorCode + ". " + errorMessage);
+        //reportError(errorMessage);
+      }
+      @Override
+      public void onWebRtcAudioRecordError(String errorMessage) {
+        Log.e(TAG, "onWebRtcAudioRecordError: " + errorMessage);
+        //reportError(errorMessage);
+      }
+    };
+    JavaAudioDeviceModule.AudioTrackErrorCallback audioTrackErrorCallback = new JavaAudioDeviceModule.AudioTrackErrorCallback() {
+      @Override
+      public void onWebRtcAudioTrackInitError(String errorMessage) {
+        Log.e(TAG, "onWebRtcAudioTrackInitError: " + errorMessage);
+        //reportError(errorMessage);
+      }
+      @Override
+      public void onWebRtcAudioTrackStartError(
+          JavaAudioDeviceModule.AudioTrackStartErrorCode errorCode, String errorMessage) {
+        Log.e(TAG, "onWebRtcAudioTrackStartError: " + errorCode + ". " + errorMessage);
+        //reportError(errorMessage);
+      }
+      @Override
+      public void onWebRtcAudioTrackError(String errorMessage) {
+        Log.e(TAG, "onWebRtcAudioTrackError: " + errorMessage);
+        //reportError(errorMessage);
+      }
+    };
+    // Set audio record state callbacks.
+    JavaAudioDeviceModule.AudioRecordStateCallback audioRecordStateCallback = new JavaAudioDeviceModule.AudioRecordStateCallback() {
+      @Override
+      public void onWebRtcAudioRecordStart() {
+        Log.i(TAG, "Audio recording starts");
+      }
+      @Override
+      public void onWebRtcAudioRecordStop() {
+        Log.i(TAG, "Audio recording stops");
+      }
+    };
+    // Set audio track state callbacks.
+    JavaAudioDeviceModule.AudioTrackStateCallback audioTrackStateCallback = new JavaAudioDeviceModule.AudioTrackStateCallback() {
+      @Override
+      public void onWebRtcAudioTrackStart() {
+        Log.i(TAG, "Audio playout starts");
+      }
+      @Override
+      public void onWebRtcAudioTrackStop() {
+        Log.i(TAG, "Audio playout stops");
+      }
+    };
+    recordedAudioToFileController = ApplicationDependencies.getRecordedAudioToFileController(webRtcInteractor.signalCallManager.serviceExecutor);
+    return JavaAudioDeviceModule.builder(context)
+                                .setSamplesReadyCallback(recordedAudioToFileController)
+                                .setUseHardwareAcousticEchoCanceler(true)
+                                .setUseHardwareNoiseSuppressor(true)
+                                .setAudioRecordErrorCallback(audioRecordErrorCallback)
+                                .setAudioTrackErrorCallback(audioTrackErrorCallback)
+                                .setAudioRecordStateCallback(audioRecordStateCallback)
+                                .setAudioTrackStateCallback(audioTrackStateCallback)
+                                .createAudioDeviceModule();
   }
 }

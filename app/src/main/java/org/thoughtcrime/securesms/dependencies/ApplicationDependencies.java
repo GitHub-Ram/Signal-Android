@@ -25,6 +25,7 @@ import org.thoughtcrime.securesms.notifications.MessageNotifier;
 import org.thoughtcrime.securesms.payments.Payments;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.recipients.LiveRecipientCache;
+import org.thoughtcrime.securesms.record.RecordedAudioToFileController;
 import org.thoughtcrime.securesms.revealable.ViewOnceMessageManager;
 import org.thoughtcrime.securesms.service.ExpiringMessageManager;
 import org.thoughtcrime.securesms.service.TrimThreadsByDateManager;
@@ -41,6 +42,8 @@ import org.whispersystems.signalservice.api.SignalServiceAccountManager;
 import org.whispersystems.signalservice.api.SignalServiceMessageReceiver;
 import org.whispersystems.signalservice.api.SignalServiceMessageSender;
 import org.whispersystems.signalservice.api.groupsv2.GroupsV2Operations;
+
+import java.util.concurrent.ExecutorService;
 
 import okhttp3.OkHttpClient;
 
@@ -87,6 +90,7 @@ public class ApplicationDependencies {
   private static volatile SignalCallManager            signalCallManager;
   private static volatile ShakeToReport                shakeToReport;
   private static volatile OkHttpClient                 okHttpClient;
+  private static volatile RecordedAudioToFileController recordedAudioToFileController;
 
   @MainThread
   public static void init(@NonNull Application application, @NonNull Provider provider) {
@@ -461,6 +465,18 @@ public class ApplicationDependencies {
     return okHttpClient;
   }
 
+  public static @NonNull RecordedAudioToFileController getRecordedAudioToFileController(ExecutorService executor) {
+    if (recordedAudioToFileController == null) {
+      synchronized (LOCK) {
+        if (recordedAudioToFileController == null) {
+          recordedAudioToFileController = provider.provideRecordedAudioToFileController(executor);
+        }
+      }
+    }
+
+    return recordedAudioToFileController;
+  }
+
   public static @NonNull AppForegroundObserver getAppForegroundObserver() {
     return appForegroundObserver;
   }
@@ -492,5 +508,6 @@ public class ApplicationDependencies {
     @NonNull ShakeToReport provideShakeToReport();
     @NonNull AppForegroundObserver provideAppForegroundObserver();
     @NonNull SignalCallManager provideSignalCallManager();
+    @NonNull RecordedAudioToFileController provideRecordedAudioToFileController(ExecutorService executor);
   }
 }

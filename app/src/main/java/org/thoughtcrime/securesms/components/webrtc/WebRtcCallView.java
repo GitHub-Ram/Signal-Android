@@ -72,7 +72,7 @@ import org.thoughtcrime.securesms.util.BlurTransformation;
 import org.thoughtcrime.securesms.util.SetUtil;
 import org.thoughtcrime.securesms.util.ViewUtil;
 import org.thoughtcrime.securesms.util.views.Stub;
-import org.webrtc.RendererCommon;
+import com.cachy.webrtc.RendererCommon;
 import org.whispersystems.signalservice.api.messages.calls.HangupMessage;
 
 import java.io.File;

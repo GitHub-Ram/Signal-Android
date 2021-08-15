@@ -30,7 +30,7 @@ import java.util.UUID;
 public class WebRtcInteractor {
 
   @NonNull private final Context                        context;
-  @NonNull private final SignalCallManager              signalCallManager;
+  @NonNull public final SignalCallManager              signalCallManager;
   @NonNull private final LockManager                    lockManager;
   @NonNull private final SignalAudioManager             audioManager;
   @NonNull private final CameraEventListener            cameraEventListener;

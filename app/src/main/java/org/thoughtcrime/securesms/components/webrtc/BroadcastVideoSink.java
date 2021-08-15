@@ -5,9 +5,9 @@ import android.graphics.Point;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.webrtc.EglBase;
-import org.webrtc.VideoFrame;
-import org.webrtc.VideoSink;
+import com.cachy.webrtc.EglBase;
+import com.cachy.webrtc.VideoFrame;
+import com.cachy.webrtc.VideoSink;
 
 import java.util.WeakHashMap;
 

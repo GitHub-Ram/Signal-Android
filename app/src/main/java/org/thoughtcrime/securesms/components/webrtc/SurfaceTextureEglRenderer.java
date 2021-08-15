@@ -1,22 +1,26 @@
 package org.thoughtcrime.securesms.components.webrtc;
 
 import android.graphics.SurfaceTexture;
+import android.media.MediaRecorder;
+import android.view.Surface;
 import android.view.TextureView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.signal.core.util.logging.Log;
-import org.webrtc.EglBase;
-import org.webrtc.EglRenderer;
-import org.webrtc.RendererCommon;
-import org.webrtc.ThreadUtils;
-import org.webrtc.VideoFrame;
+import com.cachy.webrtc.EglBase;
+import com.cachy.webrtc.EglRenderer;
+import com.cachy.webrtc.RendererCommon;
+import com.cachy.webrtc.ThreadUtils;
+import com.cachy.webrtc.VideoFrame;
 
+import org.signal.core.util.logging.Log;
+
+import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * This class is a modified copy of {@link org.webrtc.SurfaceViewRenderer} designed to work with a
+ * This class is a modified copy of {@link com.cachy.webrtc.SurfaceViewRenderer} designed to work with a
  * {@link SurfaceTexture} to facilitate easier animation, rounding, elevation, etc.
  */
 public class SurfaceTextureEglRenderer extends EglRenderer implements TextureView.SurfaceTextureListener {

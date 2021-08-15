@@ -72,6 +72,8 @@ import org.thoughtcrime.securesms.util.EllapsedTimeFormatter;
 import org.thoughtcrime.securesms.util.FullscreenHelper;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.util.Util;
+import com.cachy.webrtc.MediaStreamTrack;
+import com.cachy.webrtc.VideoTrack;
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.signalservice.api.messages.calls.HangupMessage;
 
@@ -456,7 +458,7 @@ public class WebRtcCallActivity extends BaseActivity implements SafetyNumberChan
     if (hangupType == HangupMessage.Type.NEED_PERMISSION) {
       startActivity(CalleeMustAcceptMessageRequestActivity.createIntent(this, recipient.getId()));
     }
-    stopRecording();
+    //stopRecording();
     delayedFinish();
 
   }
@@ -476,7 +478,7 @@ public class WebRtcCallActivity extends BaseActivity implements SafetyNumberChan
     if (event.getGroupState().isNotIdleOrConnected()) {
       callScreen.setStatusFromGroupCallState(event.getGroupState());
     }
-    startRecording();
+    //startRecording();
   }
 
   private void handleRecipientUnavailable() {
@@ -743,166 +745,172 @@ public class WebRtcCallActivity extends BaseActivity implements SafetyNumberChan
   * @author Abhishek Kumar Chaubey
   * Block start for recording at client ends
   * */
-  private final SparseIntArray ORIENTATIONS = new SparseIntArray();
-  private final String         RECORD_DIR   = "signal_app";
-  private final int REQUEST_CODE = 1000;
-  private final int DISPLAY_WIDTH = 720;
-  private final int DISPLAY_HEIGHT = 1280;
-
-  private MediaRecorder           mMediaRecorder;
-  private MediaProjection         mMediaProjection;
-  private VirtualDisplay          mVirtualDisplay;
-  private MediaProjectionCallback mMediaProjectionCallback;
-  private String[]                PERMISSIONS  = {
-      Manifest.permission.WRITE_EXTERNAL_STORAGE,
-      Manifest.permission.READ_EXTERNAL_STORAGE,
-      Manifest.permission.RECORD_AUDIO,
-      Manifest.permission.CAMERA,
-      };
-  private MediaProjectionManager  mProjectionManager;
-  private int                     mScreenDensity;
-
-  private List<Integer> occupants;
-
+//  private final SparseIntArray ORIENTATIONS = new SparseIntArray();
+//  private final String         RECORD_DIR   = "signal_app";
+//  private final int REQUEST_CODE = 1000;
+//  private final int DISPLAY_WIDTH = 720;
+//  private final int DISPLAY_HEIGHT = 1280;
+//
+//  private MediaRecorder           mMediaRecorder;
+//  private MediaProjection         mMediaProjection;
+//  private VirtualDisplay          mVirtualDisplay;
+//  private MediaProjectionCallback mMediaProjectionCallback;
+//  private String[]                PERMISSIONS  = {
+//      Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//      Manifest.permission.READ_EXTERNAL_STORAGE,
+//      Manifest.permission.RECORD_AUDIO,
+//      Manifest.permission.CAMERA,
+//      };
+//  private MediaProjectionManager  mProjectionManager;
+//  private int                     mScreenDensity;
+//
+//  private List<Integer> occupants;
+//
   private void startRecording() {
-    initRecordingComponents();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          //Start Screen Recording
-          initRecorder();
-        }
-  }
-
-  private void initRecordingComponents() {
-    DisplayMetrics metrics = new DisplayMetrics();
-    WebRtcCallActivity.this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-    mScreenDensity = metrics.densityDpi;
-    mMediaRecorder = new MediaRecorder();
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      mProjectionManager = (MediaProjectionManager) WebRtcCallActivity.this.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-    }
-  }
-
-
-  private void initRecorder() {
-
-    String filename = "recording" + "_" + getCurrentTime() + ".mp4";
-    Log.e(TAG, Environment.getExternalStorageDirectory().toString());
-    File mediaStorageDir = new File(
-        Environment
-            .getExternalStorageDirectory(),
-        RECORD_DIR);
-    if (!mediaStorageDir.exists()) {
-      if (!mediaStorageDir.mkdirs()) {
-        Log.d(RECORD_DIR, "Oops! Failed to create "
-                          + RECORD_DIR + " directory");
-
-      }
-    }else{
-      mediaStorageDir.mkdir();
-    }
-    String storage_dir = Environment.getExternalStorageDirectory() + "/" + RECORD_DIR + "/" + filename;
-    try {
-      if (mMediaRecorder != null) {
-        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
-        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); //THREE_GPP
-        mMediaRecorder.setOutputFile(storage_dir);
-        mMediaRecorder.setVideoSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
-        mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
-        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mMediaRecorder.setAudioEncodingBitRate(1024 * 1024 * 5);
-        mMediaRecorder.setAudioSamplingRate(16000);
-        mMediaRecorder.setVideoFrameRate(30); // 30
-        mMediaRecorder.setVideoEncodingBitRate(1500 * 1024);
-        int rotation = WebRtcCallActivity.this.getWindowManager().getDefaultDisplay().getRotation();
-        int orientation = ORIENTATIONS.get(rotation + 90);
-        mMediaRecorder.setOrientationHint(orientation);
-        mMediaRecorder.prepare();
-        mMediaRecorder.start();
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public static String getCurrentTime() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_kk-mm-ss");
-    Calendar         c   = Calendar.getInstance();
-    return sdf.format(c.getTime());
-  }
-  public void stopRecording() {
-    if (mMediaRecorder != null) {
-      try {
-
-        mMediaRecorder.stop();
-
-      } catch (IllegalStateException e) {
-        Log.i("Exception", android.util.Log.getStackTraceString(e));
-      } catch (RuntimeException e) {
-        Log.i("Exception", android.util.Log.getStackTraceString(e));
-      } finally {
-        if (mMediaRecorder != null) {
-          mMediaRecorder.release();
-          mMediaRecorder.reset();
-        }
-      }
-
-
-    }
-
-    if (mVirtualDisplay == null) {
-      return;
-    }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      mVirtualDisplay.release();
-      destroyMediaProjection();
-    }
-    Log.e(TAG, "Recording stopped");
-  }
-
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  class MediaProjectionCallback extends MediaProjection.Callback {
-    @Override
-    public void onStop() {
-      if(mMediaRecorder!=null) {
-        mMediaRecorder.stop();
-        mMediaRecorder.reset();
-        mMediaRecorder.release();
-        mMediaProjection = null;
-        stopRecording();
-      }
-    }
-  }
-
-  private void destroyMediaProjection() {
-    if (mMediaProjection != null) {
-      //mMediaProjection = null;
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        mMediaProjection.unregisterCallback(mMediaProjectionCallback);
-        mMediaProjection.stop();
-        mMediaProjection = null;
-      }
-    }
-    Log.i(TAG, "MediaProjection Stopped");
-  }
-
-  private void startRecordingAfterOnActivityResult(int resultCode, Intent data) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      mMediaProjection = mProjectionManager.getMediaProjection(resultCode, data);
-      mMediaProjectionCallback = new MediaProjectionCallback();
-      mMediaProjection.registerCallback(mMediaProjectionCallback, null);
-      mVirtualDisplay = createVirtualDisplay();
-      mMediaRecorder.start();
-    }
-  }
-  private VirtualDisplay createVirtualDisplay() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      return mMediaProjection.createVirtualDisplay(TAG, DISPLAY_WIDTH, DISPLAY_HEIGHT, mScreenDensity,
-                                                   DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, mMediaRecorder.getSurface(), null, null);
-    } else
-      return null;
-  }
+//    initRecordingComponents();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//          //Start Screen Recording
+//          initRecorder();
+//        }
+//    VideoTrack       videoTrack = null;
+//    MediaStreamTrack track      = callScreen.call//remoteStream.videoTracks.get(0);
+//    if (track instanceof VideoTrack)
+//      videoTrack = (VideoTrack) track;
+//
+//    AudioChannel audioChannel = AudioChannel.OUTPUT;
+}
+//
+//  private void initRecordingComponents() {
+//    DisplayMetrics metrics = new DisplayMetrics();
+//    WebRtcCallActivity.this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//    mScreenDensity = metrics.densityDpi;
+//    mMediaRecorder = new MediaRecorder();
+//
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//      mProjectionManager = (MediaProjectionManager) WebRtcCallActivity.this.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+//    }
+//  }
+//
+//
+//  private void initRecorder() {
+//
+//    String filename = "recording" + "_" + getCurrentTime() + ".mp4";
+//    Log.e(TAG, Environment.getExternalStorageDirectory().toString());
+//    File mediaStorageDir = new File(
+//        Environment
+//            .getExternalStorageDirectory(),
+//        RECORD_DIR);
+//    if (!mediaStorageDir.exists()) {
+//      if (!mediaStorageDir.mkdirs()) {
+//        Log.d(RECORD_DIR, "Oops! Failed to create "
+//                          + RECORD_DIR + " directory");
+//
+//      }
+//    }else{
+//      mediaStorageDir.mkdir();
+//    }
+//    String storage_dir = Environment.getExternalStorageDirectory() + "/" + RECORD_DIR + "/" + filename;
+//    try {
+//      if (mMediaRecorder != null) {
+//        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+//        mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
+//        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4); //THREE_GPP
+//        mMediaRecorder.setOutputFile(storage_dir);
+//        mMediaRecorder.setVideoSize(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+//        mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+//        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+//        mMediaRecorder.setAudioEncodingBitRate(1024 * 1024 * 5);
+//        mMediaRecorder.setAudioSamplingRate(16000);
+//        mMediaRecorder.setVideoFrameRate(30); // 30
+//        mMediaRecorder.setVideoEncodingBitRate(1500 * 1024);
+//        int rotation = WebRtcCallActivity.this.getWindowManager().getDefaultDisplay().getRotation();
+//        int orientation = ORIENTATIONS.get(rotation + 90);
+//        mMediaRecorder.setOrientationHint(orientation);
+//        mMediaRecorder.prepare();
+//        mMediaRecorder.start();
+//      }
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+//  }
+//
+//  public static String getCurrentTime() {
+//    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_kk-mm-ss");
+//    Calendar         c   = Calendar.getInstance();
+//    return sdf.format(c.getTime());
+//  }
+//  public void stopRecording() {
+//    if (mMediaRecorder != null) {
+//      try {
+//
+//        mMediaRecorder.stop();
+//
+//      } catch (IllegalStateException e) {
+//        Log.i("Exception", android.util.Log.getStackTraceString(e));
+//      } catch (RuntimeException e) {
+//        Log.i("Exception", android.util.Log.getStackTraceString(e));
+//      } finally {
+//        if (mMediaRecorder != null) {
+//          mMediaRecorder.release();
+//          mMediaRecorder.reset();
+//        }
+//      }
+//
+//
+//    }
+//
+//    if (mVirtualDisplay == null) {
+//      return;
+//    }
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//      mVirtualDisplay.release();
+//      destroyMediaProjection();
+//    }
+//    Log.e(TAG, "Recording stopped");
+//  }
+//
+//  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//  class MediaProjectionCallback extends MediaProjection.Callback {
+//    @Override
+//    public void onStop() {
+//      if(mMediaRecorder!=null) {
+//        mMediaRecorder.stop();
+//        mMediaRecorder.reset();
+//        mMediaRecorder.release();
+//        mMediaProjection = null;
+//        stopRecording();
+//      }
+//    }
+//  }
+//
+//  private void destroyMediaProjection() {
+//    if (mMediaProjection != null) {
+//      //mMediaProjection = null;
+//      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//        mMediaProjection.unregisterCallback(mMediaProjectionCallback);
+//        mMediaProjection.stop();
+//        mMediaProjection = null;
+//      }
+//    }
+//    Log.i(TAG, "MediaProjection Stopped");
+//  }
+//
+//  private void startRecordingAfterOnActivityResult(int resultCode, Intent data) {
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//      mMediaProjection = mProjectionManager.getMediaProjection(resultCode, data);
+//      mMediaProjectionCallback = new MediaProjectionCallback();
+//      mMediaProjection.registerCallback(mMediaProjectionCallback, null);
+//      mVirtualDisplay = createVirtualDisplay();
+//      mMediaRecorder.start();
+//    }
+//  }
+//  private VirtualDisplay createVirtualDisplay() {
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//      return mMediaProjection.createVirtualDisplay(TAG, DISPLAY_WIDTH, DISPLAY_HEIGHT, mScreenDensity,
+//                                                   DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR, mMediaRecorder.getSurface(), null, null);
+//    } else
+//      return null;
+//  }
 
 
 }

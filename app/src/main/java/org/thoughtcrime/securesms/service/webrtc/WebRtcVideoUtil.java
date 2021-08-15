@@ -12,10 +12,10 @@ import org.thoughtcrime.securesms.ringrtc.CameraEventListener;
 import org.thoughtcrime.securesms.ringrtc.CameraState;
 import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceState;
 import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceStateBuilder;
-import org.webrtc.CapturerObserver;
-import org.webrtc.EglBase;
-import org.webrtc.VideoFrame;
-import org.webrtc.VideoSink;
+import com.cachy.webrtc.CapturerObserver;
+import com.cachy.webrtc.EglBase;
+import com.cachy.webrtc.VideoFrame;
+import com.cachy.webrtc.VideoSink;
 
 /**
  * Helper for initializing, reinitializing, and deinitializing the camera and it's related

@@ -2,8 +2,8 @@ package org.thoughtcrime.securesms.components.webrtc;
 
 import androidx.annotation.NonNull;
 
-import org.webrtc.VideoFrame;
-import org.webrtc.VideoSink;
+import com.cachy.webrtc.VideoFrame;
+import com.cachy.webrtc.VideoSink;
 
 public final class OrientationAwareVideoSink implements VideoSink {
 

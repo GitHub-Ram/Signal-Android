@@ -30,7 +30,7 @@ import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceStateBuilder
 import org.thoughtcrime.securesms.util.NetworkUtil;
 import org.thoughtcrime.securesms.util.TelephonyUtil;
 import org.thoughtcrime.securesms.webrtc.locks.LockManager;
-import org.webrtc.PeerConnection;
+import com.cachy.webrtc.PeerConnection;
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.InvalidKeyException;
 import org.whispersystems.libsignal.util.guava.Optional;

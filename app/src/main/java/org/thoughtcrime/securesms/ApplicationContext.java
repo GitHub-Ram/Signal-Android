@@ -77,8 +77,8 @@ import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.util.VersionTracker;
 import org.thoughtcrime.securesms.util.dynamiclanguage.DynamicLanguageContextWrapper;
-import org.webrtc.voiceengine.WebRtcAudioManager;
-import org.webrtc.voiceengine.WebRtcAudioUtils;
+import com.cachy.webrtc.voiceengine.WebRtcAudioManager;
+import com.cachy.webrtc.voiceengine.WebRtcAudioUtils;
 import org.whispersystems.libsignal.logging.SignalProtocolLoggerProvider;
 
 import java.security.Security;

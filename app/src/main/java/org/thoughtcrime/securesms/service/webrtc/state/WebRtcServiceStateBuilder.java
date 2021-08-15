@@ -17,7 +17,7 @@ import org.thoughtcrime.securesms.ringrtc.Camera;
 import org.thoughtcrime.securesms.ringrtc.CameraState;
 import org.thoughtcrime.securesms.ringrtc.RemotePeer;
 import org.thoughtcrime.securesms.service.webrtc.WebRtcActionProcessor;
-import org.webrtc.EglBase;
+import com.cachy.webrtc.EglBase;
 
 import java.util.Collection;
 

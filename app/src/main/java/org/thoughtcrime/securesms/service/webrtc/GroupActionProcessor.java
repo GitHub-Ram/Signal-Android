@@ -22,7 +22,7 @@ import org.thoughtcrime.securesms.service.webrtc.state.VideoState;
 import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceState;
 import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceStateBuilder;
 import org.thoughtcrime.securesms.webrtc.locks.LockManager;
-import org.webrtc.VideoTrack;
+import com.cachy.webrtc.VideoTrack;
 import org.whispersystems.libsignal.IdentityKey;
 import org.whispersystems.libsignal.util.guava.Optional;
 import org.whispersystems.signalservice.api.messages.calls.OfferMessage;

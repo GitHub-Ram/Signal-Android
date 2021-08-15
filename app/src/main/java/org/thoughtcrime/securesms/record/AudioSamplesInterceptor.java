@@ -3,7 +3,7 @@ package org.thoughtcrime.securesms.record;
 import android.annotation.SuppressLint;
 
 
-import org.webrtc.audio.JavaAudioDeviceModule;
+import com.cachy.webrtc.audio.JavaAudioDeviceModule;
 
 import java.util.HashMap;
 

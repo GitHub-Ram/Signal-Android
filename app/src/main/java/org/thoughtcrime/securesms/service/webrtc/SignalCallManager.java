@@ -35,6 +35,7 @@ import org.thoughtcrime.securesms.jobs.GroupCallUpdateSendJob;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.recipients.RecipientUtil;
+import org.thoughtcrime.securesms.record.RecordedAudioToFileController;
 import org.thoughtcrime.securesms.ringrtc.CameraEventListener;
 import org.thoughtcrime.securesms.ringrtc.CameraState;
 import org.thoughtcrime.securesms.ringrtc.RemotePeer;
@@ -44,7 +45,10 @@ import org.thoughtcrime.securesms.util.BubbleUtil;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
 import org.thoughtcrime.securesms.webrtc.audio.SignalAudioManager;
 import org.thoughtcrime.securesms.webrtc.locks.LockManager;
-import org.webrtc.PeerConnection;
+import com.cachy.webrtc.PeerConnection;
+import com.cachy.webrtc.PeerConnectionFactory;
+import com.cachy.webrtc.audio.AudioDeviceModule;
+import com.cachy.webrtc.audio.JavaAudioDeviceModule;
 import org.whispersystems.libsignal.util.Pair;
 import org.whispersystems.libsignal.util.guava.Optional;
 import org.whispersystems.signalservice.api.SignalServiceAccountManager;
@@ -88,7 +92,7 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
   private final Context                     context;
   private final SignalServiceMessageSender  messageSender;
   private final SignalServiceAccountManager accountManager;
-  private final ExecutorService             serviceExecutor;
+  public final ExecutorService             serviceExecutor;
   private final Executor                    networkExecutor;
   private final LockManager                 lockManager;
 
@@ -430,7 +434,9 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
     if (!(remote instanceof RemotePeer)) {
       return;
     }
-
+    RecordedAudioToFileController recordedAudioToFileController =  ApplicationDependencies.getRecordedAudioToFileController(serviceExecutor);
+    if(recordedAudioToFileController!=null)
+      recordedAudioToFileController.stop();
     RemotePeer remotePeer = (RemotePeer) remote;
     Log.i(TAG, "onCallConcluded: call_id: " + remotePeer.getCallId());
     process((s, p) -> p.handleCallConcluded(s, remotePeer));
@@ -769,4 +775,5 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
   interface ProcessAction {
     @NonNull WebRtcServiceState process(@NonNull WebRtcServiceState currentState, @NonNull WebRtcActionProcessor processor);
   }
+
 }

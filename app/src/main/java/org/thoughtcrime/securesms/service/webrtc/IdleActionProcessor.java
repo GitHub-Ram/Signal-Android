@@ -8,8 +8,8 @@ import org.thoughtcrime.securesms.events.WebRtcViewModel;
 import org.thoughtcrime.securesms.ringrtc.Camera;
 import org.thoughtcrime.securesms.ringrtc.RemotePeer;
 import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceState;
-import org.webrtc.CapturerObserver;
-import org.webrtc.VideoFrame;
+import com.cachy.webrtc.CapturerObserver;
+import com.cachy.webrtc.VideoFrame;
 import org.whispersystems.signalservice.api.messages.calls.OfferMessage;
 
 /**
