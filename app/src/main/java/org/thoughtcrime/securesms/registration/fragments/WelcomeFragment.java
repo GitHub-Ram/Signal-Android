@@ -59,6 +59,8 @@ public final class WelcomeFragment extends BaseRegistrationFragment {
   @RequiresApi(26)
   private static final            String[]       PERMISSIONS_API_29 = { Manifest.permission.WRITE_CONTACTS,
                                                                         Manifest.permission.READ_CONTACTS,
+                                                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                                        Manifest.permission.READ_EXTERNAL_STORAGE,
                                                                         Manifest.permission.READ_PHONE_STATE,
                                                                         Manifest.permission.READ_PHONE_NUMBERS };
   private static final @StringRes int            RATIONALE          = R.string.RegistrationActivity_signal_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends;

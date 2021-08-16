@@ -372,6 +372,15 @@ public class WebRtcCallActivity extends BaseActivity implements SafetyNumberChan
                  .withPermanentDenialDialog(getString(R.string.WebRtcCallActivity__to_call_s_signal_needs_access_to_your_camera, recipientDisplayName))
                  .onAllGranted(() -> ApplicationDependencies.getSignalCallManager().setMuteVideo(!muted))
                  .execute();
+
+      Permissions.with(this)
+                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                 .ifNecessary()
+                 .onAllGranted(() -> {
+
+                 })
+                 .withPermanentDenialDialog(getString(R.string.BackupsPreferenceFragment_signal_requires_external_storage_permission_in_order_to_create_backups))
+                 .execute();
     }
   }
 
