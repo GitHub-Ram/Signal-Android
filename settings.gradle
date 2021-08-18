@@ -7,10 +7,12 @@ include ':core-util'
 include ':video'
 include ':device-transfer'
 include ':device-transfer-app'
+include ':SSffmpegVideoOperation'
 
 project(':app').name = 'Signal-Android'
 project(':paging').projectDir = file('paging/lib')
 project(':paging-app').projectDir = file('paging/app')
+project(':SSffmpegVideoOperation').projectDir = file('SSffmpegVideoOperation')
 
 project(':device-transfer').projectDir = file('device-transfer/lib')
 project(':device-transfer-app').projectDir = file('device-transfer/app')

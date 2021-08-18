@@ -5,6 +5,9 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.cachy.webrtc.EglBase;
+import com.cachy.webrtc.VideoFileRenderer;
+
 import org.jetbrains.annotations.NotNull;
 import org.signal.core.util.concurrent.SignalExecutors;
 import org.signal.core.util.logging.Log;
@@ -67,6 +70,7 @@ import org.whispersystems.signalservice.api.util.CredentialsProvider;
 import org.whispersystems.signalservice.api.util.SleepTimer;
 import org.whispersystems.signalservice.api.util.UptimeSleepTimer;
 
+import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -257,6 +261,11 @@ public class ApplicationDependencyProvider implements ApplicationDependencies.Pr
   @Override
   public @NonNull RecordedAudioToFileController provideRecordedAudioToFileController(ExecutorService executor) {
     return new RecordedAudioToFileController(executor);
+  }
+
+  @Override
+  @NonNull public VideoFileRenderer provideVideoFileRenderer(String outputFile, int outputFileWidth, int outputFileHeight, EglBase.Context sharedContext) throws IOException {
+    return new VideoFileRenderer(outputFile,outputFileWidth,outputFileHeight,sharedContext);
   }
 
   private static class DynamicCredentialsProvider implements CredentialsProvider {

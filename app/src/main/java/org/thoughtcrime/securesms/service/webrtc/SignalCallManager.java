@@ -8,6 +8,7 @@ import android.os.ResultReceiver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.annimon.stream.Stream;
 
@@ -35,6 +36,7 @@ import org.thoughtcrime.securesms.jobs.GroupCallUpdateSendJob;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.recipients.RecipientUtil;
+import org.thoughtcrime.securesms.record.CombineVideos;
 import org.thoughtcrime.securesms.record.RecordedAudioToFileController;
 import org.thoughtcrime.securesms.ringrtc.CameraEventListener;
 import org.thoughtcrime.securesms.ringrtc.CameraState;
@@ -429,7 +431,6 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
     });
   }
 
-  @Override
   public void onCallConcluded(@Nullable Remote remote) {
     if (!(remote instanceof RemotePeer)) {
       return;
@@ -437,7 +438,10 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
     RecordedAudioToFileController recordedAudioToFileController =  ApplicationDependencies.getRecordedAudioToFileController(serviceExecutor);
     if(recordedAudioToFileController!=null)
       recordedAudioToFileController.stop();
-    RemotePeer remotePeer = (RemotePeer) remote;
+    ApplicationDependencies.releaseVideoFileRenderer();
+    CombineVideos combineVideos = new CombineVideos();
+    combineVideos.processStart(context);
+    RemotePeer    remotePeer    = (RemotePeer) remote;
     Log.i(TAG, "onCallConcluded: call_id: " + remotePeer.getCallId());
     process((s, p) -> p.handleCallConcluded(s, remotePeer));
   }

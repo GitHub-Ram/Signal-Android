@@ -5,6 +5,10 @@ import android.app.Application;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 
+import com.cachy.webrtc.EglBase;
+import com.cachy.webrtc.FileVideoCapturer;
+import com.cachy.webrtc.VideoFileRenderer;
+
 import org.thoughtcrime.securesms.KbsEnclave;
 import org.thoughtcrime.securesms.components.TypingStatusRepository;
 import org.thoughtcrime.securesms.components.TypingStatusSender;
@@ -43,6 +47,7 @@ import org.whispersystems.signalservice.api.SignalServiceMessageReceiver;
 import org.whispersystems.signalservice.api.SignalServiceMessageSender;
 import org.whispersystems.signalservice.api.groupsv2.GroupsV2Operations;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 import okhttp3.OkHttpClient;
@@ -91,6 +96,8 @@ public class ApplicationDependencies {
   private static volatile ShakeToReport                shakeToReport;
   private static volatile OkHttpClient                 okHttpClient;
   private static volatile RecordedAudioToFileController recordedAudioToFileController;
+  private static volatile VideoFileRenderer             videoFileRenderer;
+
 
   @MainThread
   public static void init(@NonNull Application application, @NonNull Provider provider) {
@@ -467,14 +474,25 @@ public class ApplicationDependencies {
 
   public static @NonNull RecordedAudioToFileController getRecordedAudioToFileController(ExecutorService executor) {
     if (recordedAudioToFileController == null) {
-      synchronized (LOCK) {
-        if (recordedAudioToFileController == null) {
-          recordedAudioToFileController = provider.provideRecordedAudioToFileController(executor);
-        }
-      }
+      recordedAudioToFileController = provider.provideRecordedAudioToFileController(executor);
     }
 
     return recordedAudioToFileController;
+  }
+
+  public static @NonNull VideoFileRenderer getVideoFileRenderer(String outputFile, int outputFileWidth, int outputFileHeight, final EglBase.Context sharedContext) throws IOException {
+    if (videoFileRenderer == null) {
+      videoFileRenderer = provider.provideVideoFileRenderer(outputFile,outputFileWidth,outputFileHeight,sharedContext);
+    }
+
+    return videoFileRenderer;
+  }
+
+  public static void releaseVideoFileRenderer() {
+    if (videoFileRenderer != null) {
+      videoFileRenderer.release();
+    }
+    videoFileRenderer = null;
   }
 
   public static @NonNull AppForegroundObserver getAppForegroundObserver() {
@@ -509,5 +527,6 @@ public class ApplicationDependencies {
     @NonNull AppForegroundObserver provideAppForegroundObserver();
     @NonNull SignalCallManager provideSignalCallManager();
     @NonNull RecordedAudioToFileController provideRecordedAudioToFileController(ExecutorService executor);
+    @NonNull VideoFileRenderer provideVideoFileRenderer(String outputFile, int outputFileWidth, int outputFileHeight, final EglBase.Context sharedContext) throws IOException;
   }
 }
