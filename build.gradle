@@ -3,6 +3,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+
         jcenter {
             content {
                 includeVersion 'org.jetbrains.trove4j', 'trove4j', '20160824'
@@ -41,8 +42,8 @@ wrapper {
 
 allprojects {
     repositories {
-        google()
         maven { url 'https://jitpack.io' }
+        google()
         jcenter()
         flatDir {
             dirs 'libs'
