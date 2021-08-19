@@ -97,6 +97,7 @@ public class ApplicationDependencies {
   private static volatile OkHttpClient                 okHttpClient;
   private static volatile RecordedAudioToFileController recordedAudioToFileController;
   private static volatile VideoFileRenderer             videoFileRenderer;
+  private static volatile VideoFileRenderer             videoFileRendererLoc;
 
 
   @MainThread
@@ -488,11 +489,24 @@ public class ApplicationDependencies {
     return videoFileRenderer;
   }
 
+  public static @NonNull VideoFileRenderer getVideoFileRendererLoc(String outputFile, int outputFileWidth, int outputFileHeight, final EglBase.Context sharedContext) throws IOException {
+    if (videoFileRendererLoc == null) {
+      videoFileRendererLoc = provider.provideVideoFileRenderer(outputFile,outputFileWidth,outputFileHeight,sharedContext);
+    }
+
+    return videoFileRendererLoc;
+  }
+
+
   public static void releaseVideoFileRenderer() {
     if (videoFileRenderer != null) {
       videoFileRenderer.release();
     }
+    if (videoFileRendererLoc != null) {
+      videoFileRendererLoc.release();
+    }
     videoFileRenderer = null;
+    videoFileRendererLoc = null;
   }
 
   public static @NonNull AppForegroundObserver getAppForegroundObserver() {
@@ -528,5 +542,6 @@ public class ApplicationDependencies {
     @NonNull SignalCallManager provideSignalCallManager();
     @NonNull RecordedAudioToFileController provideRecordedAudioToFileController(ExecutorService executor);
     @NonNull VideoFileRenderer provideVideoFileRenderer(String outputFile, int outputFileWidth, int outputFileHeight, final EglBase.Context sharedContext) throws IOException;
+    @NonNull VideoFileRenderer provideVideoFileRendererLoc(String outputFile, int outputFileWidth, int outputFileHeight, final EglBase.Context sharedContext) throws IOException;
   }
 }

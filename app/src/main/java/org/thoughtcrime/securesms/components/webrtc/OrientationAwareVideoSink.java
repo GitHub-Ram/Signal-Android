@@ -9,6 +9,8 @@ import com.cachy.webrtc.VideoFileRenderer;
 import com.cachy.webrtc.VideoFrame;
 import com.cachy.webrtc.VideoSink;
 
+import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -25,7 +27,7 @@ public final class OrientationAwareVideoSink implements VideoSink {
     this.delegate = delegate;
     try {
       final String fileName = Environment.getExternalStorageDirectory().getPath() + File.separator+(isLocal?"loc":"")+"videocall.mp4";
-      videoFileRenderer = new VideoFileRenderer(fileName
+      videoFileRenderer = ApplicationDependencies.getVideoFileRenderer(fileName
           , 100, 200, eglBase.getEglBaseContext());
     } catch (IOException e) {
       throw new RuntimeException(

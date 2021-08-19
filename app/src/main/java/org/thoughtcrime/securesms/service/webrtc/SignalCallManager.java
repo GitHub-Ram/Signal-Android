@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Environment;
 import android.os.ResultReceiver;
 
 import androidx.annotation.NonNull;
@@ -63,6 +64,7 @@ import org.whispersystems.signalservice.api.messages.calls.SignalServiceCallMess
 import org.whispersystems.signalservice.api.messages.calls.TurnServerInfo;
 import org.whispersystems.signalservice.api.push.exceptions.UnregisteredUserException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -439,8 +441,22 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
     if(recordedAudioToFileController!=null)
       recordedAudioToFileController.stop();
     ApplicationDependencies.releaseVideoFileRenderer();
+
+    /*
+    * Combining videos and getting the final output
+    * */
     CombineVideos combineVideos = new CombineVideos();
-    combineVideos.processStart(context);
+
+
+    final String root = Environment.getExternalStorageDirectory().getPath() + File.separator;
+
+
+    combineVideos.combineVideosProcess(root+"output.mp4",
+                                       root+"recorded_audio.wav",
+                                       root+"locvideocall.mp4",
+                                       root+"videocall.mp4",
+                                       root+"temp_videocall.mp4");
+
     RemotePeer    remotePeer    = (RemotePeer) remote;
     Log.i(TAG, "onCallConcluded: call_id: " + remotePeer.getCallId());
     process((s, p) -> p.handleCallConcluded(s, remotePeer));

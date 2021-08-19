@@ -267,6 +267,10 @@ public class ApplicationDependencyProvider implements ApplicationDependencies.Pr
   @NonNull public VideoFileRenderer provideVideoFileRenderer(String outputFile, int outputFileWidth, int outputFileHeight, EglBase.Context sharedContext) throws IOException {
     return new VideoFileRenderer(outputFile,outputFileWidth,outputFileHeight,sharedContext);
   }
+  @Override
+  @NonNull public VideoFileRenderer provideVideoFileRendererLoc(String outputFile, int outputFileWidth, int outputFileHeight, EglBase.Context sharedContext) throws IOException {
+    return new VideoFileRenderer(outputFile,outputFileWidth,outputFileHeight,sharedContext);
+  }
 
   private static class DynamicCredentialsProvider implements CredentialsProvider {
 

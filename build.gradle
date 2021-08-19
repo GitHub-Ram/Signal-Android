@@ -42,6 +42,7 @@ wrapper {
 allprojects {
     repositories {
         google()
+        maven { url 'https://jitpack.io' }
         jcenter()
         flatDir {
             dirs 'libs'

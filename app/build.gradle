@@ -470,7 +470,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.12.0"
     implementation(name:'ring_rtc1', ext:'aar')
-    implementation project(':SSffmpegVideoOperation')
+    implementation 'com.github.yangjie10930:EpMedia:v0.9.5'
+
 }
 
 dependencyVerification {
