@@ -6,8 +6,6 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 
 import com.cachy.webrtc.EglBase;
-import com.cachy.webrtc.FileVideoCapturer;
-import com.cachy.webrtc.VideoFileRenderer;
 
 import org.thoughtcrime.securesms.KbsEnclave;
 import org.thoughtcrime.securesms.components.TypingStatusRepository;
@@ -30,6 +28,7 @@ import org.thoughtcrime.securesms.payments.Payments;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.recipients.LiveRecipientCache;
 import org.thoughtcrime.securesms.record.RecordedAudioToFileController;
+import org.thoughtcrime.securesms.record.VideoFileRenderer;
 import org.thoughtcrime.securesms.revealable.ViewOnceMessageManager;
 import org.thoughtcrime.securesms.service.ExpiringMessageManager;
 import org.thoughtcrime.securesms.service.TrimThreadsByDateManager;
@@ -481,17 +480,17 @@ public class ApplicationDependencies {
     return recordedAudioToFileController;
   }
 
-  public static @NonNull VideoFileRenderer getVideoFileRenderer(String outputFile, int outputFileWidth, int outputFileHeight, final EglBase.Context sharedContext) throws IOException {
+  public static @NonNull VideoFileRenderer getVideoFileRenderer(String outputFile, final EglBase.Context sharedContext) throws IOException {
     if (videoFileRenderer == null) {
-      videoFileRenderer = provider.provideVideoFileRenderer(outputFile,outputFileWidth,outputFileHeight,sharedContext);
+      videoFileRenderer = provider.provideVideoFileRenderer(outputFile,sharedContext);
     }
 
     return videoFileRenderer;
   }
 
-  public static @NonNull VideoFileRenderer getVideoFileRendererLoc(String outputFile, int outputFileWidth, int outputFileHeight, final EglBase.Context sharedContext) throws IOException {
+  public static @NonNull VideoFileRenderer getVideoFileRendererLoc(String outputFile, final EglBase.Context sharedContext) throws IOException {
     if (videoFileRendererLoc == null) {
-      videoFileRendererLoc = provider.provideVideoFileRenderer(outputFile,outputFileWidth,outputFileHeight,sharedContext);
+      videoFileRendererLoc = provider.provideVideoFileRenderer(outputFile,sharedContext);
     }
 
     return videoFileRendererLoc;
@@ -541,7 +540,7 @@ public class ApplicationDependencies {
     @NonNull AppForegroundObserver provideAppForegroundObserver();
     @NonNull SignalCallManager provideSignalCallManager();
     @NonNull RecordedAudioToFileController provideRecordedAudioToFileController(ExecutorService executor);
-    @NonNull VideoFileRenderer provideVideoFileRenderer(String outputFile, int outputFileWidth, int outputFileHeight, final EglBase.Context sharedContext) throws IOException;
-    @NonNull VideoFileRenderer provideVideoFileRendererLoc(String outputFile, int outputFileWidth, int outputFileHeight, final EglBase.Context sharedContext) throws IOException;
+    @NonNull VideoFileRenderer provideVideoFileRenderer(String outputFile, final EglBase.Context sharedContext) throws IOException;
+    @NonNull VideoFileRenderer provideVideoFileRendererLoc(String outputFile, final EglBase.Context sharedContext) throws IOException;
   }
 }

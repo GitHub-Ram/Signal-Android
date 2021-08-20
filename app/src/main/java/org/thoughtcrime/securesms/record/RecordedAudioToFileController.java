@@ -19,6 +19,9 @@ import java.nio.ByteOrder;
 import java.util.concurrent.ExecutorService;
 import com.cachy.webrtc.audio.JavaAudioDeviceModule;
 import com.cachy.webrtc.audio.JavaAudioDeviceModule.SamplesReadyCallback;
+
+import org.thoughtcrime.securesms.util.Util;
+
 /**
  * Implements the AudioRecordSamplesReadyCallback interface and writes
  * recorded raw audio samples to an output file.
@@ -124,7 +127,7 @@ public class RecordedAudioToFileController implements SamplesReadyCallback {
   @Override
   public void onWebRtcAudioRecordSamplesReady(JavaAudioDeviceModule.AudioSamples samples) {
     // The native audio layer on Android should use 16-bit PCM format.
-    if (samples.getAudioFormat() != AudioFormat.ENCODING_PCM_16BIT) {
+    if (samples.getAudioFormat() != AudioFormat.ENCODING_PCM_16BIT || !Util.RemoteStarted) {
       Log.e(TAG, "Invalid audio format");
       return;
     }

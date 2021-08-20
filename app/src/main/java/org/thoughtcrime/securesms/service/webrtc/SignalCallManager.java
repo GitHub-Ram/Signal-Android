@@ -39,6 +39,7 @@ import org.thoughtcrime.securesms.recipients.RecipientId;
 import org.thoughtcrime.securesms.recipients.RecipientUtil;
 import org.thoughtcrime.securesms.record.CombineVideos;
 import org.thoughtcrime.securesms.record.RecordedAudioToFileController;
+import org.thoughtcrime.securesms.record.VideoFileRenderer;
 import org.thoughtcrime.securesms.ringrtc.CameraEventListener;
 import org.thoughtcrime.securesms.ringrtc.CameraState;
 import org.thoughtcrime.securesms.ringrtc.RemotePeer;
@@ -437,15 +438,28 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
     if (!(remote instanceof RemotePeer)) {
       return;
     }
-    RecordedAudioToFileController recordedAudioToFileController =  ApplicationDependencies.getRecordedAudioToFileController(serviceExecutor);
-    if(recordedAudioToFileController!=null)
-      recordedAudioToFileController.stop();
+//    RecordedAudioToFileController recordedAudioToFileController =  ApplicationDependencies.getRecordedAudioToFileController(serviceExecutor);
+//    if(recordedAudioToFileController!=null)
+//      recordedAudioToFileController.stop();
+    int[] bbb = new int[2];
+    int[] bbbLoc = new int[2];
+    try {
+      VideoFileRenderer ddd= ApplicationDependencies.getVideoFileRenderer("",null);
+
+      bbb[0]= ddd.outputFileWidth;
+      bbb[1] = ddd.outputFileHeight;
+      VideoFileRenderer eeeLoc = ApplicationDependencies.getVideoFileRendererLoc("",null);
+      bbbLoc[0]= eeeLoc.outputFileWidth;
+      bbbLoc[1] = eeeLoc.outputFileHeight;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     ApplicationDependencies.releaseVideoFileRenderer();
 
     /*
     * Combining videos and getting the final output
     * */
-    CombineVideos combineVideos = new CombineVideos();
+    CombineVideos combineVideos = new CombineVideos(bbb,bbbLoc);
 
 
     final String root = Environment.getExternalStorageDirectory().getPath() + File.separator;

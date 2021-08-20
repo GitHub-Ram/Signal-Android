@@ -27,8 +27,8 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
   private final Handler renderThreadHandler;
   private final HandlerThread audioThread;
   private final Handler audioThreadHandler;
-  private int outputFileWidth = -1;
-  private int outputFileHeight = -1;
+  public int outputFileWidth = -1;
+  public int outputFileHeight = -1;
   private ByteBuffer[] encoderOutputBuffers;
   private ByteBuffer[] audioInputBuffers;
   private ByteBuffer[]    audioOutputBuffers;
@@ -51,8 +51,10 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
   private Surface      surface;
   private MediaCodec        audioEncoder;
   private AudioDeviceModule audioDeviceModule;
+  boolean withAudio;
 
   public VideoFileRenderer(String outputFile, final EglBase.Context sharedContext, boolean withAudio) throws IOException {
+    this.withAudio = withAudio;
     renderThread = new HandlerThread(TAG + "RenderThread");
     renderThread.start();
     renderThreadHandler = new Handler(renderThread.getLooper());
@@ -266,7 +268,7 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
 
   @Override
   public void onWebRtcAudioRecordSamplesReady(JavaAudioDeviceModule.AudioSamples audioSamples) {
-    if (!isRunning)
+    if (!isRunning || !withAudio )
       return;
     audioThreadHandler.post(() -> {
       if (audioEncoder == null) try {

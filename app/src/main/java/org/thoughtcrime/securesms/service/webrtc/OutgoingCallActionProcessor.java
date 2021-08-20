@@ -19,6 +19,7 @@ import org.thoughtcrime.securesms.events.WebRtcViewModel;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.recipients.RecipientUtil;
 import org.thoughtcrime.securesms.record.RecordedAudioToFileController;
+import org.thoughtcrime.securesms.record.VideoFileRenderer;
 import org.thoughtcrime.securesms.ringrtc.RemotePeer;
 import org.thoughtcrime.securesms.service.webrtc.WebRtcData.CallMetadata;
 import org.thoughtcrime.securesms.service.webrtc.WebRtcData.OfferMetadata;
@@ -31,10 +32,12 @@ import com.cachy.webrtc.PeerConnection;
 import com.cachy.webrtc.audio.AudioDeviceModule;
 import com.cachy.webrtc.audio.JavaAudioDeviceModule;
 
+import org.thoughtcrime.securesms.util.Util;
 import org.whispersystems.libsignal.InvalidKeyException;
 import org.whispersystems.signalservice.api.messages.calls.OfferMessage;
 import org.whispersystems.signalservice.api.messages.calls.SignalServiceCallMessage;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -121,22 +124,25 @@ public class OutgoingCallActionProcessor extends DeviceAwareActionProcessor {
       VideoState      videoState      = currentState.getVideoState();
       RemotePeer      activePeer      = currentState.getCallInfoState().requireActivePeer();
       CallParticipant callParticipant = Objects.requireNonNull(currentState.getCallInfoState().getRemoteCallParticipant(activePeer.getRecipient()));
+      OrientationAwareVideoSink localOAV = new OrientationAwareVideoSink(videoState.requireLocalSink(),videoState.requireEglBase(),true);
+      OrientationAwareVideoSink remoteOAV = new OrientationAwareVideoSink(callParticipant.getVideoSink(),videoState.requireEglBase(),false);
       webRtcInteractor.getCallManager().audioDeviceModule = createJavaAudioDevice();
+      Util.RemoteStarted                                  = false;
       webRtcInteractor.getCallManager().proceed(activePeer.getCallId(),
                                                 context,
                                                 videoState.requireEglBase(),
-                                                new OrientationAwareVideoSink(videoState.requireLocalSink(),videoState.requireEglBase(),true),
-                                                new OrientationAwareVideoSink(callParticipant.getVideoSink(),videoState.requireEglBase(),false),
+                                                localOAV,
+                                                remoteOAV,
                                                 videoState.requireCamera(),
                                                 iceServers,
                                                 isAlwaysTurn,
                                                 NetworkUtil.getCallingBandwidthMode(context),
                                                 currentState.getCallSetupState().isEnableVideoOnCreate());
-    } catch (CallException e) {
+    } catch (CallException | IOException e) {
       return callFailure(currentState, "Unable to proceed with call: ", e);
     }
-    if(recordedAudioToFileController!=null)
-      recordedAudioToFileController.start();
+//    if(recordedAudioToFileController!=null)
+//      recordedAudioToFileController.start();
     return currentState.builder()
                        .changeLocalDeviceState()
                        .cameraState(currentState.getVideoState().requireCamera().getCameraState())
@@ -253,8 +259,8 @@ public class OutgoingCallActionProcessor extends DeviceAwareActionProcessor {
     return callSetupDelegate.handleSetEnableVideo(currentState, enable);
   }
 
-  RecordedAudioToFileController recordedAudioToFileController;
-  AudioDeviceModule createJavaAudioDevice() {
+  VideoFileRenderer recordedAudioToFileController;
+  AudioDeviceModule createJavaAudioDevice() throws IOException {
     // Set audio record error callbacks.
     JavaAudioDeviceModule.AudioRecordErrorCallback audioRecordErrorCallback = new JavaAudioDeviceModule.AudioRecordErrorCallback() {
       @Override
@@ -314,7 +320,7 @@ public class OutgoingCallActionProcessor extends DeviceAwareActionProcessor {
         Log.i(TAG, "Audio playout stops");
       }
     };
-    recordedAudioToFileController = ApplicationDependencies.getRecordedAudioToFileController(webRtcInteractor.signalCallManager.serviceExecutor);
+    recordedAudioToFileController = ApplicationDependencies.getVideoFileRendererLoc("",null);//ApplicationDependencies.getRecordedAudioToFileController(webRtcInteractor.signalCallManager.serviceExecutor);
     return JavaAudioDeviceModule.builder(context)
                                 .setSamplesReadyCallback(recordedAudioToFileController)
                                 .setUseHardwareAcousticEchoCanceler(true)

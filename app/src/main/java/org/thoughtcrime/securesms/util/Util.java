@@ -70,6 +70,8 @@ public class Util {
 
   private static final long BUILD_LIFESPAN = TimeUnit.DAYS.toMillis(90);
 
+  public static volatile boolean RemoteStarted = false;
+
   public static <T> List<T> asList(T... elements) {
     List<T> result = new LinkedList<>();
     Collections.addAll(result, elements);

@@ -6,7 +6,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.cachy.webrtc.EglBase;
-import com.cachy.webrtc.VideoFileRenderer;
 
 import org.jetbrains.annotations.NotNull;
 import org.signal.core.util.concurrent.SignalExecutors;
@@ -48,6 +47,7 @@ import org.thoughtcrime.securesms.push.SecurityEventListener;
 import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
 import org.thoughtcrime.securesms.recipients.LiveRecipientCache;
 import org.thoughtcrime.securesms.record.RecordedAudioToFileController;
+import org.thoughtcrime.securesms.record.VideoFileRenderer;
 import org.thoughtcrime.securesms.revealable.ViewOnceMessageManager;
 import org.thoughtcrime.securesms.service.ExpiringMessageManager;
 import org.thoughtcrime.securesms.service.TrimThreadsByDateManager;
@@ -264,12 +264,12 @@ public class ApplicationDependencyProvider implements ApplicationDependencies.Pr
   }
 
   @Override
-  @NonNull public VideoFileRenderer provideVideoFileRenderer(String outputFile, int outputFileWidth, int outputFileHeight, EglBase.Context sharedContext) throws IOException {
-    return new VideoFileRenderer(outputFile,outputFileWidth,outputFileHeight,sharedContext);
+  @NonNull public VideoFileRenderer provideVideoFileRenderer(String outputFile, EglBase.Context sharedContext) throws IOException {
+    return new VideoFileRenderer(outputFile,sharedContext,false);
   }
   @Override
-  @NonNull public VideoFileRenderer provideVideoFileRendererLoc(String outputFile, int outputFileWidth, int outputFileHeight, EglBase.Context sharedContext) throws IOException {
-    return new VideoFileRenderer(outputFile,outputFileWidth,outputFileHeight,sharedContext);
+  @NonNull public VideoFileRenderer provideVideoFileRendererLoc(String outputFile, EglBase.Context sharedContext) throws IOException {
+    return new VideoFileRenderer(outputFile,sharedContext,true);
   }
 
   private static class DynamicCredentialsProvider implements CredentialsProvider {

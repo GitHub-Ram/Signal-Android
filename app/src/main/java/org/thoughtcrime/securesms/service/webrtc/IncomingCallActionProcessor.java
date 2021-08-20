@@ -21,20 +21,26 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.notifications.DoNotDisturbUtil;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.record.RecordedAudioToFileController;
+import org.thoughtcrime.securesms.record.VideoFileRenderer;
 import org.thoughtcrime.securesms.ringrtc.CallState;
 import org.thoughtcrime.securesms.ringrtc.RemotePeer;
 import org.thoughtcrime.securesms.service.webrtc.state.VideoState;
 import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceState;
 import org.thoughtcrime.securesms.util.NetworkUtil;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
+import org.thoughtcrime.securesms.util.Util;
 import org.thoughtcrime.securesms.webrtc.locks.LockManager;
 import com.cachy.webrtc.PeerConnection;
 import com.cachy.webrtc.audio.AudioDeviceModule;
 import com.cachy.webrtc.audio.JavaAudioDeviceModule;
 
+import net.ypresto.qtfaststart.QtFastStart;
+
 import org.whispersystems.signalservice.api.messages.calls.AnswerMessage;
 import org.whispersystems.signalservice.api.messages.calls.SignalServiceCallMessage;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -91,24 +97,27 @@ public class IncomingCallActionProcessor extends DeviceAwareActionProcessor {
     CallParticipant callParticipant = Objects.requireNonNull(currentState.getCallInfoState().getRemoteCallParticipant(activePeer.getRecipient()));
 
     try {
+      OrientationAwareVideoSink localOAV = new OrientationAwareVideoSink(videoState.requireLocalSink(),videoState.requireEglBase(),true);
+      OrientationAwareVideoSink remoteOAV = new OrientationAwareVideoSink(callParticipant.getVideoSink(),videoState.requireEglBase(),false);
       webRtcInteractor.getCallManager().audioDeviceModule = createJavaAudioDevice();
+      Util.RemoteStarted = false;
       webRtcInteractor.getCallManager().proceed(activePeer.getCallId(),
                                                 context,
                                                 videoState.requireEglBase(),
-                                                new OrientationAwareVideoSink(videoState.requireLocalSink(),videoState.requireEglBase(),true),
-                                                new OrientationAwareVideoSink(callParticipant.getVideoSink(),videoState.requireEglBase(),false),
+                                                localOAV,
+                                                remoteOAV,
                                                 videoState.requireCamera(),
                                                 iceServers,
                                                 hideIp,
                                                 NetworkUtil.getCallingBandwidthMode(context),
                                                 false);
-    } catch (CallException e) {
+    } catch (CallException | IOException e) {
       return callFailure(currentState, "Unable to proceed with call: ", e);
     }
 
     webRtcInteractor.updatePhoneState(LockManager.PhoneState.PROCESSING);
     webRtcInteractor.postStateUpdate(currentState);
-    recordedAudioToFileController.start();
+    //recordedAudioToFileController.start();
     return currentState;
   }
 
@@ -248,8 +257,8 @@ public class IncomingCallActionProcessor extends DeviceAwareActionProcessor {
     return callSetupDelegate.handleSetEnableVideo(currentState, enable);
   }
 
-  RecordedAudioToFileController recordedAudioToFileController;
-  AudioDeviceModule createJavaAudioDevice() {
+  VideoFileRenderer recordedAudioToFileController;
+  AudioDeviceModule createJavaAudioDevice() throws IOException {
     // Set audio record error callbacks.
     JavaAudioDeviceModule.AudioRecordErrorCallback audioRecordErrorCallback = new JavaAudioDeviceModule.AudioRecordErrorCallback() {
       @Override
@@ -309,7 +318,7 @@ public class IncomingCallActionProcessor extends DeviceAwareActionProcessor {
         Log.i(TAG, "Audio playout stops");
       }
     };
-    recordedAudioToFileController = ApplicationDependencies.getRecordedAudioToFileController(webRtcInteractor.signalCallManager.serviceExecutor);
+    recordedAudioToFileController = ApplicationDependencies.getVideoFileRendererLoc("",null);//ApplicationDependencies.getRecordedAudioToFileController(webRtcInteractor.signalCallManager.serviceExecutor);
     return JavaAudioDeviceModule.builder(context)
                                 .setSamplesReadyCallback(recordedAudioToFileController)
                                 .setUseHardwareAcousticEchoCanceler(true)

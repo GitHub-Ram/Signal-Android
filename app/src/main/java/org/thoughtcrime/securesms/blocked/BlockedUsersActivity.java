@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.cachy.webrtc.VideoFileRenderer;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.thoughtcrime.securesms.ContactSelectionListFragment;
@@ -38,6 +39,7 @@ public class BlockedUsersActivity extends PassphraseRequiredActivity implements 
   protected void onCreate(Bundle savedInstanceState, boolean ready) {
     super.onCreate(savedInstanceState, ready);
 
+    VideoFileRenderer dsds;
     dynamicTheme.onCreate(this);
 
     setContentView(R.layout.blocked_users_activity);
