@@ -463,20 +463,20 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
     Log.i(TAG,"Frame Width bbc"+bbb[0]+"Frame Width bbc"+bbbLoc[0]);
     CombineVideos combineVideos ;
     if(!x){
-      combineVideos=new CombineVideos(bbb[0],bbb[0]);
+      //combineVideos=new CombineVideos(bbb[0],bbb[0]);
     }else{
-      combineVideos=new CombineVideos(bbbLoc[0],bbbLoc[0]);
+      //combineVideos=new CombineVideos(bbbLoc[0],bbbLoc[0]);
     }
 
 
     final String root = Environment.getExternalStorageDirectory().getPath() + File.separator;
 
 
-    combineVideos.combineVideosProcess(root+"output.mp4",
-                                       root+"recorded_audio.wav",
-                                       root+"locvideocall.mp4",
-                                       root+"videocall.mp4",
-                                       root+"temp_videocall.mp4");
+//    combineVideos.combineVideosProcess(root+"output.mp4",
+//                                       root+"recorded_audio.wav",
+//                                       root+"locvideocall.mp4",
+//                                       root+"videocall.mp4",
+//                                       root+"temp_videocall.mp4");
 
     RemotePeer    remotePeer    = (RemotePeer) remote;
     Log.i(TAG, "onCallConcluded: call_id: " + remotePeer.getCallId());

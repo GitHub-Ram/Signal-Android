@@ -13,7 +13,7 @@ import android.view.Surface;
 import com.cachy.webrtc.EglBase;
 import com.cachy.webrtc.GlRectDrawer;
 import com.cachy.webrtc.VideoFrame;
-import com.cachy.webrtc.VideoFrameDrawer;
+//import com.cachy.webrtc.VideoFrameDrawer;
 import com.cachy.webrtc.VideoSink;
 import com.cachy.webrtc.audio.AudioDeviceModule;
 import com.cachy.webrtc.audio.JavaAudioDeviceModule;
@@ -122,6 +122,7 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
       frameDrawer = new VideoFrameDrawer();
     }
     frameDrawer.drawFrame(frame, drawer, null, 0, 0, outputFileWidth, outputFileHeight);
+    //frameDrawer.drawFrame(frame, drawer, null, outputFileWidth, 0, 2*outputFileWidth, outputFileHeight);
     frame.release();
     drainEncoder();
     eglBase.swapBuffers();
