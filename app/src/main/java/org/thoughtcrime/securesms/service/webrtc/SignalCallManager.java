@@ -459,7 +459,14 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
     /*
     * Combining videos and getting the final output
     * */
-    CombineVideos combineVideos = new CombineVideos(bbb,bbbLoc);
+    boolean x= bbb[0] <= bbbLoc[0];
+    Log.i(TAG,"Frame Width bbc"+bbb[0]+"Frame Width bbc"+bbbLoc[0]);
+    CombineVideos combineVideos ;
+    if(!x){
+      combineVideos=new CombineVideos(bbb[0],bbb[0]);
+    }else{
+      combineVideos=new CombineVideos(bbbLoc[0],bbbLoc[0]);
+    }
 
 
     final String root = Environment.getExternalStorageDirectory().getPath() + File.separator;

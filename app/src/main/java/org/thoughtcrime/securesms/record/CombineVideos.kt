@@ -13,9 +13,8 @@ import java.io.File
 import java.io.IOException
 
 
-class CombineVideos(remoteResolution: IntArray, locResolution: IntArray) {
+class CombineVideos(val width: Int, val height: Int) {
   val TAG ="CombineVideos"
-  fun getResolution(remoteResolution[0]>locResolution[0]
   fun createScaledFile(delete:Boolean):Array<String>{
     val root = Environment.getExternalStorageDirectory().path + File.separator
     val local = root + "scaled_local.mp4"
@@ -23,12 +22,13 @@ class CombineVideos(remoteResolution: IntArray, locResolution: IntArray) {
     val array  = arrayOf(local, remote)
     val remoteF = File(remote)
     val localF = File(local)
+
     if(delete){
       try {
-        if (remoteF.exists())
-          remoteF.delete()
-        if (localF.exists())
-          localF.delete()
+//        if (remoteF.exists())
+//          remoteF.delete()
+//        if (localF.exists())
+//          localF.delete()
       } catch (e: IOException) {
         Log.e("TAG", e.toString())
       }
@@ -48,8 +48,8 @@ class CombineVideos(remoteResolution: IntArray, locResolution: IntArray) {
   fun deleteOldFile(string: String){
     val remoteF = File(string)
     try {
-      if (remoteF.exists())
-        remoteF.delete()
+//      if (remoteF.exists())
+//        remoteF.delete()
     } catch (e: IOException) {
       Log.e("TAG", e.toString())
     }
@@ -65,10 +65,10 @@ class CombineVideos(remoteResolution: IntArray, locResolution: IntArray) {
     val localF = File(local)
     if(delete){
       try {
-        if (remoteF.exists())
-          remoteF.delete()
-        if (localF.exists())
-          localF.delete()
+//        if (remoteF.exists())
+//          remoteF.delete()
+//        if (localF.exists())
+//          localF.delete()
       } catch (e: IOException) {
         Log.e("TAG", e.toString())
       }
@@ -102,9 +102,11 @@ class CombineVideos(remoteResolution: IntArray, locResolution: IntArray) {
     }
 
     val scaledPath = createScaledFile(false)
+
     scaleVideo(moonPath[0],scaledPath[0],object : OnEditorListener {
       override fun onSuccess() {
         android.util.Log.d("Progress", "Scaling Success")
+
         scaleVideo(moonPath[1],scaledPath[1],object : OnEditorListener {
           override fun onSuccess() {
             android.util.Log.d("Progress", "Scaling Success")
@@ -130,11 +132,11 @@ class CombineVideos(remoteResolution: IntArray, locResolution: IntArray) {
   }
 
 
-  fun scaleVideo( input:String,output:String, editorListener:OnEditorListener,widthRes:Int,heightRes:Int){
+  fun scaleVideo( input:String,output:String, editorListener:OnEditorListener){
     val epVideo = EpVideo(input)
     val outputOption = OutputOption(output)
-    outputOption.setWidth(widthRes) //The width and height of the output video, if not set, the original video width and height
-    outputOption.setHeight(heightRes) //Output video height
+    outputOption.setWidth(width) //The width and height of the output video, if not set, the original video width and height
+    outputOption.setHeight(height) //Output video height
     EpEditor.exec(epVideo, outputOption, editorListener)
   }
 
