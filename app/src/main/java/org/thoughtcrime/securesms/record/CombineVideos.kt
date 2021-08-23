@@ -101,6 +101,8 @@ class CombineVideos(val width: Int, val height: Int) {
       Log.e("QT", m.toString())
     }
 
+    mergeVideo(moonPath[0],moonPath[1],output_file)
+    return
     val scaledPath = createScaledFile(false)
 
     scaleVideo(moonPath[0],scaledPath[0],object : OnEditorListener {

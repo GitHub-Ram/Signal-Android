@@ -13,7 +13,7 @@ import android.view.Surface;
 import com.cachy.webrtc.EglBase;
 import com.cachy.webrtc.GlRectDrawer;
 import com.cachy.webrtc.VideoFrame;
-//import com.cachy.webrtc.VideoFrameDrawer;
+import com.cachy.webrtc.VideoFrameDrawer;
 import com.cachy.webrtc.VideoSink;
 import com.cachy.webrtc.audio.AudioDeviceModule;
 import com.cachy.webrtc.audio.JavaAudioDeviceModule;
@@ -52,9 +52,12 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
   private MediaCodec        audioEncoder;
   private AudioDeviceModule audioDeviceModule;
   boolean withAudio;
+  boolean local;
+  private int[] localHeightWidth = new int[2];
 
-  public VideoFileRenderer(String outputFile, final EglBase.Context sharedContext, boolean withAudio) throws IOException {
+  public VideoFileRenderer(String outputFile, final EglBase.Context sharedContext, boolean withAudio,boolean local) throws IOException {
     this.withAudio = withAudio;
+    this.local = local;
     renderThread = new HandlerThread(TAG + "RenderThread");
     renderThread.start();
     renderThreadHandler = new Handler(renderThread.getLooper());
@@ -110,8 +113,18 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
   public void onFrame(VideoFrame frame) {
     frame.retain();
     if (outputFileWidth == -1) {
-      outputFileWidth = frame.getRotatedWidth();
-      outputFileHeight = frame.getRotatedHeight();
+      if(local)
+      {
+        outputFileWidth = frame.getRotatedWidth();
+        outputFileHeight = frame.getRotatedHeight();
+        localHeightWidth[0] = outputFileWidth;
+        localHeightWidth[1] = outputFileHeight;
+      }else if(localHeightWidth[0]!=0){
+        outputFileWidth = localHeightWidth[0];
+        outputFileHeight = localHeightWidth[1];
+      }else {
+        return;
+      }
       initVideoEncoder();
     }
     renderThreadHandler.post(() -> renderFrameOnRenderThread(frame));
