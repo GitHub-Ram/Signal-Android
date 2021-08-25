@@ -45,15 +45,7 @@ class CombineVideos(val width: Int, val height: Int) {
     return  array
   }
 
-  fun deleteOldFile(string: String){
-    val remoteF = File(string)
-    try {
-//      if (remoteF.exists())
-//        remoteF.delete()
-    } catch (e: IOException) {
-      Log.e("TAG", e.toString())
-    }
-  }
+
 
   fun createMoonFile(delete:Boolean):Array<String>{
 
@@ -111,8 +103,7 @@ class CombineVideos(val width: Int, val height: Int) {
           override fun onSuccess() {
             android.util.Log.d("Progress", "Scaling Success")
             mergeVideo(scaledPath[0],scaledPath[1],output_file)
-            deleteOldFile(inputVideo_local)
-            deleteOldFile(inputVideo_remote)
+
           }
           override fun onFailure() {
             android.util.Log.d("Progress", "Scaling Failed")
@@ -141,29 +132,22 @@ class CombineVideos(val width: Int, val height: Int) {
   }
 
   fun mergeVideo(input:String,input2:String,output:String){
-    deleteOldFile(output)
-    EpEditor.execCmd(
-      "-i $input -i $input2 -filter_complex hstack $output",
-      0,
-      object : OnEditorListener {
-        override fun onSuccess() {
-          android.util.Log.d("Progress", "3Success")
-          createMoonFile(true)
-          createScaledFile(true)
-        }
-        override fun onFailure() {
-          android.util.Log.d("Progress", "3Failed")
-        }
+   // deleteOldFile(output)
+    EpEditor.execCmd("-i $input -i $input2 -filter_complex vstack=inputs=2 $output", 0, object : OnEditorListener {
+      override fun onSuccess() {
+        Log.d("Progress","Success2")
 
-        override fun onProgress(progress: Float) {
-          android.util.Log.d("Progress", "$progress")
-        }
       }
-    )
+
+
+      override fun onFailure() {
+        Log.d("Progress2","Failed2")}
+      override fun onProgress(progress: Float) {
+        Log.d("Progress2","$progress")}
+    })
   }
 
    fun mergeAudioWithVideo(output_file:String,inputVideo: String,inputAudio:String){
-     deleteOldFile(output_file)
      EpEditor.music(inputVideo, inputAudio, output_file, 0.0f, 1f, object : OnEditorListener{
        override fun onSuccess() {
          android.util.Log.d("Progress", "4Success")

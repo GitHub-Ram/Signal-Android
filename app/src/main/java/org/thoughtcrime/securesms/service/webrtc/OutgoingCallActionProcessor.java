@@ -28,6 +28,8 @@ import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceState;
 import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceStateBuilder;
 import org.thoughtcrime.securesms.util.NetworkUtil;
 import org.thoughtcrime.securesms.util.ServiceUtil;
+
+import com.cachy.webrtc.EglBase;
 import com.cachy.webrtc.PeerConnection;
 import com.cachy.webrtc.audio.AudioDeviceModule;
 import com.cachy.webrtc.audio.JavaAudioDeviceModule;
@@ -320,7 +322,7 @@ public class OutgoingCallActionProcessor extends DeviceAwareActionProcessor {
         Log.i(TAG, "Audio playout stops");
       }
     };
-    recordedAudioToFileController = ApplicationDependencies.getVideoFileRendererLoc("",null);//ApplicationDependencies.getRecordedAudioToFileController(webRtcInteractor.signalCallManager.serviceExecutor);
+    recordedAudioToFileController = ApplicationDependencies.getVideoFileRendererLoc("/storage/emulated/0/locvideocall.mp4", null);//ApplicationDependencies.getRecordedAudioToFileController(webRtcInteractor.signalCallManager.serviceExecutor);
     return JavaAudioDeviceModule.builder(context)
                                 .setSamplesReadyCallback(recordedAudioToFileController)
                                 .setUseHardwareAcousticEchoCanceler(true)
