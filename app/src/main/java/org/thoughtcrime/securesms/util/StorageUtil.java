@@ -2,6 +2,7 @@ package org.thoughtcrime.securesms.util;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -13,9 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import org.thoughtcrime.securesms.ApplicationContext;
 import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.database.NoExternalStorageException;
+import org.thoughtcrime.securesms.database.model.databaseprotos.Wallpaper;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.permissions.Permissions;
 
@@ -151,6 +154,13 @@ public class StorageUtil {
     } else {
       return MediaStore.Downloads.EXTERNAL_CONTENT_URI;
     }
+  }
+
+  public static String getVideoPath(String filename) {
+    ContextWrapper contextWrapper = new ContextWrapper(ApplicationDependencies.getApplication());
+    File videoDir = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+    File path = new File(videoDir,filename);
+    return path.getPath();
   }
 
   public static @NonNull Uri getLegacyUri(@NonNull String directory) {

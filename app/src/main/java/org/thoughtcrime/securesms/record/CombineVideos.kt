@@ -9,6 +9,7 @@ import net.ypresto.qtfaststart.QtFastStart
 import net.ypresto.qtfaststart.QtFastStart.MalformedFileException
 import net.ypresto.qtfaststart.QtFastStart.UnsupportedFileException
 import org.signal.core.util.logging.Log
+import org.thoughtcrime.securesms.util.StorageUtil.getVideoPath
 import java.io.File
 import java.io.IOException
 
@@ -16,9 +17,8 @@ import java.io.IOException
 class CombineVideos(val width: Int, val height: Int) {
   val TAG ="CombineVideos"
   fun createScaledFile(delete:Boolean):Array<String>{
-    val root = Environment.getExternalStorageDirectory().path + File.separator
-    val local = root + "scaled_local.mp4"
-    val remote = root + "scaled_remote.mp4"
+    val local = getVideoPath( "scaled_local.mp4")
+    val remote = getVideoPath( "scaled_remote.mp4")
     val array  = arrayOf(local, remote)
     val remoteF = File(remote)
     val localF = File(local)
@@ -49,9 +49,8 @@ class CombineVideos(val width: Int, val height: Int) {
 
   fun createMoonFile(delete:Boolean):Array<String>{
 
-    val root = Environment.getExternalStorageDirectory().path + File.separator
-    val local = root + "moon_local.mp4"
-    val remote = root + "moon_remote.mp4"
+    val local = getVideoPath( "moon_local.mp4")
+    val remote = getVideoPath( "moon_remote.mp4")
     val array  = arrayOf(local, remote)
     val remoteF = File(remote)
     val localF = File(local)

@@ -8,13 +8,15 @@ import com.cachy.webrtc.EglBase;
 import com.cachy.webrtc.VideoFrame;
 import com.cachy.webrtc.VideoSink;
 
-import org.signal.glide.Log;
+import org.signal.core.util.logging.Log;
 import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 import org.thoughtcrime.securesms.record.VideoFileRenderer;
 import org.thoughtcrime.securesms.util.Util;
 
 import java.io.File;
 import java.io.IOException;
+
+import static org.thoughtcrime.securesms.util.StorageUtil.getVideoPath;
 
 public final class OrientationAwareVideoSink implements VideoSink {
 
@@ -29,17 +31,20 @@ public final class OrientationAwareVideoSink implements VideoSink {
   public OrientationAwareVideoSink(@NonNull VideoSink delegate, @NonNull EglBase eglBase,boolean isLocal) {
     this.delegate = delegate;
     this.isLocal = isLocal;
+    final String fileName = getVideoPath((isLocal?"loc":"")+"videocall.mp4");
     try {
-      final String fileName = Environment.getExternalStorageDirectory().getPath() + File.separator+(isLocal?"loc":"")+"videocall.mp4";
+      //Environment.getExternalStorageDirectory().getPath() + File.separator+(isLocal?"loc":"")+"videocall.mp4";
       deleteOldFile(fileName);
       videoFileRenderer = isLocal? ApplicationDependencies.getVideoFileRendererLoc(fileName
           ,  eglBase.getEglBaseContext()): ApplicationDependencies.getVideoFileRenderer(fileName
           ,  eglBase.getEglBaseContext());
     } catch (IOException e) {
       throw new RuntimeException(
-          "Failed to open video file for output: " + e+ Environment.getExternalStorageDirectory().getPath() + File.separator+(isLocal?"loc":"")+"videocall.mp4");
+          "Failed to open video file for output: " + e+ fileName);
     }
   }
+
+
 
   void deleteOldFile( String string){
     File remoteF =new File(string);

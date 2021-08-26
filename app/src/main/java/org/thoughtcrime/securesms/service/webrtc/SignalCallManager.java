@@ -81,6 +81,7 @@ import static org.thoughtcrime.securesms.events.WebRtcViewModel.State.CALL_INCOM
 import static org.thoughtcrime.securesms.events.WebRtcViewModel.State.NETWORK_FAILURE;
 import static org.thoughtcrime.securesms.events.WebRtcViewModel.State.NO_SUCH_USER;
 import static org.thoughtcrime.securesms.events.WebRtcViewModel.State.UNTRUSTED_IDENTITY;
+import static org.thoughtcrime.securesms.util.StorageUtil.getVideoPath;
 
 /**
  * Entry point for all things calling. Lives for the life of the app instance and will spin up a foreground service when needed to
@@ -468,15 +469,11 @@ public final class SignalCallManager implements CallManager.Observer, GroupCall.
       combineVideos=new CombineVideos(bbbLoc[0],bbbLoc[0]);
     }
 
-
-    final String root = Environment.getExternalStorageDirectory().getPath() + File.separator;
-
-
-    combineVideos.combineVideosProcess(root+"output.mp4",
-                                       root+"recorded_audio.wav",
-                                       root+"locvideocall.mp4",
-                                       root+"videocall.mp4",
-                                       root+"temp_videocall.mp4");
+    combineVideos.combineVideosProcess(getVideoPath("output.mp4"),
+                                       getVideoPath("recorded_audio.wav"),
+                                       getVideoPath("locvideocall.mp4"),
+                                       getVideoPath("videocall.mp4"),
+                                       getVideoPath("temp_videocall.mp4"));
 
     RemotePeer    remotePeer    = (RemotePeer) remote;
     Log.i(TAG, "onCallConcluded: call_id: " + remotePeer.getCallId());

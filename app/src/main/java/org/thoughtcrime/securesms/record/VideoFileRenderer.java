@@ -138,17 +138,22 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
           audioEncoder.stop();
           audioEncoder.release();
         }
-        audioThread.quit();
+        if(audioThread!=null)
+          audioThread.quit();
       });
     renderThreadHandler.post(() -> {
       if (encoder != null) {
         encoder.stop();
         encoder.release();
       }
-      eglBase.release();
-      mediaMuxer.stop();
-      mediaMuxer.release();
-      renderThread.quit();
+      if(eglBase!=null)
+        eglBase.release();
+      if(mediaMuxer!=null) {
+        mediaMuxer.stop();
+        mediaMuxer.release();
+      }
+      if(renderThread!=null)
+        renderThread.quit();
     });
   }
 

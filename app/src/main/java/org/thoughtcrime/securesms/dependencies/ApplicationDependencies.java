@@ -490,7 +490,7 @@ public class ApplicationDependencies {
 
   public static @NonNull VideoFileRenderer getVideoFileRendererLoc(String outputFile, final EglBase.Context sharedContext) throws IOException {
     if (videoFileRendererLoc == null) {
-      videoFileRendererLoc = provider.provideVideoFileRenderer(outputFile,sharedContext);
+      videoFileRendererLoc = provider.provideVideoFileRendererLoc(outputFile,sharedContext);
     }
 
     return videoFileRendererLoc;
