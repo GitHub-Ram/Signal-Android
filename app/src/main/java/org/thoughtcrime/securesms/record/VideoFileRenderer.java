@@ -1,5 +1,7 @@
 package org.thoughtcrime.securesms.record;
 
+import android.content.Context;
+import android.graphics.Point;
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
@@ -7,7 +9,9 @@ import android.media.MediaMuxer;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.view.Display;
 import android.view.Surface;
+import android.view.WindowManager;
 
 
 import com.cachy.webrtc.EglBase;
@@ -17,6 +21,8 @@ import com.cachy.webrtc.VideoFrameDrawer;
 import com.cachy.webrtc.VideoSink;
 import com.cachy.webrtc.audio.AudioDeviceModule;
 import com.cachy.webrtc.audio.JavaAudioDeviceModule;
+
+import org.thoughtcrime.securesms.dependencies.ApplicationDependencies;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -51,10 +57,11 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
   private Surface      surface;
   private MediaCodec        audioEncoder;
   private AudioDeviceModule audioDeviceModule;
-  boolean withAudio;
+  boolean withAudio,isRemote;
 
-  public VideoFileRenderer(String outputFile, final EglBase.Context sharedContext, boolean withAudio) throws IOException {
+  public VideoFileRenderer(String outputFile, final EglBase.Context sharedContext, boolean withAudio,boolean isRemote) throws IOException {
     this.withAudio = withAudio;
+    this.isRemote = isRemote;
     renderThread = new HandlerThread(TAG + "RenderThread");
     renderThread.start();
     renderThreadHandler = new Handler(renderThread.getLooper());
@@ -109,10 +116,19 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
   @Override
   public void onFrame(VideoFrame frame) {
     frame.retain();
-    if (outputFileWidth == -1) {
+    if (outputFileWidth == -1 && isRemote) {
       outputFileWidth = frame.getRotatedWidth();
       outputFileHeight = frame.getRotatedHeight();
       initVideoEncoder();
+    }else  if (outputFileWidth == -1 && !isRemote) {
+      try {
+        VideoFileRenderer vfr = ApplicationDependencies.getVideoFileRenderer("",null);
+        outputFileWidth = vfr.outputFileWidth;
+        outputFileHeight = vfr.outputFileHeight;
+        initVideoEncoder();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
     renderThreadHandler.post(() -> renderFrameOnRenderThread(frame));
   }
@@ -151,6 +167,7 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
       if(mediaMuxer!=null) {
         mediaMuxer.stop();
         mediaMuxer.release();
+        mediaMuxer = null;
       }
       if(renderThread!=null)
         renderThread.quit();
@@ -204,7 +221,7 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
             videoFrameStart = bufferInfo.presentationTimeUs;
           }
           bufferInfo.presentationTimeUs -= videoFrameStart;
-          if (muxerStarted)
+          if (muxerStarted && mediaMuxer!=null)
             mediaMuxer.writeSampleData(trackIndex, encodedData, bufferInfo);
           isRunning = isRunning && (bufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) == 0;
           encoder.releaseOutputBuffer(encoderStatus, false);
@@ -256,7 +273,7 @@ public class VideoFileRenderer implements VideoSink, JavaAudioDeviceModule.Sampl
           // It's usually necessary to adjust the ByteBuffer values to match BufferInfo.
           encodedData.position(audioBufferInfo.offset);
           encodedData.limit(audioBufferInfo.offset + audioBufferInfo.size);
-          if (muxerStarted)
+          if (muxerStarted && mediaMuxer!=null)
             mediaMuxer.writeSampleData(audioTrackIndex, encodedData, audioBufferInfo);
           isRunning = isRunning && (audioBufferInfo.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) == 0;
           audioEncoder.releaseOutputBuffer(encoderStatus, false);

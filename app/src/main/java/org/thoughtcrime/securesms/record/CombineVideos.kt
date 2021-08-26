@@ -92,33 +92,34 @@ class CombineVideos(val width: Int, val height: Int) {
       Log.e("QT", m.toString())
     }
 
-    val scaledPath = createScaledFile(false)
-
-    scaleVideo(moonPath[0],scaledPath[0],object : OnEditorListener {
-      override fun onSuccess() {
-        android.util.Log.d("Progress", "Scaling Success")
-
-        scaleVideo(moonPath[1],scaledPath[1],object : OnEditorListener {
-          override fun onSuccess() {
-            android.util.Log.d("Progress", "Scaling Success")
-            mergeVideo(scaledPath[0],scaledPath[1],output_file)
-
-          }
-          override fun onFailure() {
-            android.util.Log.d("Progress", "Scaling Failed")
-          }
-          override fun onProgress(progress: Float) {
-            android.util.Log.d("Scaling Progress", "$progress")
-          }
-        })
-      }
-      override fun onFailure() {
-        android.util.Log.d("Progress", "Scaling Failed")
-      }
-      override fun onProgress(progress: Float) {
-        android.util.Log.d("Scaling Progress", "$progress")
-      }
-    })
+    mergeVideo(moonPath[0],moonPath[1],output_file)
+//    val scaledPath = createScaledFile(false)
+//
+//    scaleVideo(moonPath[0],scaledPath[0],object : OnEditorListener {
+//      override fun onSuccess() {
+//        android.util.Log.d("Progress", "Scaling Success")
+//
+//        scaleVideo(moonPath[1],scaledPath[1],object : OnEditorListener {
+//          override fun onSuccess() {
+//            android.util.Log.d("Progress", "Scaling Success")
+//            mergeVideo(scaledPath[0],scaledPath[1],output_file)
+//
+//          }
+//          override fun onFailure() {
+//            android.util.Log.d("Progress", "Scaling Failed")
+//          }
+//          override fun onProgress(progress: Float) {
+//            android.util.Log.d("Scaling Progress", "$progress")
+//          }
+//        })
+//      }
+//      override fun onFailure() {
+//        android.util.Log.d("Progress", "Scaling Failed")
+//      }
+//      override fun onProgress(progress: Float) {
+//        android.util.Log.d("Scaling Progress", "$progress")
+//      }
+//    })
   }
 
 

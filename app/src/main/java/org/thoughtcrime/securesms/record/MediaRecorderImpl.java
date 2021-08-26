@@ -35,7 +35,7 @@ public class MediaRecorderImpl {
       videoFileRenderer = new VideoFileRenderer(
           file.getAbsolutePath(),
           EglUtils.getRootEglBaseContext(),
-          audioInterceptor != null
+          audioInterceptor != null,false
       );
       videoTrack.addSink(videoFileRenderer);
       if (audioInterceptor != null)
