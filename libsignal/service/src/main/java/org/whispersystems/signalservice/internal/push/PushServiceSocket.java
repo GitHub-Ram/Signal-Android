@@ -1431,6 +1431,7 @@ public class PushServiceSocket {
 
       @Override
       public void onFailure(Call call, IOException e) {
+
         bodyFuture.setException(e);
       }
     });
@@ -1697,7 +1698,7 @@ public class PushServiceSocket {
                                                         .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
                                                         .build();
 
-//    Log.d(TAG, "Opening URL: " + connectionHolder.getUrl());
+    Log.d(TAG, "Opening URL: " + connectionHolder.getUrl()+" path:"+path);
 
     Request.Builder request = new Request.Builder().url(connectionHolder.getUrl() + path);
     request.method(method, body);
@@ -1720,7 +1721,7 @@ public class PushServiceSocket {
 
     try {
       response = call.execute();
-
+      Log.d(TAG, "Opening URL response: " + response!=null?response.toString():" "+" body:"+response!=null && response.body()!=null?response.body().string():" ");
       if (response.isSuccessful() && response.code() != 204) {
         return response;
       }
